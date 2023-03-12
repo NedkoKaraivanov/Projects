@@ -32,6 +32,9 @@ public class EmployeeEntity extends BaseEntity {
     @ManyToOne
     private EmployeeEntity manager;
 
+    @Column(nullable = false)
+    private String password;
+
     public String getFirstName() {
         return firstName;
     }
@@ -92,6 +95,15 @@ public class EmployeeEntity extends BaseEntity {
 
     public EmployeeEntity setManager(EmployeeEntity manager) {
         this.manager = manager;
+        return this;
+    }
+
+    public String getPassword() {
+        return password;
+    }
+
+    public EmployeeEntity setPassword(String password) {
+        this.password = password;
         return this;
     }
 
