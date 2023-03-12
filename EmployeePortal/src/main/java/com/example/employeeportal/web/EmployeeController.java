@@ -41,7 +41,7 @@ public class EmployeeController {
             redirectAttributes.addFlashAttribute("createEmployeeDTO", createEmployeeDTO);
             redirectAttributes.addFlashAttribute("org.springframework.validation.BindingResult.createEmployeeDTO", bindingResult);
 
-            return "redirect:/create";
+            return "redirect:/employees/create";
         }
 
         return "redirect:/";

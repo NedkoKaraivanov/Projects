@@ -7,6 +7,7 @@ import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 
 import java.time.LocalDate;
+import java.time.format.DateTimeFormatter;
 import java.util.Optional;
 
 @Service
@@ -43,10 +44,12 @@ public class EmployeeService {
                 .setEmail(createEmployeeDTO.getEmail())
                 .setPhoneNumber(createEmployeeDTO.getPhoneNumber())
                 .setSalary(createEmployeeDTO.getSalary())
-                .setBirthDate(
-                        createEmployeeDTO.getBirthDate() != null ? LocalDate.parse(createEmployeeDTO.getBirthDate())
-                                : null
-                ).setPassword(passwordEncoder.encode(createEmployeeDTO.getPassword()));
+                .setPassword(passwordEncoder.encode(createEmployeeDTO.getPassword()));
+
+        if (createEmployeeDTO.getBirthDate() != null) {
+            LocalDate birthDate = LocalDate.parse(createEmployeeDTO.getBirthDate(), DateTimeFormatter.ofPattern("yyyy-MM-dd"));
+            employee.setBirthDate(birthDate);
+        }
 
         this.employeeRepository.save(employee);
 

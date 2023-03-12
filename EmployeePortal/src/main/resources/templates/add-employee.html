@@ -2,7 +2,6 @@
 <html lang="en" xmlns="http://www.w3.org/1999/xhtml"
       xmlns:th="http://www.thymeleaf.org">
 <head th:replace="~{fragments/commons::head}">
-    <title>Create Employee"</title>
 </head>
 <body>
 <header th:replace="~{fragments/commons::nav}"></header>
@@ -23,7 +22,7 @@
                     <div class="col-sm-10">
                         <input type="text"
                                th:field="*{firstName}"
-                               th:errorclass="'is-invalid bg-danger'"
+                               th:errorclass="'is-invalid'"
                                class="form-control"
                                id="firstName"
                                aria-describedby="firstNameHelpInline" placeholder="First name">
@@ -38,7 +37,7 @@
                     <div class="col-sm-10">
                         <input type="text"
                                th:field="*{lastName}"
-                               th:errorclass="'is-invalid bg-danger'"
+                               th:errorclass="'is-invalid'"
                                class="form-control"
                                id="lastName"
                                aria-describedby="lastNameHelpInline"
@@ -54,7 +53,7 @@
                     <div class="col-sm-10">
                         <input type="text"
                                th:field="*{email}"
-                               th:errorclass="'is-invalid bg-danger'"
+                               th:errorclass="'is-invalid'"
                                class="form-control"
                                id="email"
                                aria-describedby="emailHelpInline"
@@ -70,7 +69,7 @@
                     <div class="col-sm-10">
                         <input type="text"
                                th:field="*{phoneNumber}"
-                               th:errorclass="'is-invalid bg-danger'"
+                               th:errorclass="'is-invalid'"
                                class="form-control"
                                id="phoneNumber"
                                aria-describedby="phoneNumberHelpInline"
@@ -84,7 +83,7 @@
                 <div id="date-picker-example" class="form-group row">
                     <label for="date" class="col-sm-2 col-form-label text-dark">Select date</label>
                     <div class="col-sm-10">
-                    <input placeholder="Select date" type="date" id="date" class="form-control">
+                    <input placeholder="Select date" type="date" id="date" class="form-control" th:field="*{birthDate}">
                     <i class="fas fa-calendar input-prefix"></i>
                     </div>
                 </div>
@@ -93,7 +92,7 @@
                     <div class="col-sm-10">
                         <input type="text"
                                th:field="*{salary}"
-                               th:errorclass="'is-invalid bg-danger'"
+                               th:errorclass="'is-invalid'"
                                class="form-control"
                                id="salary"
                                aria-describedby="salaryHelpInline">
@@ -108,7 +107,7 @@
                     <div class="col-sm-10">
                         <input type="password"
                                th:field="*{password}"
-                               th:errorclass="'is-invalid bg-danger'"
+                               th:errorclass="'is-invalid'"
                                class="form-control"
                                id="password"
                                aria-describedby="passwordHelpInline"
@@ -124,7 +123,7 @@
                     <div class="col-sm-10">
                         <input type="password"
                                th:field="*{confirmPassword}"
-                               th:errorclass="'is-invalid bg-danger'"
+                               th:errorclass="'is-invalid'"
                                class="form-control"
                                id="confirmPassword"
                                aria-describedby="confirmPasswordHelpInline"
