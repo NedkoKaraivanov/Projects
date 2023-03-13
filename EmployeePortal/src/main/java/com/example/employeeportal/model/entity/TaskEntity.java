@@ -1,11 +1,10 @@
 package com.example.employeeportal.model.entity;
 
-import jakarta.persistence.Column;
-import jakarta.persistence.Entity;
-import jakarta.persistence.ManyToMany;
-import jakarta.persistence.Table;
+import jakarta.persistence.*;
 
 import java.time.LocalDate;
+import java.util.ArrayList;
+import java.util.List;
 import java.util.Set;
 
 @Entity
@@ -18,11 +17,11 @@ public class TaskEntity extends BaseEntity {
     @Column(nullable = false, columnDefinition = "TEXT")
     private String description;
 
-    @Column(nullable = false)
+    @Column
     private LocalDate dueDate;
 
-    @ManyToMany
-    private Set<EmployeeEntity> employees;
+    @ManyToOne
+    private EmployeeEntity employee;
 
     public String getTitle() {
         return title;
@@ -51,12 +50,12 @@ public class TaskEntity extends BaseEntity {
         return this;
     }
 
-    public Set<EmployeeEntity> getEmployees() {
-        return employees;
+    public EmployeeEntity getEmployee() {
+        return employee;
     }
 
-    public TaskEntity setEmployees(Set<EmployeeEntity> employees) {
-        this.employees = employees;
+    public TaskEntity setEmployee(EmployeeEntity employee) {
+        this.employee = employee;
         return this;
     }
 }

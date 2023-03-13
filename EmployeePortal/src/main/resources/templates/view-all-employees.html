@@ -1,0 +1,37 @@
+<!DOCTYPE html>
+<html lang="en" xmlns="http://www.w3.org/1999/xhtml"
+      xmlns:th="http://www.thymeleaf.org">
+<head th:replace="~{fragments/commons::head}">
+</head>
+<body>
+<header th:replace="~{fragments/commons::nav}"></header>
+<main>
+    <div class="container bg-blur rounded mt-1 mb-4">
+        <table class="table">
+            <thead>
+            <tr>
+                <td>First Name</td>
+                <td>Last Name</td>
+                <td>Email</td>
+                <td>Phone Number</td>
+                <td>Department</td>
+            </tr>
+            </thead>
+            <tbody>
+            <tr th:each="employee : ${allEmployees}" th:object="${employee}">
+                <td th:text="|*{firstName}|"></td>
+                <td th:text="|*{lastName}|"></td>
+                <td th:text="|*{email}|"></td>
+                <td th:text="|*{phoneNumber}|"></td>
+                <td th:text="|*{department}|"></td>
+                <td style="width: 15%"><a class="btn-primary btn" th:href="@{/employees/update/{id}(id = *{id})}">Update Employee</a>
+                <td style="width: 15%"><a class="btn-danger btn" th:href="@{/employees/delete/{id}(id = *{id})}">Delete Employee</a>
+                </td>
+            </tr>
+            </tbody>
+        </table>
+    </div>
+</main>
+<footer th:replace="~{fragments/commons::footer}"></footer>
+</body>
+</html>

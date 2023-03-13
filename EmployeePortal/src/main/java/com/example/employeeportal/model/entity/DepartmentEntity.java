@@ -1,25 +1,24 @@
 package com.example.employeeportal.model.entity;
 
-import jakarta.persistence.Column;
-import jakarta.persistence.Entity;
-import jakarta.persistence.OneToOne;
-import jakarta.persistence.Table;
+import com.example.employeeportal.model.enums.DepartmentEnum;
+import jakarta.persistence.*;
 
 @Entity
 @Table(name = "departments")
 public class DepartmentEntity extends BaseEntity{
 
     @Column(nullable = false, unique = true)
-    private String name;
+    @Enumerated(EnumType.STRING)
+    private DepartmentEnum name;
 
-    @OneToOne(optional = false)
+    @OneToOne(optional = true)
     private EmployeeEntity manager;
 
-    public String getName() {
+    public DepartmentEnum getName() {
         return name;
     }
 
-    public DepartmentEntity setName(String name) {
+    public DepartmentEntity setName(DepartmentEnum name) {
         this.name = name;
         return this;
     }

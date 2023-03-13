@@ -30,6 +30,28 @@ public class CreateEmployeeDTO {
     @NotBlank
     private String confirmPassword;
 
+    private Long department;
+
+    private Long manager;
+
+    public Long getDepartment() {
+        return department;
+    }
+
+    public CreateEmployeeDTO setDepartment(Long department) {
+        this.department = department;
+        return this;
+    }
+
+    public Long getManager() {
+        return manager;
+    }
+
+    public CreateEmployeeDTO setManager(Long manager) {
+        this.manager = manager;
+        return this;
+    }
+
     public String getFirstName() {
         return firstName;
     }

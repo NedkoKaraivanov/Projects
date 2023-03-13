@@ -1,11 +1,10 @@
 package com.example.employeeportal.model.entity;
 
-import jakarta.persistence.Column;
-import jakarta.persistence.Entity;
-import jakarta.persistence.ManyToOne;
-import jakarta.persistence.Table;
+import jakarta.persistence.*;
 
 import java.time.LocalDate;
+import java.util.ArrayList;
+import java.util.List;
 import java.util.Objects;
 
 @Entity
@@ -34,6 +33,12 @@ public class EmployeeEntity extends BaseEntity {
 
     @Column(nullable = false)
     private String password;
+
+    @OneToMany(mappedBy = "employee", fetch = FetchType.EAGER)
+    private List<TaskEntity> tasks = new ArrayList<>();
+
+    @ManyToOne
+    private DepartmentEntity department;
 
     public String getFirstName() {
         return firstName;
@@ -107,22 +112,21 @@ public class EmployeeEntity extends BaseEntity {
         return this;
     }
 
-    @Override
-    public boolean equals(Object o) {
-        if (this == o) return true;
-        if (o == null || getClass() != o.getClass()) return false;
-        EmployeeEntity that = (EmployeeEntity) o;
-        return Objects.equals(getFirstName(), that.getFirstName()) &&
-                Objects.equals(getLastName(), that.getLastName()) &&
-                Objects.equals(getEmail(), that.getEmail()) &&
-                Objects.equals(getPhoneNumber(), that.getPhoneNumber()) &&
-                Objects.equals(getBirthDate(), that.getBirthDate()) &&
-                Objects.equals(getSalary(), that.getSalary()) &&
-                Objects.equals(getManager(), that.getManager());
+    public List<TaskEntity> getTasks() {
+        return tasks;
     }
 
-    @Override
-    public int hashCode() {
-        return Objects.hash(getFirstName(), getLastName(), getEmail(), getPhoneNumber(), getBirthDate(), getSalary(), getManager());
+    public EmployeeEntity setTasks(List<TaskEntity> tasks) {
+        this.tasks = tasks;
+        return this;
+    }
+
+    public DepartmentEntity getDepartment() {
+        return department;
+    }
+
+    public EmployeeEntity setDepartment(DepartmentEntity department) {
+        this.department = department;
+        return this;
     }
 }

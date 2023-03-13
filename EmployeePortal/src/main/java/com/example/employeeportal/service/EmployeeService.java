@@ -1,24 +1,32 @@
 package com.example.employeeportal.service;
 
 import com.example.employeeportal.model.dtos.CreateEmployeeDTO;
+import com.example.employeeportal.model.dtos.viewDtos.ViewEmployeeDTO;
+import com.example.employeeportal.model.entity.DepartmentEntity;
 import com.example.employeeportal.model.entity.EmployeeEntity;
+import com.example.employeeportal.repository.DepartmentRepository;
 import com.example.employeeportal.repository.EmployeeRepository;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 
 import java.time.LocalDate;
 import java.time.format.DateTimeFormatter;
+import java.util.List;
 import java.util.Optional;
+import java.util.stream.Collectors;
 
 @Service
 public class EmployeeService {
 
     private final EmployeeRepository employeeRepository;
 
+    private final DepartmentRepository departmentRepository;
+
     private final PasswordEncoder passwordEncoder;
 
-    public EmployeeService(EmployeeRepository employeeRepository, PasswordEncoder passwordEncoder) {
+    public EmployeeService(EmployeeRepository employeeRepository, DepartmentRepository departmentRepository, PasswordEncoder passwordEncoder) {
         this.employeeRepository = employeeRepository;
+        this.departmentRepository = departmentRepository;
         this.passwordEncoder = passwordEncoder;
     }
 
@@ -33,8 +41,8 @@ public class EmployeeService {
             return false;
         }
 
-        Optional<EmployeeEntity> byUsername = this.employeeRepository.findByPhoneNumber(createEmployeeDTO.getPhoneNumber());
-        if (byUsername.isPresent()) {
+        Optional<EmployeeEntity> byPhoneNumber = this.employeeRepository.findByPhoneNumber(createEmployeeDTO.getPhoneNumber());
+        if (byPhoneNumber.isPresent()) {
             return false;
         }
 
@@ -54,5 +62,65 @@ public class EmployeeService {
         this.employeeRepository.save(employee);
 
         return true;
+    }
+
+    public List<ViewEmployeeDTO> findAllEmployees() {
+
+        List<EmployeeEntity> all = employeeRepository.findAll();
+
+        return all.stream()
+                .map(employee -> {
+                    return new ViewEmployeeDTO()
+                            .setId(employee.getId())
+                            .setFirstName(employee.getFirstName())
+                            .setLastName(employee.getLastName())
+                            .setEmail(employee.getEmail())
+                            .setPhoneNumber(employee.getPhoneNumber())
+                            .setSalary(employee.getSalary());
+                }).collect(Collectors.toList());
+    }
+
+    public void deleteEmployee(Long id) {
+
+        this.employeeRepository.deleteById(id);
+    }
+
+    public boolean updateEmployee(CreateEmployeeDTO createEmployeeDTO, Long id) {
+
+        EmployeeEntity employee = employeeRepository.findById(id).get();
+
+        DepartmentEntity department = departmentRepository.findById(createEmployeeDTO.getDepartment()).get();
+
+        EmployeeEntity manager = employeeRepository.findById(createEmployeeDTO.getManager()).get();
+
+        employee
+                .setFirstName(createEmployeeDTO.getFirstName())
+                .setLastName(createEmployeeDTO.getLastName())
+                .setEmail(createEmployeeDTO.getEmail())
+                .setPhoneNumber(createEmployeeDTO.getPhoneNumber())
+                .setSalary(createEmployeeDTO.getSalary())
+                .setDepartment(department)
+                .setManager(manager);
+
+        if (createEmployeeDTO.getBirthDate() != null) {
+            LocalDate birthDate = LocalDate.parse(createEmployeeDTO.getBirthDate(), DateTimeFormatter.ofPattern("yyyy-MM-dd"));
+            employee.setBirthDate(birthDate);
+        }
+
+        this.employeeRepository.save(employee);
+
+        return true;
+    }
+
+    public EmployeeEntity findById(Long id) {
+        return employeeRepository.findById(id).get();
+    }
+
+    public void saveEmployee(EmployeeEntity employee) {
+        employeeRepository.save(employee);
+    }
+
+    public List<EmployeeEntity> findAllManagers() {
+        return employeeRepository.findAll();
     }
 }

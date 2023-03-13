@@ -1,0 +1,89 @@
+<!DOCTYPE html>
+<html lang="en" xmlns="http://www.w3.org/1999/xhtml"
+      xmlns:th="http://www.thymeleaf.org">
+<head th:replace="~{fragments/commons::head}">
+</head>
+<body>
+<header th:replace="~{fragments/commons::nav}"></header>
+<main>
+    <div class="jumbotron">
+        <div class="container text-dark">
+            <h2 class="display-3 ">
+                <strong class="bg-blur rounded border-left border-white pl-3 border-bottom">
+                    Update</strong></h2>
+        </div>
+        <div class="container bg-blur rounded p-5 mt-5 w-75">
+            <form th:action="@{/tasks/save}"
+                  th:method="post"
+                  th:object="${task}"
+                  class=" text-center text-light">
+                <div class="form-group row">
+                    <div class="col-sm-10">
+                        <input type="hidden"
+                               th:field="*{id}"
+                               th:errorclass="'is-invalid'"
+                               class="form-control"
+                               id="id"
+                               aria-describedby="titleHelpInline" placeholder="title">
+                        <small id="idHelpInline"
+                               class="invalid-feedback bg-danger text-light rounded">
+                            Enter valid title.
+                        </small>
+                    </div>
+                </div>
+                <div class="form-group row">
+                    <label for="title" class="col-sm-2 col-form-label text-dark">Title</label>
+                    <div class="col-sm-10">
+                        <input type="text"
+                               th:field="*{title}"
+                               th:errorclass="'is-invalid'"
+                               class="form-control"
+                               id="title"
+                               aria-describedby="titleHelpInline" placeholder="title">
+                        <small id="titleHelpInline"
+                               class="invalid-feedback bg-danger text-light rounded">
+                            Enter valid title.
+                        </small>
+                    </div>
+                </div>
+                <div class="form-group row">
+                    <label for="description" class="col-sm-2 col-form-label text-dark">Description</label>
+                    <div class="col-sm-10">
+                        <input type="text"
+                               th:field="*{description}"
+                               th:errorclass="'is-invalid'"
+                               class="form-control"
+                               id="description"
+                               aria-describedby="descriptionHelpInline"
+                               placeholder="description">
+                        <small id="descriptionHelpInline"
+                               class="invalid-feedback bg-danger text-light rounded">
+                            Enter valid description.
+                        </small>
+                    </div>
+                </div>
+                <div class="form-group row">
+                    <label for="dueDate" class="col-sm-2 col-form-label text-dark">Due Date</label>
+                    <div class="col-sm-10">
+                        <input type="date"
+                               th:field="*{dueDate}"
+                               th:errorclass="'is-invalid'"
+                               class="form-control"
+                               id="dueDate"
+                               aria-describedby="dueDateHelpInline"
+                               placeholder="dd/MM/YYYY">
+                        <small id="dueDateHelpInline"
+                               class="invalid-feedback bg-danger text-light rounded">
+                            Due date should be in the future.
+                        </small>
+                    </div>
+                </div>
+                <button type="submit" class="btn btn-info w-50">Create Task</button>
+            </form>
+            <hr class="bg-light">
+        </div>
+    </div>
+</main>
+<footer th:replace="~{fragments/commons::footer}"></footer>
+</body>
+</html>
