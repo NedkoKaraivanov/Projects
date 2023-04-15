@@ -85,39 +85,25 @@ public class EmployeeService {
         this.employeeRepository.deleteById(id);
     }
 
-    public boolean updateEmployee(CreateEmployeeDTO createEmployeeDTO, Long id) {
-
-        EmployeeEntity employee = employeeRepository.findById(id).get();
-
-        DepartmentEntity department = departmentRepository.findById(createEmployeeDTO.getDepartment()).get();
-
-        EmployeeEntity manager = employeeRepository.findById(createEmployeeDTO.getManager()).get();
-
-        employee
-                .setFirstName(createEmployeeDTO.getFirstName())
-                .setLastName(createEmployeeDTO.getLastName())
-                .setEmail(createEmployeeDTO.getEmail())
-                .setPhoneNumber(createEmployeeDTO.getPhoneNumber())
-                .setSalary(createEmployeeDTO.getSalary())
-                .setDepartment(department)
-                .setManager(manager);
-
-        if (createEmployeeDTO.getBirthDate() != null) {
-            LocalDate birthDate = LocalDate.parse(createEmployeeDTO.getBirthDate(), DateTimeFormatter.ofPattern("yyyy-MM-dd"));
-            employee.setBirthDate(birthDate);
-        }
-
-        this.employeeRepository.save(employee);
-
-        return true;
-    }
-
     public EmployeeEntity findById(Long id) {
         return employeeRepository.findById(id).get();
     }
 
-    public void saveEmployee(EmployeeEntity employee) {
+    public boolean saveEmployee(EmployeeEntity employee) {
+
+        List<EmployeeEntity> byEmail = this.employeeRepository.findAllByAndEmailNot(employee.getEmail());
+        if (byEmail.size() > 0) {
+            return false;
+        }
+
+        List<EmployeeEntity> byPhoneNumber = this.employeeRepository.findAllByAndPhoneNumberNot(employee.getPhoneNumber());
+        if (byPhoneNumber.size() > 0) {
+            return false;
+        }
+
         employeeRepository.save(employee);
+
+        return true;
     }
 
     public List<EmployeeEntity> findAllManagers() {

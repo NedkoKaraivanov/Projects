@@ -14,10 +14,11 @@
                     Update</strong></h2>
         </div>
         <div class="container bg-blur rounded p-5 mt-5 w-75">
-            <form th:action="@{/employees/save}"
+            <form th:action="@{/employees/saveEmployee}"
                   th:method="post"
                   th:object="${employee}"
                   class=" text-center text-light">
+                <div th:each="error : ${#fields.errors()}" th:object="${error}" th:text="error"></div>
                 <div class="form-group row">
                     <div class="col-sm-10">
                         <input type="hidden"
@@ -40,7 +41,7 @@
                                class="form-control"
                                id="firstName"
                                aria-describedby="firstNameHelpInline">
-                        <small id="usernameHelpInline"
+                        <small id="firstNameHelpInline"
                                class="invalid-feedback bg-danger text-light rounded">
                             Enter valid first name.
                         </small>
@@ -116,7 +117,7 @@
                 <div class="form-group row">
                     <label for="password" class="col-sm-2 col-form-label text-dark">Password</label>
                     <div class="col-sm-10">
-                        <input type="password"
+                        <input type="hidden"
                                th:field="*{password}"
                                th:errorclass="'is-invalid'"
                                class="form-control"

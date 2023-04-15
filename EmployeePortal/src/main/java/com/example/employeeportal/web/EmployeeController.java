@@ -92,18 +92,37 @@ public class EmployeeController {
         return "redirect:/employees/view";
     }
 
-    @PostMapping("/save")
-    public String saveEmployee(EmployeeEntity employee) {
-        employeeService.saveEmployee(employee);
+
+    @PostMapping("/saveEmployee")
+    public String saveEmployee(@Valid EmployeeEntity employee,
+                               BindingResult bindingResult,
+                               RedirectAttributes redirectAttributes) {
+
+
+        if (bindingResult.hasErrors() || !employeeService.saveEmployee(employee)) {
+            redirectAttributes.addFlashAttribute("employee", employee);
+            redirectAttributes.addFlashAttribute("org.springframework.validation.BindingResult.employee", bindingResult);
+
+            Long id = employee.getId();
+
+            return "redirect:/employees/update/" + id;
+        }
 
         return "redirect:/employees/view";
     }
-    @GetMapping("/update/{id}")
-    public ModelAndView updateEmployee(@PathVariable("id") Long id) {
 
-        ModelAndView updateView = new ModelAndView("update-employee");
+    @GetMapping("/update/{id}")
+    public String updateEmployee(@PathVariable("id") Long id,
+                                 Model model) {
+
         EmployeeEntity employee = employeeService.findById(id);
-        updateView.addObject("employee", employee);
-        return updateView;
+
+        if (!model.containsAttribute("employee")) {
+            model.addAttribute("employee", employee);
+        }
+
+        return "update-employee";
     }
+
+
 }

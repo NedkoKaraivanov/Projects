@@ -1,6 +1,10 @@
 package com.example.employeeportal.model.entity;
 
 import jakarta.persistence.*;
+import jakarta.validation.constraints.NotBlank;
+import jakarta.validation.constraints.NotEmpty;
+import jakarta.validation.constraints.NotNull;
+import jakarta.validation.constraints.Positive;
 
 import java.time.LocalDate;
 import java.util.ArrayList;
@@ -11,20 +15,26 @@ import java.util.Objects;
 @Table(name = "employees")
 public class EmployeeEntity extends BaseEntity {
 
+    @NotBlank
     @Column(nullable = false)
     private String firstName;
 
+    @NotBlank
     @Column(nullable = false)
     private String lastName;
 
+    @NotBlank
     @Column(nullable = false, unique = true)
     private String email;
 
+    @NotBlank
     @Column(nullable = false, unique = true)
     private String phoneNumber;
 
     private LocalDate birthDate;
 
+    @Positive
+    @NotNull
     @Column(nullable = false)
     private Double salary;
 

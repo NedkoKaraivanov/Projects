@@ -5,6 +5,7 @@ import jakarta.validation.constraints.*;
 
 public class CreateEmployeeDTO {
 
+    private Long id;
     @NotBlank
     private String firstName;
 
@@ -33,6 +34,15 @@ public class CreateEmployeeDTO {
     private Long department;
 
     private Long manager;
+
+    public Long getId() {
+        return id;
+    }
+
+    public CreateEmployeeDTO setId(Long id) {
+        this.id = id;
+        return this;
+    }
 
     public Long getDepartment() {
         return department;
