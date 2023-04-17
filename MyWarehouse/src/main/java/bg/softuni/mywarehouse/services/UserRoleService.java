@@ -7,4 +7,6 @@ import java.util.List;
 public interface UserRoleService {
 
     List<UserRoleEntity> createUserRoles(List<String> roles);
+
+    void initRoles();
 }
