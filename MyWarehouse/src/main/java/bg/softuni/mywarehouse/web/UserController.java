@@ -46,13 +46,13 @@ public class UserController {
         UserEntity userEntity = userService.createUser(user);
 
         return UserDTO.builder()
-                .id(user.getId())
-                .email(user.getEmail())
-                .firstName(user.getFirstName())
-                .lastName(user.getLastName())
-                .address(user.getAddress())
-                .phoneNumber(user.getPhoneNumber())
-                .isActive(user.getIsActive())
+                .id(userEntity.getId())
+                .email(userEntity.getEmail())
+                .firstName(userEntity.getFirstName())
+                .lastName(userEntity.getLastName())
+                .address(userEntity.getAddress())
+                .phoneNumber(userEntity.getPhoneNumber())
+                .isActive(userEntity.getIsActive())
                 .roles(userEntity.getRoles().stream().map(role -> UserRoleDTO.builder()
                         .userRole(role.getRole()).id(role.getId()).build()).collect(Collectors.toList()))
                 .build();

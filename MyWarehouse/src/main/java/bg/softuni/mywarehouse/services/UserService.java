@@ -1,5 +1,6 @@
 package bg.softuni.mywarehouse.services;
 
+import bg.softuni.mywarehouse.domain.dtos.UserDTO;
 import bg.softuni.mywarehouse.domain.entities.OrderEntity;
 import bg.softuni.mywarehouse.domain.entities.UserEntity;
 import bg.softuni.mywarehouse.domain.request.UserRequest;
@@ -18,7 +19,7 @@ public interface UserService {
 
     UserEntity getUserByEmail(String email);
 
-    UserEntity createUser(UserRequest user);
+    UserEntity createUser(UserRequest userRequest);
 
     void updateUser(UserEntity user);
 

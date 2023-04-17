@@ -16,6 +16,7 @@ public class OrderServiceImpl implements OrderService {
         this.orderRepository = orderRepository;
     }
 
+
     @Override
     public List<OrderEntity> getAllOrders() {
         return orderRepository.findAll();

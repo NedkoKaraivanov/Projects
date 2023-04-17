@@ -1,12 +1,13 @@
 package bg.softuni.mywarehouse.services.impl;
 
-import bg.softuni.mywarehouse.domain.entities.OrderEntity;
+import bg.softuni.mywarehouse.domain.dtos.UserDTO;
 import bg.softuni.mywarehouse.domain.entities.UserEntity;
 import bg.softuni.mywarehouse.domain.entities.UserRoleEntity;
 import bg.softuni.mywarehouse.domain.request.UserRequest;
 import bg.softuni.mywarehouse.repositories.UserRepository;
 import bg.softuni.mywarehouse.services.UserRoleService;
 import bg.softuni.mywarehouse.services.UserService;
+
 import org.mindrot.jbcrypt.BCrypt;
 import org.springframework.stereotype.Service;
 
@@ -24,10 +25,9 @@ public class UserServiceImpl implements UserService {
         this.userRoleService = userRoleService;
     }
 
-
     @Override
     public List<UserEntity> getAllUsers() {
-        return null;
+        return userRepository.findAll();
     }
 
     @Override
@@ -51,12 +51,12 @@ public class UserServiceImpl implements UserService {
     }
 
     @Override
-    public UserEntity createUser(UserRequest user) {
-        String hashedPwd = BCrypt.hashpw(user.getPassword(), BCrypt.gensalt());
-        List<UserRoleEntity> userRoles = userRoleService.createUserRoles(user.getRoles());
-        return userRepository.save(UserEntity.builder().email(user.getEmail()).password(hashedPwd).isActive(user.getIsActive())
-                .firstName(user.getFirstName()).lastName(user.getLastName())
-                .roles(userRoles).address(user.getAddress()).phoneNumber(user.getPhoneNumber()).build());
+    public UserEntity createUser(UserRequest userRequest) {
+        String hashedPwd = BCrypt.hashpw(userRequest.getPassword(), BCrypt.gensalt());
+        List<UserRoleEntity> userRoles = userRoleService.createUserRoles(userRequest.getRoles());
+        return userRepository.save(UserEntity.builder().email(userRequest.getEmail()).password(hashedPwd).isActive(userRequest.getIsActive())
+                .firstName(userRequest.getFirstName()).lastName(userRequest.getLastName())
+                .roles(userRoles).address(userRequest.getAddress()).phoneNumber(userRequest.getPhoneNumber()).build());
     }
 
     @Override

@@ -4,15 +4,17 @@ import bg.softuni.mywarehouse.domain.entities.UserRoleEntity;
 import bg.softuni.mywarehouse.domain.enums.UserRoleEnum;
 import bg.softuni.mywarehouse.repositories.UserRoleRepository;
 import bg.softuni.mywarehouse.services.UserRoleService;
+import lombok.AllArgsConstructor;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
 import java.util.stream.Collectors;
 
 @Service
+@AllArgsConstructor
 public class UserRoleServiceImpl implements UserRoleService {
 
-    private UserRoleRepository userRoleRepository;
+    private final UserRoleRepository userRoleRepository;
 
     @Override
     public List<UserRoleEntity> createUserRoles(List<String> roles) {
