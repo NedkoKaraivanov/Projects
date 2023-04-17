@@ -1,17 +1,25 @@
 package bg.softuni.mywarehouse.domain.entities;
 
 import jakarta.persistence.*;
+import lombok.AllArgsConstructor;
+import lombok.Builder;
+import lombok.Data;
+import lombok.NoArgsConstructor;
 
 import java.time.LocalDate;
 import java.util.List;
 
 @Entity
 @Table(name = "orders")
+@Builder
+@Data
+@NoArgsConstructor
+@AllArgsConstructor
 public class OrderEntity extends BaseEntity {
 
     @ManyToOne
-    @JoinColumn(name = "customer_id", referencedColumnName = "id")
-    private CustomerEntity customer;
+    @JoinColumn(name = "user_id", referencedColumnName = "id")
+    private UserEntity user;
 
     private LocalDate orderDate;
 
@@ -22,59 +30,10 @@ public class OrderEntity extends BaseEntity {
     private double totalPrice;
 
     @OneToMany
+    @JoinTable(
+            name = "orders_products",
+            joinColumns = { @JoinColumn(name = "order_id") },
+            inverseJoinColumns = { @JoinColumn(name = "product_id") }
+    )
     private List<ProductEntity> products;
-
-    public CustomerEntity getCustomer() {
-        return customer;
-    }
-
-    public OrderEntity setCustomer(CustomerEntity customer) {
-        this.customer = customer;
-        return this;
-    }
-
-    public LocalDate getOrderDate() {
-        return orderDate;
-    }
-
-    public OrderEntity setOrderDate(LocalDate orderDate) {
-        this.orderDate = orderDate;
-        return this;
-    }
-
-    public boolean isLoaded() {
-        return isLoaded;
-    }
-
-    public OrderEntity setLoaded(boolean loaded) {
-        isLoaded = loaded;
-        return this;
-    }
-
-    public boolean isPaid() {
-        return isPaid;
-    }
-
-    public OrderEntity setPaid(boolean paid) {
-        isPaid = paid;
-        return this;
-    }
-
-    public double getTotalPrice() {
-        return totalPrice;
-    }
-
-    public OrderEntity setTotalPrice(double totalPrice) {
-        this.totalPrice = totalPrice;
-        return this;
-    }
-
-    public List<ProductEntity> getProducts() {
-        return products;
-    }
-
-    public OrderEntity setProducts(List<ProductEntity> products) {
-        this.products = products;
-        return this;
-    }
 }

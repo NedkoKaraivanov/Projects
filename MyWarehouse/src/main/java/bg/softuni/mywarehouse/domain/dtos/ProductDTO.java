@@ -1,39 +1,27 @@
-package bg.softuni.mywarehouse.domain.entities;
+package bg.softuni.mywarehouse.domain.dtos;
 
 import bg.softuni.mywarehouse.domain.enums.ProductBrandEnum;
 import bg.softuni.mywarehouse.domain.enums.ProductNameEnum;
-import jakarta.persistence.*;
 import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Data;
 import lombok.NoArgsConstructor;
 
-import java.math.BigDecimal;
-
-@Entity
-@Table(name = "products")
-@Builder
 @Data
+@Builder
 @NoArgsConstructor
 @AllArgsConstructor
-public class ProductEntity extends BaseEntity{
+public class ProductDTO {
 
-    @Enumerated(EnumType.STRING)
+    private Long id;
+
     private ProductNameEnum name;
 
-    @Enumerated(EnumType.STRING)
     private ProductBrandEnum brand;
 
-    @Column
     private Double size;
 
-    @Column
     private double price;
 
-    @Column
     private int quantity;
-
-    @OneToOne
-    @JoinColumn(name = "info_id", referencedColumnName = "id")
-    private ProductInfoEntity productInfo;
 }
