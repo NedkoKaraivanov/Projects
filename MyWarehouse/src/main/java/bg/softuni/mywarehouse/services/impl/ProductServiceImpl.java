@@ -23,6 +23,11 @@ public class ProductServiceImpl implements ProductService {
     }
 
     @Override
+    public ProductEntity getProductById(Long id) {
+        return productRepository.findById(id).orElse(null);
+    }
+
+    @Override
     public ProductEntity createProduct(ProductEntity product) {
         return productRepository.save(product);
     }
@@ -36,4 +41,6 @@ public class ProductServiceImpl implements ProductService {
     public void deleteProduct(Long id) {
         productRepository.deleteById(id);
     }
+
+
 }

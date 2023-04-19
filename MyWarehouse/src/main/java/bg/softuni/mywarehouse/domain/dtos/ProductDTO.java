@@ -1,7 +1,7 @@
 package bg.softuni.mywarehouse.domain.dtos;
 
 import bg.softuni.mywarehouse.domain.enums.ProductBrandEnum;
-import bg.softuni.mywarehouse.domain.enums.ProductNameEnum;
+import bg.softuni.mywarehouse.domain.enums.ProductTypeEnum;
 import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Data;
@@ -15,7 +15,7 @@ public class ProductDTO {
 
     private Long id;
 
-    private ProductNameEnum name;
+    private ProductTypeEnum type;
 
     private ProductBrandEnum brand;
 
@@ -24,4 +24,6 @@ public class ProductDTO {
     private double price;
 
     private int quantity;
+
+    private ProductInfoDTO productInfo;
 }

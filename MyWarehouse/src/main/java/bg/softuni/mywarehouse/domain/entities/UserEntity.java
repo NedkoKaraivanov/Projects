@@ -37,7 +37,7 @@ public class UserEntity extends BaseEntity {
     @Column
     private Boolean isActive;
 
-    @ManyToMany(cascade = CascadeType.MERGE)
+    @ManyToMany(cascade = CascadeType.MERGE, fetch = FetchType.EAGER)
     @JoinTable(
             name = "users_roles",
             joinColumns = { @JoinColumn(name = "user_id") },
@@ -45,7 +45,7 @@ public class UserEntity extends BaseEntity {
     )
     private List<UserRoleEntity> roles;
 
-    @OneToMany
+    @OneToMany(fetch = FetchType.EAGER)
     @JoinTable(
             name = "users_orders",
             joinColumns = { @JoinColumn(name = "user_id") },

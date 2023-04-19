@@ -1,14 +1,12 @@
 package bg.softuni.mywarehouse.domain.entities;
 
 import bg.softuni.mywarehouse.domain.enums.ProductBrandEnum;
-import bg.softuni.mywarehouse.domain.enums.ProductNameEnum;
+import bg.softuni.mywarehouse.domain.enums.ProductTypeEnum;
 import jakarta.persistence.*;
 import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Data;
 import lombok.NoArgsConstructor;
-
-import java.math.BigDecimal;
 
 @Entity
 @Table(name = "products")
@@ -19,7 +17,7 @@ import java.math.BigDecimal;
 public class ProductEntity extends BaseEntity{
 
     @Enumerated(EnumType.STRING)
-    private ProductNameEnum name;
+    private ProductTypeEnum type;
 
     @Enumerated(EnumType.STRING)
     private ProductBrandEnum brand;

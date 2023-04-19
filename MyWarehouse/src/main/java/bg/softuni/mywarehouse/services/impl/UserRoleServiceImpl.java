@@ -19,7 +19,11 @@ public class UserRoleServiceImpl implements UserRoleService {
 
     @Override
     public List<UserRoleEntity> createUserRoles(List<String> roles) {
-        return userRoleRepository.saveAll(roles.stream().map(role -> UserRoleEntity.builder().role(UserRoleEnum.valueOf(role)).build()).collect(Collectors.toList()));
+
+        if (roles == null) {
+            return List.of(userRoleRepository.findByRole(UserRoleEnum.valueOf("USER")));
+        }
+        return roles.stream().map(role -> UserRoleEntity.builder().role(UserRoleEnum.valueOf(role)).build()).collect(Collectors.toList());
     }
 
     public void initRoles() {
