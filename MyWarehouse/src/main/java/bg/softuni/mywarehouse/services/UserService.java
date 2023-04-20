@@ -21,7 +21,7 @@ public interface UserService {
 
     UserEntity createUser(UserRequest userRequest);
 
-    void updateUser(UserEntity user);
+    UserEntity updateUser(UserEntity existingUser, UserRequest userRequest);
 
     void deleteUser(Long id);
 }

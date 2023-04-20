@@ -1,22 +1,20 @@
 package bg.softuni.mywarehouse.web;
 
-import bg.softuni.mywarehouse.domain.dtos.OrderDTO;
-import bg.softuni.mywarehouse.domain.dtos.ProductDTO;
 import bg.softuni.mywarehouse.domain.dtos.UserDTO;
 import bg.softuni.mywarehouse.domain.dtos.UserRoleDTO;
 import bg.softuni.mywarehouse.domain.entities.UserEntity;
 import bg.softuni.mywarehouse.domain.request.UserRequest;
 import bg.softuni.mywarehouse.services.UserService;
 import org.modelmapper.ModelMapper;
-import org.springframework.http.MediaType;
-import org.springframework.stereotype.Controller;
+import org.springframework.http.HttpStatus;
+import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
 import java.util.stream.Collectors;
 
-@Controller
-@RequestMapping(value = "/users", produces = MediaType.APPLICATION_JSON_VALUE)
+@RestController
+@RequestMapping("/users")
 public class UserController {
 
     private final UserService userService;
@@ -29,34 +27,38 @@ public class UserController {
     }
 
     @GetMapping
-    @ResponseBody
-    public List<UserDTO> getAllUsers() {
-        return userService.getAllUsers().stream().map(this::createUserDTO).collect(Collectors.toList());
+    public ResponseEntity<List<UserDTO>> getAllUsers() {
+        return ResponseEntity.ok(userService.getAllUsers().stream().map(this::createUserDTO).collect(Collectors.toList()));
     }
 
     @GetMapping("/{id}")
-    @ResponseBody
-    public UserDTO getUserById(@PathVariable Long id) {
-        return createUserDTO(userService.getUserById(id));
+    public ResponseEntity<UserDTO> getUserById(@PathVariable Long id) {
+        UserEntity userEntity = userService.getUserById(id);
+
+        if (userEntity != null) {
+            return ResponseEntity.ok(createUserDTO(userService.getUserById(id)));
+        } else {
+            return ResponseEntity.notFound().build();
+        }
+
     }
 
     @PostMapping
-    @ResponseBody
-    public UserDTO createUser(@RequestBody UserRequest user) {
-        UserEntity userEntity = userService.createUser(user);
+    public ResponseEntity<UserDTO> createUser(@RequestBody UserRequest userRequest) {
+        UserEntity userEntity = userService.createUser(userRequest);
+        return ResponseEntity.status(HttpStatus.CREATED).body(createUserDTO(userEntity));
+    }
 
-        return UserDTO.builder()
-                .id(userEntity.getId())
-                .email(userEntity.getEmail())
-                .firstName(userEntity.getFirstName())
-                .lastName(userEntity.getLastName())
-                .address(userEntity.getAddress())
-                .phoneNumber(userEntity.getPhoneNumber())
-                .isActive(userEntity.getIsActive())
-                .roles(userEntity.getRoles().stream().map(role -> UserRoleDTO.builder()
-                        .userRole(role.getRole()).id(role.getId()).build()).collect(Collectors.toList()))
-                .build();
+    @PatchMapping("/{id}")
+    public ResponseEntity<UserDTO> updateUser(@PathVariable Long id, @RequestBody UserRequest userRequest) {
+        UserEntity existingUser = userService.getUserById(id);
 
+        if (existingUser != null) {
+            UserEntity updateUser = userService.updateUser(existingUser, userRequest);
+            return ResponseEntity.ok(createUserDTO(updateUser));
+        } else {
+            return ResponseEntity.notFound().build();
+        }
     }
 
     private UserDTO createUserDTO(UserEntity user) {
@@ -68,16 +70,6 @@ public class UserController {
                 .isActive(user.getIsActive())
                 .address(user.getAddress())
                 .phoneNumber(user.getPhoneNumber())
-                .orders(user.getOrders().stream().map(order -> OrderDTO.builder().orderDate(order.getOrderDate())
-                        .isPaid(order.isPaid())
-                        .isLoaded(order.isLoaded())
-                        .totalPrice(order.getTotalPrice())
-                        .id(order.getId())
-                        .products(order.getProducts().stream().map(product -> ProductDTO.builder().brand(product.getBrand())
-                                .price(product.getPrice()).size(product.getSize()).quantity(product.getQuantity()).type(product.getType())
-                                .type(product.getType()).id(product.getId())
-                                .build()).collect(Collectors.toList()))
-                        .build()).collect(Collectors.toList()))
                 .roles(user.getRoles().stream().map(role -> UserRoleDTO.builder()
                         .userRole(role.getRole()).id(role.getId()).build()).collect(Collectors.toList()))
                 .build();

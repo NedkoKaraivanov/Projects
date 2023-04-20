@@ -60,8 +60,18 @@ public class UserServiceImpl implements UserService {
     }
 
     @Override
-    public void updateUser(UserEntity user) {
-        userRepository.save(user);
+    public UserEntity updateUser(UserEntity existingUser, UserRequest userRequest) {
+        String hashedPwd = BCrypt.hashpw(userRequest.getPassword(), BCrypt.gensalt());
+        List<UserRoleEntity> userRoles = userRoleService.createUserRoles(userRequest.getRoles());
+        existingUser.setEmail(userRequest.getEmail());
+        existingUser.setPassword(hashedPwd);
+        existingUser.setIsActive(userRequest.getIsActive());
+        existingUser.setFirstName(userRequest.getFirstName());
+        existingUser.setLastName(userRequest.getLastName());
+        existingUser.setRoles(userRoles);
+        existingUser.setAddress(userRequest.getAddress());
+        existingUser.setPhoneNumber(userRequest.getPhoneNumber());
+        return userRepository.save(existingUser);
     }
 
     @Override

@@ -29,6 +29,4 @@ public class UserDTO {
     private Boolean isActive;
 
     List<UserRoleDTO> roles;
-
-    List<OrderDTO> orders;
 }
