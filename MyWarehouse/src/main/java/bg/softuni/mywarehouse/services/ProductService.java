@@ -1,5 +1,6 @@
 package bg.softuni.mywarehouse.services;
 
+import bg.softuni.mywarehouse.domain.dtos.ProductDTO;
 import bg.softuni.mywarehouse.domain.entities.ProductEntity;
 
 import java.util.List;
@@ -10,7 +11,7 @@ public interface ProductService {
 
     ProductEntity createProduct(ProductEntity product);
 
-    void updateProduct(ProductEntity product);
+    ProductEntity updateProduct(ProductEntity existingProduct, ProductDTO updatedProduct);
 
     void deleteProduct(Long id);
 

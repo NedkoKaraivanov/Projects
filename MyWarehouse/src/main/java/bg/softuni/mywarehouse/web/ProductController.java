@@ -42,7 +42,6 @@ public class ProductController {
     @PostMapping
     public ResponseEntity<ProductDTO> createProduct(@RequestBody ProductDTO productDTO) {
         ProductEntity productEntity = modelMapper.map(productDTO, ProductEntity.class);
-
         productService.createProduct(productEntity);
 
         return ResponseEntity.status(HttpStatus.CREATED).body(createProductDTO(productEntity));
@@ -50,13 +49,10 @@ public class ProductController {
 
     @PatchMapping("/{id}")
     public ResponseEntity<ProductDTO> updateProduct(@PathVariable Long id, @RequestBody ProductDTO productDTO) {
-
         ProductEntity existingProduct = productService.getProductById(id);
+
         if (existingProduct != null) {
-            existingProduct.setType(productDTO.getType());
-            existingProduct.setBrand(productDTO.getBrand());
-            existingProduct.setPrice(productDTO.getPrice());
-            productService.updateProduct(existingProduct);
+            productService.updateProduct(existingProduct, productDTO);
             return ResponseEntity.ok(createProductDTO(existingProduct));
         } else {
             return ResponseEntity.notFound().build();

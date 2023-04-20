@@ -1,5 +1,6 @@
 package bg.softuni.mywarehouse.services.impl;
 
+import bg.softuni.mywarehouse.domain.dtos.ProductDTO;
 import bg.softuni.mywarehouse.domain.entities.ProductEntity;
 import bg.softuni.mywarehouse.repositories.ProductRepository;
 import bg.softuni.mywarehouse.services.ProductService;
@@ -33,8 +34,17 @@ public class ProductServiceImpl implements ProductService {
     }
 
     @Override
-    public void updateProduct(ProductEntity product) {
-        productRepository.save(product);
+    public ProductEntity updateProduct(ProductEntity existingProduct, ProductDTO updatedProduct) {
+        if (updatedProduct.getType() != null) {
+            existingProduct.setType(updatedProduct.getType());
+        }
+        if (updatedProduct.getBrand() != null) {
+            existingProduct.setBrand(updatedProduct.getBrand());
+        }
+        existingProduct.setSize(updatedProduct.getSize());
+        existingProduct.setPrice(updatedProduct.getPrice());
+
+        return productRepository.save(existingProduct);
     }
 
     @Override
