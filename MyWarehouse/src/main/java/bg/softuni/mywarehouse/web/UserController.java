@@ -61,6 +61,18 @@ public class UserController {
         }
     }
 
+    @DeleteMapping("/{id}")
+    public ResponseEntity<Void> deleteUser(@PathVariable Long id) {
+        UserEntity existingUser = userService.getUserById(id);
+
+        if (existingUser != null) {
+            userService.deleteUser(id);
+            return ResponseEntity.noContent().build();
+        } else {
+            return ResponseEntity.notFound().build();
+        }
+    }
+
     private UserDTO createUserDTO(UserEntity user) {
         return UserDTO.builder()
                 .email(user.getEmail())

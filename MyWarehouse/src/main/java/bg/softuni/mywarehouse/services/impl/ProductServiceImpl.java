@@ -35,12 +35,9 @@ public class ProductServiceImpl implements ProductService {
 
     @Override
     public ProductEntity updateProduct(ProductEntity existingProduct, ProductDTO updatedProduct) {
-        if (updatedProduct.getType() != null) {
-            existingProduct.setType(updatedProduct.getType());
-        }
-        if (updatedProduct.getBrand() != null) {
-            existingProduct.setBrand(updatedProduct.getBrand());
-        }
+
+        existingProduct.setType(updatedProduct.getType() == null ? existingProduct.getType() : updatedProduct.getType());
+        existingProduct.setBrand(updatedProduct.getBrand() == null ? existingProduct.getBrand() : updatedProduct.getBrand());
         existingProduct.setSize(updatedProduct.getSize());
         existingProduct.setPrice(updatedProduct.getPrice());
 

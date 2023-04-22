@@ -1,6 +1,5 @@
 package bg.softuni.mywarehouse.services.impl;
 
-import bg.softuni.mywarehouse.domain.dtos.UserDTO;
 import bg.softuni.mywarehouse.domain.entities.UserEntity;
 import bg.softuni.mywarehouse.domain.entities.UserRoleEntity;
 import bg.softuni.mywarehouse.domain.request.UserRequest;
@@ -63,14 +62,14 @@ public class UserServiceImpl implements UserService {
     public UserEntity updateUser(UserEntity existingUser, UserRequest userRequest) {
         String hashedPwd = BCrypt.hashpw(userRequest.getPassword(), BCrypt.gensalt());
         List<UserRoleEntity> userRoles = userRoleService.createUserRoles(userRequest.getRoles());
-        existingUser.setEmail(userRequest.getEmail());
+        existingUser.setEmail(userRequest.getEmail() == null ? existingUser.getEmail() : userRequest.getEmail());
         existingUser.setPassword(hashedPwd);
-        existingUser.setIsActive(userRequest.getIsActive());
-        existingUser.setFirstName(userRequest.getFirstName());
-        existingUser.setLastName(userRequest.getLastName());
+        existingUser.setIsActive(userRequest.getIsActive() == null ? existingUser.getIsActive() : userRequest.getIsActive());
+        existingUser.setFirstName(userRequest.getFirstName() == null ? existingUser.getFirstName() : userRequest.getFirstName());
+        existingUser.setLastName(userRequest.getLastName() == null ? existingUser.getLastName() : userRequest.getLastName());
         existingUser.setRoles(userRoles);
-        existingUser.setAddress(userRequest.getAddress());
-        existingUser.setPhoneNumber(userRequest.getPhoneNumber());
+        existingUser.setAddress(userRequest.getAddress() == null ? existingUser.getAddress() : userRequest.getAddress());
+        existingUser.setPhoneNumber(userRequest.getPhoneNumber() == null ? existingUser.getPhoneNumber() : userRequest.getPhoneNumber());
         return userRepository.save(existingUser);
     }
 
