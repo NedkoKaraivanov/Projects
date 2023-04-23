@@ -6,7 +6,8 @@ import lombok.Builder;
 import lombok.Data;
 import lombok.NoArgsConstructor;
 
-import java.time.LocalDate;
+import java.time.LocalDateTime;
+import java.util.ArrayList;
 import java.util.List;
 
 @Entity
@@ -21,7 +22,7 @@ public class OrderEntity extends BaseEntity {
     @JoinColumn(name = "user_id", referencedColumnName = "id")
     private UserEntity user;
 
-    private LocalDate orderDate;
+    private LocalDateTime orderDate;
 
     private boolean isLoaded;
 
@@ -35,5 +36,5 @@ public class OrderEntity extends BaseEntity {
             joinColumns = { @JoinColumn(name = "order_id") },
             inverseJoinColumns = { @JoinColumn(name = "product_id") }
     )
-    private List<ProductEntity> products;
+    private List<ProductEntity> products = new ArrayList<>();
 }
