@@ -17,7 +17,7 @@ import java.util.List;
 import java.util.stream.Collectors;
 
 @RestController
-@RequestMapping("/orders")
+@RequestMapping(value = "/orders", consumes = "application/json", produces = "application/json")
 public class OrderController {
 
     private final OrderService orderService;

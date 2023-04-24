@@ -12,7 +12,7 @@ import java.util.List;
 import java.util.stream.Collectors;
 
 @RestController
-@RequestMapping("/products")
+@RequestMapping(value = "/products", consumes = "application/json", produces = "application/json")
 public class ProductController {
 
     private final ProductService productService;

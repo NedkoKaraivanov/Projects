@@ -1,9 +1,12 @@
 package bg.softuni.mywarehouse.services.impl;
 
+import bg.softuni.mywarehouse.domain.dtos.UserRegistrationDTO;
 import bg.softuni.mywarehouse.domain.entities.UserEntity;
 import bg.softuni.mywarehouse.domain.entities.UserRoleEntity;
+import bg.softuni.mywarehouse.domain.enums.UserRoleEnum;
 import bg.softuni.mywarehouse.domain.request.UserRequest;
 import bg.softuni.mywarehouse.repositories.UserRepository;
+import bg.softuni.mywarehouse.repositories.UserRoleRepository;
 import bg.softuni.mywarehouse.services.UserRoleService;
 import bg.softuni.mywarehouse.services.UserService;
 
@@ -17,11 +20,14 @@ public class UserServiceImpl implements UserService {
 
     private final UserRepository userRepository;
 
+    private final UserRoleRepository userRoleRepository;
     private final UserRoleService userRoleService;
 
-    public UserServiceImpl(UserRepository userRepository, UserRoleService userRoleService) {
+    public UserServiceImpl(UserRepository userRepository, UserRoleRepository userRoleRepository, UserRoleService userRoleService) {
         this.userRepository = userRepository;
+        this.userRoleRepository = userRoleRepository;
         this.userRoleService = userRoleService;
+
     }
 
     @Override
@@ -56,6 +62,16 @@ public class UserServiceImpl implements UserService {
         return userRepository.save(UserEntity.builder().email(userRequest.getEmail()).password(hashedPwd).isActive(userRequest.getIsActive())
                 .firstName(userRequest.getFirstName()).lastName(userRequest.getLastName())
                 .roles(userRoles).address(userRequest.getAddress()).phoneNumber(userRequest.getPhoneNumber()).build());
+    }
+
+    @Override
+    public UserEntity registerUser(UserRegistrationDTO userRegistrationDTO) {
+        String hashedPwd = BCrypt.hashpw(userRegistrationDTO.getPassword(), BCrypt.gensalt());
+        UserRoleEntity role = userRoleRepository.findByRole(UserRoleEnum.USER);
+        List<UserRoleEntity> userRoles = List.of(role);
+        return userRepository.save(UserEntity.builder().email(userRegistrationDTO.getEmail()).password(hashedPwd)
+                .firstName(userRegistrationDTO.getFirstName()).lastName(userRegistrationDTO.getLastName())
+                .roles(userRoles).address(userRegistrationDTO.getAddress()).phoneNumber(userRegistrationDTO.getPhoneNumber()).build());
     }
 
     @Override

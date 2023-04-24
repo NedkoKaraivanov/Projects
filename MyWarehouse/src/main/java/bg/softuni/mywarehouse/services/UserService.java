@@ -1,6 +1,7 @@
 package bg.softuni.mywarehouse.services;
 
 import bg.softuni.mywarehouse.domain.dtos.UserDTO;
+import bg.softuni.mywarehouse.domain.dtos.UserRegistrationDTO;
 import bg.softuni.mywarehouse.domain.entities.OrderEntity;
 import bg.softuni.mywarehouse.domain.entities.UserEntity;
 import bg.softuni.mywarehouse.domain.request.UserRequest;
@@ -22,6 +23,8 @@ public interface UserService {
     UserEntity createUser(UserRequest userRequest);
 
     UserEntity updateUser(UserEntity existingUser, UserRequest userRequest);
+
+    UserEntity registerUser(UserRegistrationDTO userRegistrationDTO);
 
     void deleteUser(Long id);
 }

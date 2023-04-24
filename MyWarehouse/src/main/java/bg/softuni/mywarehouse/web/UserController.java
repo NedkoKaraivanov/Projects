@@ -14,7 +14,7 @@ import java.util.List;
 import java.util.stream.Collectors;
 
 @RestController
-@RequestMapping("/users")
+@RequestMapping(value = "/users", consumes = "application/json", produces = "application/json")
 public class UserController {
 
     private final UserService userService;
