@@ -15,7 +15,7 @@ import org.springframework.web.bind.annotation.RestController;
 import java.util.List;
 
 @RestController
-@RequestMapping(value = "/users", consumes = "application/json", produces = "application/json")
+@RequestMapping(value = "/api/users")
 public class RegistrationController {
 
     private final UserService userService;
