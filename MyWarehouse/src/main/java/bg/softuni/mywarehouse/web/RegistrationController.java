@@ -18,8 +18,6 @@ import java.util.List;
 @RequestMapping(value = "/users", consumes = "application/json", produces = "application/json")
 public class RegistrationController {
 
-    private static final String BINDING_RESULT_PATH = "org.springframework.validation.BindingResult.";
-
     private final UserService userService;
 
     public RegistrationController(UserService userService) {

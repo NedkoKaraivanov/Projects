@@ -10,7 +10,7 @@ import bg.softuni.mywarehouse.repositories.UserRoleRepository;
 import bg.softuni.mywarehouse.services.UserRoleService;
 import bg.softuni.mywarehouse.services.UserService;
 
-import org.mindrot.jbcrypt.BCrypt;
+import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
@@ -19,15 +19,17 @@ import java.util.List;
 public class UserServiceImpl implements UserService {
 
     private final UserRepository userRepository;
-
     private final UserRoleRepository userRoleRepository;
     private final UserRoleService userRoleService;
 
-    public UserServiceImpl(UserRepository userRepository, UserRoleRepository userRoleRepository, UserRoleService userRoleService) {
+    private final PasswordEncoder passwordEncoder;
+
+    public UserServiceImpl(UserRepository userRepository, UserRoleRepository userRoleRepository, UserRoleService userRoleService, PasswordEncoder passwordEncoder) {
         this.userRepository = userRepository;
         this.userRoleRepository = userRoleRepository;
         this.userRoleService = userRoleService;
 
+        this.passwordEncoder = passwordEncoder;
     }
 
     @Override
@@ -57,7 +59,7 @@ public class UserServiceImpl implements UserService {
 
     @Override
     public UserEntity createUser(UserRequest userRequest) {
-        String hashedPwd = BCrypt.hashpw(userRequest.getPassword(), BCrypt.gensalt());
+        String hashedPwd = passwordEncoder.encode(userRequest.getPassword());
         List<UserRoleEntity> userRoles = userRoleService.createUserRoles(userRequest.getRoles());
         return userRepository.save(UserEntity.builder().email(userRequest.getEmail()).password(hashedPwd).isActive(userRequest.getIsActive())
                 .firstName(userRequest.getFirstName()).lastName(userRequest.getLastName())
@@ -66,7 +68,7 @@ public class UserServiceImpl implements UserService {
 
     @Override
     public UserEntity registerUser(UserRegistrationDTO userRegistrationDTO) {
-        String hashedPwd = BCrypt.hashpw(userRegistrationDTO.getPassword(), BCrypt.gensalt());
+        String hashedPwd = passwordEncoder.encode(userRegistrationDTO.getPassword());
         UserRoleEntity role = userRoleRepository.findByRole(UserRoleEnum.USER);
         List<UserRoleEntity> userRoles = List.of(role);
         return userRepository.save(UserEntity.builder().email(userRegistrationDTO.getEmail()).password(hashedPwd)
@@ -76,7 +78,7 @@ public class UserServiceImpl implements UserService {
 
     @Override
     public UserEntity updateUser(UserEntity existingUser, UserRequest userRequest) {
-        String hashedPwd = BCrypt.hashpw(userRequest.getPassword(), BCrypt.gensalt());
+        String hashedPwd = passwordEncoder.encode(userRequest.getPassword());
         List<UserRoleEntity> userRoles = userRoleService.createUserRoles(userRequest.getRoles());
         existingUser.setEmail(userRequest.getEmail() == null ? existingUser.getEmail() : userRequest.getEmail());
         existingUser.setPassword(hashedPwd);
