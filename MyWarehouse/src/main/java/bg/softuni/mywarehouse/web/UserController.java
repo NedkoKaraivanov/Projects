@@ -10,6 +10,7 @@ import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
+import java.net.URI;
 import java.util.List;
 import java.util.stream.Collectors;
 
@@ -46,7 +47,10 @@ public class UserController {
     @PostMapping
     public ResponseEntity<UserDTO> createUser(@RequestBody UserRequest userRequest) {
         UserEntity userEntity = userService.createUser(userRequest);
-        return ResponseEntity.status(HttpStatus.CREATED).body(createUserDTO(userEntity));
+//        return ResponseEntity.status(HttpStatus.CREATED).body(createUserDTO(userEntity));
+        return ResponseEntity
+                .created(URI.create(String.format("/api/users/%d", userEntity.getId())))
+                .body(createUserDTO(userEntity));
     }
 
     @PatchMapping("/{id}")
@@ -54,20 +58,20 @@ public class UserController {
         UserEntity existingUser = userService.getUserById(id);
 
         if (existingUser != null) {
-            UserEntity updateUser = userService.updateUser(existingUser, userRequest);
-            return ResponseEntity.ok(createUserDTO(updateUser));
+            UserEntity updatedUser = userService.updateUser(existingUser, userRequest);
+            return ResponseEntity.ok(createUserDTO(updatedUser));
         } else {
             return ResponseEntity.notFound().build();
         }
     }
 
     @DeleteMapping("/{id}")
-    public ResponseEntity<Void> deleteUser(@PathVariable Long id) {
+    public ResponseEntity<UserDTO> deleteUser(@PathVariable Long id) {
         UserEntity existingUser = userService.getUserById(id);
 
         if (existingUser != null) {
             userService.deleteUser(id);
-            return ResponseEntity.noContent().build();
+            return ResponseEntity.ok(createUserDTO(existingUser));
         } else {
             return ResponseEntity.notFound().build();
         }

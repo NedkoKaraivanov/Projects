@@ -10,25 +10,27 @@ import bg.softuni.mywarehouse.repositories.UserRoleRepository;
 import bg.softuni.mywarehouse.services.UserRoleService;
 import bg.softuni.mywarehouse.services.UserService;
 
+import org.modelmapper.ModelMapper;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
+import java.util.Optional;
 
 @Service
 public class UserServiceImpl implements UserService {
 
     private final UserRepository userRepository;
     private final UserRoleRepository userRoleRepository;
+    private final ModelMapper modelMapper;
     private final UserRoleService userRoleService;
-
     private final PasswordEncoder passwordEncoder;
 
-    public UserServiceImpl(UserRepository userRepository, UserRoleRepository userRoleRepository, UserRoleService userRoleService, PasswordEncoder passwordEncoder) {
+    public UserServiceImpl(UserRepository userRepository, UserRoleRepository userRoleRepository, ModelMapper modelMapper, UserRoleService userRoleService, PasswordEncoder passwordEncoder) {
         this.userRepository = userRepository;
         this.userRoleRepository = userRoleRepository;
+        this.modelMapper = modelMapper;
         this.userRoleService = userRoleService;
-
         this.passwordEncoder = passwordEncoder;
     }
 
@@ -92,7 +94,9 @@ public class UserServiceImpl implements UserService {
     }
 
     @Override
-    public void deleteUser(Long id) {
+    public UserEntity deleteUser(Long id) {
+        Optional<UserEntity> existingUser = userRepository.findById(id);
         userRepository.deleteById(id);
+        return existingUser.get();
     }
 }

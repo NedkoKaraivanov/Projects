@@ -26,5 +26,5 @@ public interface UserService {
 
     UserEntity registerUser(UserRegistrationDTO userRegistrationDTO);
 
-    void deleteUser(Long id);
+    UserEntity deleteUser(Long id);
 }
