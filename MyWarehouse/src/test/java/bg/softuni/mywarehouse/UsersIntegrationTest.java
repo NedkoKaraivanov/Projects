@@ -1,0 +1,85 @@
+package bg.softuni.mywarehouse;
+
+import bg.softuni.mywarehouse.domain.entities.UserEntity;
+import bg.softuni.mywarehouse.repositories.UserRepository;
+import bg.softuni.mywarehouse.services.UserService;
+import org.junit.jupiter.api.AfterAll;
+import org.junit.jupiter.api.BeforeAll;
+import org.junit.jupiter.api.Test;
+import org.junit.jupiter.api.TestInstance;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.boot.test.autoconfigure.web.servlet.AutoConfigureMockMvc;
+import org.springframework.boot.test.context.SpringBootTest;
+import org.springframework.security.crypto.password.PasswordEncoder;
+import org.springframework.test.context.ActiveProfiles;
+import org.springframework.test.web.servlet.MockMvc;
+import org.springframework.test.web.servlet.request.MockMvcRequestBuilders;
+
+import java.util.List;
+
+import static org.hamcrest.Matchers.is;
+import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.jsonPath;
+import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.status;
+
+@SpringBootTest
+@AutoConfigureMockMvc
+@TestInstance(TestInstance.Lifecycle.PER_CLASS)
+@ActiveProfiles("test")
+public class UsersIntegrationTest {
+
+    @Autowired
+    private UserService userService;
+
+    @Autowired
+    private PasswordEncoder passwordEncoder;
+
+    @Autowired
+    private UserRepository userRepository;
+
+    @Autowired
+    private MockMvc mockMvc;
+
+    @BeforeAll
+    void setUp() {
+        List<UserEntity> testUsers = createTestUsers();
+        userRepository.saveAll(testUsers);
+
+    }
+
+    @AfterAll
+    void tearDown() {
+        userRepository.deleteAll();
+    }
+
+    @Test
+    public void getUserById_userIsFound_userReturned() throws Exception {
+        mockMvc.perform(MockMvcRequestBuilders.get("/api/users/1"))
+                .andExpect(status().isOk())
+                .andExpect(jsonPath("$.firstName", is("Test1FirstName")))
+                .andExpect(jsonPath("$.email", is("Test1@abv")));
+    }
+
+    @Test
+    public void getAllUsers_usersFound_usersReturned() throws Exception {
+        mockMvc.perform(MockMvcRequestBuilders.get("/api/users"))
+                .andExpect(status().isOk())
+                .andExpect(jsonPath("$.[0].firstName", is("Test1FirstName")))
+                .andExpect(jsonPath("$.[0].email", is("Test1@abv")))
+                .andExpect(jsonPath("$.[0].id", is(1)))
+                .andExpect(jsonPath("$.[1].firstName", is("Test2FirstName")))
+                .andExpect(jsonPath("$.[1].email", is("Test2@abv")))
+                .andExpect(jsonPath("$.[1].id", is(2)));
+    }
+
+    private List<UserEntity> createTestUsers() {
+        UserEntity user1 = new UserEntity();
+        user1.setFirstName("Test1FirstName");
+        user1.setEmail("Test1@abv");
+        user1.setPassword(passwordEncoder.encode("test1Password"));
+        UserEntity user2 = new UserEntity();
+        user2.setFirstName("Test2FirstName");
+        user2.setEmail("Test2@abv");
+        user2.setPassword(passwordEncoder.encode("test2Password"));
+        return List.of(user1, user2);
+    }
+}

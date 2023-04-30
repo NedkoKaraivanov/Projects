@@ -103,7 +103,6 @@ public class UserControllerTest {
             return existingUser;
         });
 
-
         mockMvc.perform(MockMvcRequestBuilders.patch("/api/users/1")
                         .content(objectMapper.writeValueAsString(userRequest))
                 .contentType("application/json")
@@ -112,6 +111,21 @@ public class UserControllerTest {
                 .andExpect(jsonPath("$.email", is("test1Updated@abv")))
                 .andExpect(jsonPath("$.firstName", is("Test1Updated")));
     }
+
+    @Test
+    public void updateUser_nonExistentUser() throws Exception {
+        UserRequest userRequest = new UserRequest();
+        userRequest.setEmail("test1Updated@abv");
+        userRequest.setFirstName("Test1Updated");
+
+        mockMvc.perform(MockMvcRequestBuilders.patch("/api/users/1")
+                        .content(objectMapper.writeValueAsString(userRequest))
+                        .contentType("application/json")
+                        .accept("application/json"))
+                .andExpect(status().isNotFound());
+    }
+
+
 
     @Test
     public void deleteUser_existingUser_userIsDeleted() throws Exception {

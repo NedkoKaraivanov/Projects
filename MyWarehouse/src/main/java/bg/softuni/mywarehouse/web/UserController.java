@@ -6,7 +6,6 @@ import bg.softuni.mywarehouse.domain.entities.UserEntity;
 import bg.softuni.mywarehouse.domain.request.UserRequest;
 import bg.softuni.mywarehouse.services.UserService;
 import org.modelmapper.ModelMapper;
-import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
