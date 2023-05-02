@@ -16,4 +16,6 @@ public interface ProductService {
     void deleteProduct(Long id);
 
     ProductEntity getProductById(Long id);
+
+    ProductDTO createProductDTO(ProductEntity productEntity);
 }

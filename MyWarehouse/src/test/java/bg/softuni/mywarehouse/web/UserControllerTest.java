@@ -48,7 +48,7 @@ public class UserControllerTest {
         when(userService.getAllUsers()).thenReturn(List.of(createUser("test1@abv", "Test1"),
                 createUser("test2@abv", "Test2")));
 
-        mockMvc.perform(MockMvcRequestBuilders.get("/api/users"))
+        mockMvc.perform(MockMvcRequestBuilders.get("/api/admin/users"))
                 .andExpect(status().isOk())
                 .andExpect(jsonPath("$.[0].email", is("test1@abv")))
                 .andExpect(jsonPath("$.[0].firstName", is("Test1")))
@@ -60,7 +60,7 @@ public class UserControllerTest {
     public void getUser_UserExists_UserReturned() throws Exception {
         when(userService.getUserById(1L)).thenReturn(createUser("test1@abv", "Test1"));
 
-        mockMvc.perform(MockMvcRequestBuilders.get("/api/users/1"))
+        mockMvc.perform(MockMvcRequestBuilders.get("/api/admin/users/1"))
                 .andExpect(status().isOk())
                 .andExpect(jsonPath("$.email", is("test1@abv")))
                 .andExpect(jsonPath("$.firstName", is("Test1")));
@@ -68,7 +68,7 @@ public class UserControllerTest {
 
     @Test
     public void getUser_userDoesNotExist_notFoundStatusIsReturned() throws Exception {
-        mockMvc.perform(MockMvcRequestBuilders.get("/api/users/1"))
+        mockMvc.perform(MockMvcRequestBuilders.get("/api/admin/users/1"))
                 .andExpect(status().isNotFound());
     }
 
@@ -80,7 +80,7 @@ public class UserControllerTest {
         UserEntity user = createUser("test1@abv", "Test1");
         when(userService.createUser(userRequest)).thenReturn(user);
 
-        mockMvc.perform(MockMvcRequestBuilders.post("/api/users")
+        mockMvc.perform(MockMvcRequestBuilders.post("/api/admin/users")
                 .content(objectMapper.writeValueAsString(userRequest))
                         .contentType("application/json")
                         .accept("application/json"))
@@ -103,7 +103,7 @@ public class UserControllerTest {
             return existingUser;
         });
 
-        mockMvc.perform(MockMvcRequestBuilders.patch("/api/users/1")
+        mockMvc.perform(MockMvcRequestBuilders.patch("/api/admin/users/1")
                         .content(objectMapper.writeValueAsString(userRequest))
                 .contentType("application/json")
                 .accept("application/json"))
@@ -118,7 +118,7 @@ public class UserControllerTest {
         userRequest.setEmail("test1Updated@abv");
         userRequest.setFirstName("Test1Updated");
 
-        mockMvc.perform(MockMvcRequestBuilders.patch("/api/users/1")
+        mockMvc.perform(MockMvcRequestBuilders.patch("/api/admin/users/1")
                         .content(objectMapper.writeValueAsString(userRequest))
                         .contentType("application/json")
                         .accept("application/json"))
@@ -134,7 +134,7 @@ public class UserControllerTest {
         when(userService.getUserById(1L)).thenReturn(user);
         when(userService.deleteUser(1L)).thenReturn(user);
 
-        mockMvc.perform(MockMvcRequestBuilders.delete("/api/users/1"))
+        mockMvc.perform(MockMvcRequestBuilders.delete("/api/admin/users/1"))
                 .andExpect(status().isOk())
                 .andExpect(jsonPath("$.email", is("test1@abv")))
                 .andExpect(jsonPath("$.firstName", is("Test1")));
@@ -142,7 +142,7 @@ public class UserControllerTest {
 
     @Test
     public void deleteUser_nonExistent_userIsNotFound() throws Exception {
-        mockMvc.perform(MockMvcRequestBuilders.delete("/api/users/1"))
+        mockMvc.perform(MockMvcRequestBuilders.delete("/api/admin/users/1"))
                 .andExpect(status().isNotFound());
     }
 

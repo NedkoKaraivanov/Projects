@@ -12,7 +12,7 @@ import java.util.List;
 import java.util.stream.Collectors;
 
 @RestController
-@RequestMapping(value = "/api/products")
+@RequestMapping(value = "/api/admin/products")
 public class ProductController {
 
     private final ProductService productService;
@@ -26,7 +26,7 @@ public class ProductController {
 
     @GetMapping
     public ResponseEntity<List<ProductDTO>> getAllProducts() {
-        return ResponseEntity.ok(productService.getAllProducts().stream().map(this::createProductDTO).collect(Collectors.toList()));
+        return ResponseEntity.ok(productService.getAllProducts().stream().map(productService::createProductDTO).collect(Collectors.toList()));
     }
 
     @GetMapping("/{id}")
@@ -34,7 +34,7 @@ public class ProductController {
         ProductEntity productEntity = productService.getProductById(id);
 
         if (productEntity != null) {
-            return ResponseEntity.ok(createProductDTO(productEntity));
+            return ResponseEntity.ok(productService.createProductDTO(productEntity));
         }
         return ResponseEntity.notFound().build();
     }
@@ -44,7 +44,7 @@ public class ProductController {
         ProductEntity productEntity = modelMapper.map(productDTO, ProductEntity.class);
         productService.createProduct(productEntity);
 
-        return ResponseEntity.status(HttpStatus.CREATED).body(createProductDTO(productEntity));
+        return ResponseEntity.status(HttpStatus.CREATED).body(productService.createProductDTO(productEntity));
     }
 
     @PatchMapping("/{id}")
@@ -53,7 +53,7 @@ public class ProductController {
 
         if (existingProduct != null) {
             productService.updateProduct(existingProduct, productDTO);
-            return ResponseEntity.ok(createProductDTO(existingProduct));
+            return ResponseEntity.ok(productService.createProductDTO(existingProduct));
         } else {
             return ResponseEntity.notFound().build();
         }
@@ -70,13 +70,4 @@ public class ProductController {
         }
     }
 
-    public ProductDTO createProductDTO(ProductEntity productEntity) {
-        return ProductDTO.builder()
-                .id(productEntity.getId())
-                .type(productEntity.getType())
-                .brand(productEntity.getBrand())
-                .size(productEntity.getSize())
-                .price(productEntity.getPrice())
-                .build();
-    }
 }

@@ -48,5 +48,14 @@ public class ProductServiceImpl implements ProductService {
         productRepository.deleteById(id);
     }
 
-
+    @Override
+    public ProductDTO createProductDTO(ProductEntity productEntity) {
+        return ProductDTO.builder()
+                .id(productEntity.getId())
+                .type(productEntity.getType())
+                .brand(productEntity.getBrand())
+                .size(productEntity.getSize())
+                .price(productEntity.getPrice())
+                .build();
+    }
 }

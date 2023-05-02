@@ -55,7 +55,7 @@ public class UsersIntegrationTest {
 
     @Test
     public void getUserById_userIsFound_userReturned() throws Exception {
-        mockMvc.perform(MockMvcRequestBuilders.get("/api/users/1"))
+        mockMvc.perform(MockMvcRequestBuilders.get("/api/admin/users/1"))
                 .andExpect(status().isOk())
                 .andExpect(jsonPath("$.firstName", is("Test1FirstName")))
                 .andExpect(jsonPath("$.email", is("Test1@abv")));
@@ -63,13 +63,13 @@ public class UsersIntegrationTest {
 
     @Test
     public void getUserById_userNotFound_statusReturned() throws Exception {
-        mockMvc.perform(MockMvcRequestBuilders.get("/api/users/10"))
+        mockMvc.perform(MockMvcRequestBuilders.get("/api/admin/users/10"))
                 .andExpect(status().isNotFound());
     }
 
     @Test
     public void getAllUsers_usersFound_usersReturned() throws Exception {
-        mockMvc.perform(MockMvcRequestBuilders.get("/api/users"))
+        mockMvc.perform(MockMvcRequestBuilders.get("/api/admin/users"))
                 .andExpect(status().isOk())
                 .andExpect(jsonPath("$.[0].firstName", is("Test1FirstName")))
                 .andExpect(jsonPath("$.[0].email", is("Test1@abv")))
@@ -88,11 +88,11 @@ public class UsersIntegrationTest {
         userService.createUser(user);
         UserEntity existingUser = userService.getUserByEmail("UserToBeDeleted@abv");
         Long id = existingUser.getId();
-        mockMvc.perform(MockMvcRequestBuilders.delete("/api/users/" + id))
+        mockMvc.perform(MockMvcRequestBuilders.delete("/api/admin/users/" + id))
                 .andExpect(status().isOk())
                 .andExpect(jsonPath("$.firstName", is("userToBeDeleted")));
 
-        mockMvc.perform(MockMvcRequestBuilders.delete("/api/users/" + id))
+        mockMvc.perform(MockMvcRequestBuilders.delete("/api/admin/users/" + id))
                 .andExpect(status().isNotFound());
     }
 
