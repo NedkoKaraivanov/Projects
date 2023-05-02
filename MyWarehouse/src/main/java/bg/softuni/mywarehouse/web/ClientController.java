@@ -37,13 +37,13 @@ public class ClientController {
         return null;
     }
 
-    @GetMapping("/user")
+    @GetMapping("/profile")
     public ResponseEntity<UserDTO> viewProfile() {
         //TODO
         return null;
     }
 
-    @PutMapping("/user")
+    @PutMapping("/profile")
     public ResponseEntity<UserDTO> updateProfile() {
         //TODO
         return null;
