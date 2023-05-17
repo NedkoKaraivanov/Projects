@@ -34,7 +34,7 @@ public class SecurityConfiguration {
                 .requestMatchers(PathRequest.toStaticResources().atCommonLocations()).permitAll()
 //                .requestMatchers(EndpointRequest.toAnyEndpoint()).permitAll()
                 .requestMatchers("/", "/api/client/products").permitAll()
-                .requestMatchers("/api/auth/register", "/api/auth/authenticate").anonymous()
+                .requestMatchers("/api/auth/register", "/api/auth/authenticate", "/api/auth/refresh-token").anonymous()
                 .requestMatchers("/api/admin/**").hasAnyRole(String.valueOf(UserRoleEnum.ADMIN))
                 .anyRequest().authenticated()
                 .and()

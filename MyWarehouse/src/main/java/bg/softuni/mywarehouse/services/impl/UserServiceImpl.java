@@ -1,6 +1,8 @@
 package bg.softuni.mywarehouse.services.impl;
 
+import bg.softuni.mywarehouse.domain.dtos.UserDTO;
 import bg.softuni.mywarehouse.domain.dtos.UserRegistrationDTO;
+import bg.softuni.mywarehouse.domain.dtos.UserRoleDTO;
 import bg.softuni.mywarehouse.domain.entities.UserEntity;
 import bg.softuni.mywarehouse.domain.entities.UserRoleEntity;
 import bg.softuni.mywarehouse.domain.enums.UserRoleEnum;
@@ -17,6 +19,7 @@ import org.springframework.stereotype.Service;
 
 import java.util.List;
 import java.util.Optional;
+import java.util.stream.Collectors;
 
 @Service
 public class UserServiceImpl implements UserService {
@@ -99,5 +102,19 @@ public class UserServiceImpl implements UserService {
         Optional<UserEntity> existingUser = userRepository.findById(id);
         userRepository.deleteById(id);
         return existingUser.get();
+    }
+
+    public UserDTO createUserDTO(UserEntity user) {
+        return UserDTO.builder()
+                .email(user.getEmail())
+                .id(user.getId())
+                .firstName(user.getFirstName())
+                .lastName(user.getLastName())
+                .isActive(user.getIsActive())
+                .address(user.getAddress())
+                .phoneNumber(user.getPhoneNumber())
+                .roles(user.getRoles().stream().map(role -> UserRoleDTO.builder()
+                        .userRole(role.getRole()).id(role.getId()).build()).collect(Collectors.toList()))
+                .build();
     }
 }

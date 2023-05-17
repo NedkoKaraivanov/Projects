@@ -28,7 +28,7 @@ public class UserController {
 
     @GetMapping
     public ResponseEntity<List<UserDTO>> getAllUsers() {
-        return ResponseEntity.ok(userService.getAllUsers().stream().map(this::createUserDTO).collect(Collectors.toList()));
+        return ResponseEntity.ok(userService.getAllUsers().stream().map(userService::createUserDTO).collect(Collectors.toList()));
     }
 
     @GetMapping("/{id}")
@@ -36,7 +36,7 @@ public class UserController {
         UserEntity userEntity = userService.getUserById(id);
 
         if (userEntity != null) {
-            return ResponseEntity.ok(createUserDTO(userService.getUserById(id)));
+            return ResponseEntity.ok(userService.createUserDTO(userService.getUserById(id)));
         } else {
             return ResponseEntity.notFound().build();
         }
@@ -46,10 +46,10 @@ public class UserController {
     @PostMapping
     public ResponseEntity<UserDTO> createUser(@RequestBody UserRequest userRequest) {
         UserEntity userEntity = userService.createUser(userRequest);
-//        return ResponseEntity.status(HttpStatus.CREATED).body(createUserDTO(userEntity));
+
         return ResponseEntity
                 .created(URI.create(String.format("/api/users/%d", userEntity.getId())))
-                .body(createUserDTO(userEntity));
+                .body(userService.createUserDTO(userEntity));
     }
 
     @PatchMapping("/{id}")
@@ -58,7 +58,7 @@ public class UserController {
 
         if (existingUser != null) {
             UserEntity updatedUser = userService.updateUser(existingUser, userRequest);
-            return ResponseEntity.ok(createUserDTO(updatedUser));
+            return ResponseEntity.ok(userService.createUserDTO(updatedUser));
         } else {
             return ResponseEntity.notFound().build();
         }
@@ -70,23 +70,10 @@ public class UserController {
 
         if (existingUser != null) {
             userService.deleteUser(id);
-            return ResponseEntity.ok(createUserDTO(existingUser));
+            return ResponseEntity.ok(userService.createUserDTO(existingUser));
         } else {
             return ResponseEntity.notFound().build();
         }
     }
 
-    private UserDTO createUserDTO(UserEntity user) {
-        return UserDTO.builder()
-                .email(user.getEmail())
-                .id(user.getId())
-                .firstName(user.getFirstName())
-                .lastName(user.getLastName())
-                .isActive(user.getIsActive())
-                .address(user.getAddress())
-                .phoneNumber(user.getPhoneNumber())
-                .roles(user.getRoles().stream().map(role -> UserRoleDTO.builder()
-                        .userRole(role.getRole()).id(role.getId()).build()).collect(Collectors.toList()))
-                .build();
-    }
 }

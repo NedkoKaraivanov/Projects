@@ -1,5 +1,6 @@
 package bg.softuni.mywarehouse.services;
 
+import bg.softuni.mywarehouse.domain.dtos.OrderDTO;
 import bg.softuni.mywarehouse.domain.entities.OrderEntity;
 
 import java.util.List;
@@ -23,4 +24,6 @@ public interface OrderService {
     void updateOrder(OrderEntity order);
 
     void deleteOrder(Long id);
+
+    OrderDTO createOrderDTO(OrderEntity orderEntity);
 }
