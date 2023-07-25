@@ -29,4 +29,6 @@ public interface UserService {
     UserEntity deleteUser(Long id);
 
     UserDTO createUserDTO(UserEntity userEntity);
+
+    void initTestUsers();
 }

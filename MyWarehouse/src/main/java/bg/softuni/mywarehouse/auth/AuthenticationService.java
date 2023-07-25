@@ -23,6 +23,7 @@ import org.springframework.stereotype.Service;
 
 import java.io.IOException;
 import java.util.List;
+import java.util.stream.Collectors;
 
 @Service
 @RequiredArgsConstructor
@@ -40,6 +41,11 @@ public class AuthenticationService {
     public AuthenticationResponse register(RegisterRequest request) {
         UserRoleEntity role = userRoleRepository.findByRole(UserRoleEnum.USER);
         List<UserRoleEntity> userRoles = List.of(role);
+
+        var email = userRepository.findByEmail(request.getEmail());
+        if (email.isPresent()) {
+            throw new RuntimeException();
+        }
 
         UserEntity user = UserEntity.builder()
                 .firstName(request.getFirstName())
@@ -71,11 +77,13 @@ public class AuthenticationService {
         UserEntity user = userRepository.findByEmail(request.getEmail()).orElseThrow();
         String jwtToken = jwtService.generateToken(userDetails);
         String refreshToken = jwtService.generateRefreshToken(userDetails);
+        var roles = user.getRoles().stream().map((role) -> String.valueOf(role.getId())).collect(Collectors.toList());
         revokeAllUserTokens(user);
         saveUserToken(user, jwtToken);
         return AuthenticationResponse.builder()
                 .accessToken(jwtToken)
                 .refreshToken(refreshToken)
+                .roles(roles)
                 .build();
     }
 
@@ -113,8 +121,10 @@ public class AuthenticationService {
 
         refreshToken = authHeader.substring(7);
         userEmail = jwtService.extractUsername(refreshToken);
+
         if (userEmail != null) {
             UserEntity user = userRepository.findByEmail(userEmail).orElseThrow();
+            var roles = user.getRoles().stream().map((role) -> String.valueOf(role.getId())).collect(Collectors.toList());
             UserDetails userDetails = applicationUserDetailsService.loadUserByUsername(userEmail);
             if (jwtService.isTokenValid(refreshToken, userDetails)) {
                 String accessToken = jwtService.generateToken(userDetails);
@@ -123,6 +133,7 @@ public class AuthenticationService {
                 var authResponse = AuthenticationResponse.builder()
                         .accessToken(accessToken)
                         .refreshToken(refreshToken)
+                        .roles(roles)
                         .build();
                 new ObjectMapper().writeValue(response.getOutputStream(), authResponse);
             }

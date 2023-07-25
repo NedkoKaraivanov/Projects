@@ -117,4 +117,24 @@ public class UserServiceImpl implements UserService {
                         .userRole(role.getRole()).id(role.getId()).build()).collect(Collectors.toList()))
                 .build();
     }
+
+    @Override
+    public void initTestUsers() {
+        var userRolesUser = userRoleRepository.findByRole(UserRoleEnum.USER);
+        var userRolesAdmin = userRoleRepository.findByRole(UserRoleEnum.ADMIN);
+
+        var normalUser = UserEntity.builder()
+                .email("user@test.com")
+                .password(passwordEncoder.encode("user"))
+                .roles(List.of(userRolesUser))
+                .build();
+        userRepository.save(normalUser);
+
+        var adminUser = UserEntity.builder()
+                .email("admin@test.com")
+                .password(passwordEncoder.encode("admin"))
+                .roles(List.of(userRolesAdmin))
+                .build();
+        userRepository.save(adminUser);
+    }
 }
