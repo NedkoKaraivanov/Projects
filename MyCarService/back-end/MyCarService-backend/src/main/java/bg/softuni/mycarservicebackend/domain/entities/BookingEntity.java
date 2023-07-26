@@ -28,6 +28,9 @@ public class BookingEntity extends BaseEntity{
     @Column
     private LocalDate finishDate;
 
+    @Column
+    private String description;
+
     @OneToOne()
-    private ServiceInfoEntity serviceInfo;
+    private ProcedureInfoEntity serviceInfo;
 }
