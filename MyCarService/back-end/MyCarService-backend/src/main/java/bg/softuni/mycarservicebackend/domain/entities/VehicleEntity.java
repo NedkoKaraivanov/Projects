@@ -17,7 +17,7 @@ import lombok.NoArgsConstructor;
 @AllArgsConstructor
 public class VehicleEntity extends BaseEntity {
 
-    @OneToOne()
+    @OneToOne
     private UserEntity user;
 
     @Column

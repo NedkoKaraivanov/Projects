@@ -29,11 +29,12 @@ spring:
           format_sql: true
       defer-datasource-initialization: true
 
-  management:
-    endpoints:
-      web:
-        exposure:
-          include: "*"
-    server:
-      port: 8081
+#management:
+#  endpoints:
+#    web:
+#      exposure:
+#        include: "*"
+#
+#  server:
+#    port: 8081
 
