@@ -1,0 +1,26 @@
+.sidenav-container {
+  height: 86%
+}
+
+.sidenav {
+    padding: 20px;
+    width: 10%;
+    color: #333335;
+}
+.sidenav-content {
+  display: flex;
+  height: 100%;
+  align-items: center;
+  justify-content: center;
+}
+
+.menu-link {
+  box-sizing: border-box;
+  margin-top: 8px;
+  font-size: 1rem;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  color: #333335;
+}
+
