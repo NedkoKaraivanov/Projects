@@ -1,1 +1,50 @@
-<p>register works!</p>
+<div class="container">
+  <form class="register" [formGroup]="form">
+    <h2>Registration</h2>
+    <mat-form-field>
+      <mat-label>Enter your email</mat-label>
+      <input type="email" matInput formControlName="email" required />
+      <mat-error *ngIf="form.get('email')?.hasError('required')"
+        >Email is required</mat-error
+      >
+      <mat-error *ngIf="form.get('email')?.hasError('email')"
+        >Invalid email format</mat-error
+      >
+    </mat-form-field>
+
+    <mat-form-field>
+      <mat-label>Phone number</mat-label>
+      <input matInput />
+    </mat-form-field>
+
+      <mat-form-field>
+        <mat-label>Password</mat-label>
+        <input type="password" matInput formControlName="password" required />
+        <mat-error
+          *ngIf="form.get('password')?.hasError('required')"
+          >Password is required</mat-error
+        >
+        <mat-error
+          *ngIf="form.get('password')?.hasError('minlength')"
+          >Must be at least 6 symbols</mat-error
+        >
+      </mat-form-field>
+
+      <mat-form-field>
+        <mat-label>Confirm Password</mat-label>
+        <input type="password" matInput formControlName="rePassword" required />
+        <mat-error
+          *ngIf="
+            form.get('rePassword')?.hasError('required') || form?.hasError('passwordMismatch')"
+          >Passwords does not match</mat-error
+        >
+      </mat-form-field>
+
+    <button mat-raised-button color="primary">Register</button>
+
+    <p class="text-center">
+      Have an account?
+      <a routerLink="/login">Log In</a>
+    </p>
+  </form>
+</div>
