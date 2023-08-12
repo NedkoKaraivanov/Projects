@@ -4,8 +4,9 @@
 
 .sidenav {
     padding: 20px;
-    width: 10%;
+    width: 12%;
     color: #333335;
+    display: inline;
 }
 .sidenav-content {
   display: flex;

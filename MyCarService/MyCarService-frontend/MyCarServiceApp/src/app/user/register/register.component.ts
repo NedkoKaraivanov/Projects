@@ -2,7 +2,7 @@ import { Component } from '@angular/core';
 import { UserService } from '../user.service';
 import { Router } from '@angular/router';
 import { FormBuilder, FormControl, Validators } from '@angular/forms';
-import { matchPasswordsValidator } from 'src/app/shared/validators/match-passwords-validator';
+import { confirmPasswordValidator } from 'src/app/shared/validators/match-passwords-validator';
 
 @Component({
   selector: 'app-register',
@@ -16,25 +16,26 @@ export class RegisterComponent {
     private fb: FormBuilder
   ) {}
 
-  form = this.fb.group({
-    email: ['', [Validators.required, Validators.email]],
-    password: ['', [Validators.required, Validators.minLength(6)]],
-    rePassword: ['', [Validators.required]],
+  form = this.fb.group(
+    {
+      email: ['', [Validators.required, Validators.email]],
+      phoneNumber: [''],
+      password: ['', [Validators.required, Validators.minLength(6)]],
+      confirmPassword: ['', [Validators.required]],
+    },
+  );
 
-  }, {validators: [matchPasswordsValidator('password', 'rePassword')]});
+  user = {
+    email: '',
+    phoneNumber: '',
+    password: '',
+  };
 
-  // user = {
-  //   email: '',
-  //   password: '',
-  // };
-  // confirmPassword = '';
-
-  // onSubmit() {
-  //   if (this.confirmPassword !== this.user.password) {
-  //     // Handle password mismatch
-  //     return;
-  //   }
-
-  //   // Handle form submission
-  // }
+  register(): void {
+    if (this.form.invalid) {
+      return;
+    }
+    this.userService.register(this.form.value);
+  }
 }
+

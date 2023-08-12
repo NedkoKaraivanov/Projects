@@ -1,19 +1,32 @@
 <div class="container">
-  <form class="login">
+  <form class="login" [formGroup]="form" (ngSubmit)="login()">
     <h2>Login</h2>
-    
+
     <mat-form-field>
       <mat-label>Enter your email</mat-label>
-      <input type="email" matInput required />
-      <mat-error *ngIf="email.invalid">{{ getErrorMessage() }}</mat-error>
+      <input type="email" matInput formControlName="email" required />
+      <mat-error *ngIf="form.get('email')?.hasError('required')"
+        >Email is required</mat-error
+      >
+      <mat-error *ngIf="form.get('email')?.hasError('email')"
+        >Invalid email format</mat-error
+      >
     </mat-form-field>
 
     <mat-form-field>
       <mat-label>Password</mat-label>
-      <input matInput required />
+      <input matInput required formControlName="password" required />
+      <mat-error *ngIf="form.get('password')?.hasError('required')"
+        >Password is required</mat-error
+      >
+      <mat-error *ngIf="form.get('password')?.hasError('minlength')"
+        >Must be at least 6 symbols</mat-error
+      >
     </mat-form-field>
 
-    <button mat-raised-button color="primary">Login</button>
+    <button mat-raised-button type="submit" color="primary" [disabled]="form.invalid">
+      Login
+    </button>
 
     <p class="text-center">
       Don't have an account?
@@ -21,4 +34,3 @@
     </p>
   </form>
 </div>
-

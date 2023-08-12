@@ -1,5 +1,5 @@
 <div class="container">
-  <form class="register" [formGroup]="form">
+  <form class="register" [formGroup]="form" (ngSubmit)="register()">
     <h2>Registration</h2>
     <mat-form-field>
       <mat-label>Enter your email</mat-label>
@@ -14,7 +14,7 @@
 
     <mat-form-field>
       <mat-label>Phone number</mat-label>
-      <input matInput />
+      <input matInput formControlName="phoneNumber"/>
     </mat-form-field>
 
       <mat-form-field>
@@ -32,15 +32,16 @@
 
       <mat-form-field>
         <mat-label>Confirm Password</mat-label>
-        <input type="password" matInput formControlName="rePassword" required />
+        <input type="password" matInput formControlName="confirmPassword" required pattern="{{form.value.password}}"/>
         <mat-error
           *ngIf="
-            form.get('rePassword')?.hasError('required') || form?.hasError('passwordMismatch')"
-          >Passwords does not match</mat-error
+            form.get('confirmPassword')?.hasError('required')"
+          >Confirmation is required</mat-error
         >
+        <mat-error *ngIf="form.value.confirmPassword">Passwords do not match</mat-error>
       </mat-form-field>
 
-    <button mat-raised-button color="primary">Register</button>
+    <button mat-raised-button color="primary" type="submit" [disabled]="this.form.invalid">Register</button>
 
     <p class="text-center">
       Have an account?
