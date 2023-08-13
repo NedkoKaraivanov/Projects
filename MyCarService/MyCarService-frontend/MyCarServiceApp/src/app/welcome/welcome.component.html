@@ -1,0 +1,44 @@
+<section class="welcome-container">
+<h2 class="welcome-msg">
+  Welcome to <p>BestService</p>, the right place for your car. We will take care of your car as nobody else.
+</h2>
+<h3 class="info-msg">
+  We offer a wide variety of services such as
+</h3>
+
+<mat-grid-list cols="4" rowHeight="300px" gutterSize="10px">
+  <mat-grid-tile
+    class="tile"
+    class="first-tile"
+    colspan="2"
+    rowspan="1"
+    [ngStyle]="{ backgroundImage: 'url(' + image1 + ')' }"
+    >
+    <mat-grid-tile-header>Diagnostics</mat-grid-tile-header></mat-grid-tile
+  >
+  <mat-grid-tile
+    class="tile"
+    class="second-tile"
+    colspan="2"
+    rowspan="1"
+    [ngStyle]="{ backgroundImage: 'url(' + image2 + ')' }"
+    ><mat-grid-tile-header>Oil change</mat-grid-tile-header></mat-grid-tile
+  >
+  <mat-grid-tile
+    class="tile"
+    class="third-tile"
+    colspan="2"
+    rowspan="1"
+    [ngStyle]="{ backgroundImage: 'url(' + image3 + ')' }"
+    ><mat-grid-tile-header>Suspension work</mat-grid-tile-header></mat-grid-tile
+  >
+  <mat-grid-tile
+    class="tile"
+    class="fourth-tile"
+    colspan="2"
+    rowspan="1"
+    [ngStyle]="{ backgroundImage: 'url(' + image4 + ')' }"
+    ><mat-grid-tile-header>Tire change</mat-grid-tile-header></mat-grid-tile
+  >
+</mat-grid-list>
+</section>

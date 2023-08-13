@@ -1,18 +1,19 @@
 .sidenav-container {
-  height: 86%
+  height: 87%;
 }
 
 .sidenav {
-    padding: 20px;
-    width: 12%;
-    color: #333335;
-    display: inline;
+  padding: 20px;
+  width: 12%;
+  color: #333335;
+  display: inline;
 }
 .sidenav-content {
   display: flex;
-  height: 86%;
+  height: 95%;
   align-items: center;
   justify-content: center;
+  background-color: #e2e8f0;
 }
 
 .menu-link {
@@ -24,4 +25,3 @@
   justify-content: center;
   color: #333335;
 }
-

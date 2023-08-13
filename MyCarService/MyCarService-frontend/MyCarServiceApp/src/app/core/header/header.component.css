@@ -5,6 +5,7 @@
 }
 
 .logo {
+    color: black;
     display: flex;
     align-items: center;
     justify-content: center;
@@ -14,8 +15,8 @@
 }
 
 .logo-img {
-    height: 4rem;
-    border-radius: 26px;
+    height: 55px;
+    border-radius: 20px;
 }
 
 .logo mat-icon {

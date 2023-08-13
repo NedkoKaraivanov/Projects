@@ -1,0 +1,39 @@
+.welcome-container {
+  
+  margin-bottom: 5px;
+  color: rgba(0, 0, 0, 0.884);
+  font-family: Arial, Helvetica, sans-serif;
+}
+.welcome-msg {
+  width: 100%;
+  box-sizing: border-box;
+  padding: 5px 10px;
+}
+
+.welcome-msg p {
+  display: inline;
+  font-style: italic;
+  font-family: '';
+  color: black;
+  font-size: 27px;
+}
+
+.info-msg {
+  box-sizing: border-box;
+  padding: 5px 10px;
+  text-align: center;
+}
+
+mat-grid-tile {
+  border: 2px solid #ffffff;
+  border-radius: 6px;
+  background-size: cover;
+  background-repeat: no-repeat;
+  background-position: center center;
+  border-radius: 10px;
+}
+
+mat-grid-tile:hover {
+  scale: 105%;
+}
+

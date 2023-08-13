@@ -25,5 +25,6 @@ export class LoginComponent {
       return;
     }
     this.userService.login(this.form.value);
+    this.router.navigate(['/home']);
   }
 }

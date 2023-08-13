@@ -8,10 +8,14 @@ import { CoreModule } from './core/core.module';
 import { SharedModule } from './shared/shared.module';
 import { MaterialModule } from './material/material.module';
 import { UserModule } from './user/user.module';
+import { HomeComponent } from './home/home.component';
+import { WelcomeComponent } from './welcome/welcome.component';
 
 @NgModule({
   declarations: [
-    AppComponent
+    AppComponent,
+    HomeComponent,
+    WelcomeComponent
   ],
   imports: [
     BrowserModule,

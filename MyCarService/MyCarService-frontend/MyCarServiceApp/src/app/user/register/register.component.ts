@@ -36,6 +36,7 @@ export class RegisterComponent {
       return;
     }
     this.userService.register(this.form.value);
+    this.router.navigate(['/home']);
   }
 }
 
