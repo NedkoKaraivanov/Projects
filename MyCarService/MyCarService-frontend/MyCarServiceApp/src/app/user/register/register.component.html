@@ -14,35 +14,49 @@
 
     <mat-form-field>
       <mat-label>Phone number</mat-label>
-      <input matInput formControlName="phoneNumber"/>
+      <input matInput formControlName="phoneNumber" />
     </mat-form-field>
 
-      <mat-form-field>
-        <mat-label>Password</mat-label>
-        <input type="password" matInput formControlName="password" required />
-        <mat-error
-          *ngIf="form.get('password')?.hasError('required')"
-          >Password is required</mat-error
-        >
-        <mat-error
-          *ngIf="form.get('password')?.hasError('minlength')"
-          >Must be at least 6 symbols</mat-error
-        >
-      </mat-form-field>
+    <mat-form-field>
+      <mat-label>Password</mat-label>
+      <input type="password" matInput formControlName="password" required />
+      <mat-error *ngIf="form.get('password')?.hasError('required')"
+        >Password is required</mat-error
+      >
+      <mat-error *ngIf="form.get('password')?.hasError('minlength')"
+        >Must be at least 6 symbols</mat-error
+      >
+    </mat-form-field>
 
-      <mat-form-field>
-        <mat-label>Confirm Password</mat-label>
-        <input type="password" matInput formControlName="confirmPassword" required pattern="{{form.value.password}}"/>
-        <mat-error
-          *ngIf="
-            form.get('confirmPassword')?.hasError('required')"
-          >Confirmation is required</mat-error
-        >
-        <mat-error *ngIf="form.value.confirmPassword">Passwords do not match</mat-error>
-      </mat-form-field>
+    <mat-form-field>
+      <mat-label>Confirm Password</mat-label>
+      <input
+        type="password"
+        matInput
+        formControlName="confirmPassword"
+        required
+        pattern="{{ form.value.password }}"
+      />
+      <mat-error *ngIf="form.get('confirmPassword')?.hasError('required')"
+        >Confirmation is required</mat-error
+      >
+      <mat-error *ngIf="form.value.confirmPassword"
+        >Passwords do not match</mat-error
+      >
+    </mat-form-field>
 
-    <button mat-raised-button color="primary" type="submit" [disabled]="this.form.invalid">Register</button>
-
+    <button
+      mat-raised-button
+      color="primary"
+      type="submit"
+      [disabled]="this.form.invalid"
+    >
+      Register
+    </button>
+    <hr />
+    <mat-error *ngIf="form?.hasError('existingUser')"
+      >Email is already taken</mat-error
+    >
     <p class="text-center">
       Have an account?
       <a routerLink="/login">Log In</a>

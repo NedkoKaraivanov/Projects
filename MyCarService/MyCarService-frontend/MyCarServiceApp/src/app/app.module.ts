@@ -10,23 +10,28 @@ import { MaterialModule } from './material/material.module';
 import { UserModule } from './user/user.module';
 import { HomeComponent } from './home/home.component';
 import { WelcomeComponent } from './welcome/welcome.component';
+import { HttpClientModule } from '@angular/common/http';
+import { AuthenticateComponent } from './authenticate/authenticate.component';
+import { jwtInterceptorProvider } from './jwt.interceptor';
 
 @NgModule({
   declarations: [
     AppComponent,
     HomeComponent,
-    WelcomeComponent
+    WelcomeComponent,
+    AuthenticateComponent
   ],
   imports: [
     BrowserModule,
     CoreModule,
     SharedModule,
-    AppRoutingModule,
     BrowserAnimationsModule,
     MaterialModule,
+    HttpClientModule,
     UserModule,
+    AppRoutingModule,
   ],
-  providers: [],
+  providers: [jwtInterceptorProvider],
   bootstrap: [AppComponent]
 })
 export class AppModule { }

@@ -15,18 +15,23 @@
 
     <mat-form-field>
       <mat-label>Password</mat-label>
-      <input matInput required formControlName="password" required />
+      <input type="password" matInput required formControlName="password" required />
       <mat-error *ngIf="form.get('password')?.hasError('required')"
         >Password is required</mat-error
       >
       <mat-error *ngIf="form.get('password')?.hasError('minlength')"
         >Must be at least 6 symbols</mat-error
       >
+      
     </mat-form-field>
-
+    
     <button mat-raised-button type="submit" color="primary" [disabled]="form.invalid">
       Login
     </button>
+    <hr>
+    <mat-error *ngIf="form?.hasError('unauthenticated')"
+      >Wrong Email or Password</mat-error
+    >
 
     <p class="text-center">
       Don't have an account?

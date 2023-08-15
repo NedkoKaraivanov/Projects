@@ -1,5 +1,5 @@
 <mat-sidenav-container class="sidenav-container">
-  <button  mat-button (click)="sidenav.toggle()">
+  <button  mat-button (click)="sidenav.toggle()" *ngIf="isLoggedIn">
     <span class="menu-link" *ngIf="!sidenav.opened"><mat-icon>menu</mat-icon>Menu</span>
     <span *ngIf="sidenav.opened"><mat-icon color="accent">close</mat-icon></span>
   </button>

@@ -19,7 +19,7 @@
     border-radius: 20px;
 }
 
-.logo mat-icon {
+mat-icon {
     font-size: 25px;
 }
 
@@ -31,6 +31,7 @@
     display: flex;
     justify-content: right;
     gap: 3rem;
+    list-style-type: none;
 }
 
 .nav-links a {
@@ -43,5 +44,6 @@
 .nav-links a:hover {
     opacity: 1;
     transform: scale(105%);
+    text-decoration: underline;
 }
 

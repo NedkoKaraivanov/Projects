@@ -24,7 +24,20 @@ export class LoginComponent {
     if (this.form.invalid) {
       return;
     }
-    this.userService.login(this.form.value);
-    this.router.navigate(['/home']);
+
+    this.userService.login(this.form.value).subscribe({
+      next: (response) => {
+        localStorage.setItem('access_token', response.access_token);
+        localStorage.setItem('refresh_token', response.refresh_token);
+        localStorage.setItem('roles', JSON.stringify(response.roles));        
+        this.router.navigate(['/home']);
+      },
+      error: (err) => {
+        if (err.status === 401) {
+          this.form.setErrors({ unauthenticated: true });
+        }
+      }
+    });
   }
+
 }

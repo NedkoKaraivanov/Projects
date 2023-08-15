@@ -1,8 +1,7 @@
 import { Component } from '@angular/core';
 import { UserService } from '../user.service';
 import { Router } from '@angular/router';
-import { FormBuilder, FormControl, Validators } from '@angular/forms';
-import { confirmPasswordValidator } from 'src/app/shared/validators/match-passwords-validator';
+import { FormBuilder, Validators } from '@angular/forms';
 
 @Component({
   selector: 'app-register',
@@ -16,14 +15,12 @@ export class RegisterComponent {
     private fb: FormBuilder
   ) {}
 
-  form = this.fb.group(
-    {
-      email: ['', [Validators.required, Validators.email]],
-      phoneNumber: [''],
-      password: ['', [Validators.required, Validators.minLength(6)]],
-      confirmPassword: ['', [Validators.required]],
-    },
-  );
+  form = this.fb.group({
+    email: ['', [Validators.required, Validators.email]],
+    phoneNumber: [''],
+    password: ['', [Validators.required, Validators.minLength(6)]],
+    confirmPassword: ['', [Validators.required]],
+  });
 
   user = {
     email: '',
@@ -35,8 +32,18 @@ export class RegisterComponent {
     if (this.form.invalid) {
       return;
     }
-    this.userService.register(this.form.value);
-    this.router.navigate(['/home']);
+    this.userService.register(this.form.value).subscribe({
+      next: (response) => {
+        localStorage.setItem('access_token', response.access_token);
+        localStorage.setItem('refresh_token', response.refresh_token);
+        localStorage.setItem('roles', JSON.stringify(response.roles));
+        this.router.navigate(['/home']);
+      },
+      error: (err) => {
+        if (err.status === 409) {
+          this.form.setErrors({ existingUser: true });
+        }
+      },
+    });
   }
 }
-

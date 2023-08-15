@@ -3,11 +3,42 @@
     BestService <img class="logo-img" src="../../../assets/car-logo2.jpg" />
   </div>
   <ul class="nav-links">
-    <a mat-button routerLink="/home">Home</a>
-    <a mat-button routerLink="/about">About</a>
-    <a mat-button routerLink="/services">Services</a>
-    <a mat-button routerLink="/contact">Contact</a>
-    <a mat-raised-button color="accent" routerLink="/login">Login</a>
-    <a mat-raised-button color="accent" routerLink="/register">Register</a>
+    <li>
+      <a mat-button routerLink="/home">Home</a>
+    </li>
+    <li>
+      <a mat-button routerLink="/about">About</a>
+    </li>
+    <li>
+      <a mat-button routerLink="/services">Services</a>
+    </li>
+    <li>
+      <a mat-button routerLink="/contact">Contact</a>
+    </li>
+    <div class="mini-navbar">
+      <ul class="nav-links" *ngIf="!isLoggedIn">
+        <li>
+          <a mat-raised-button color="accent" routerLink="/login">Login</a>
+        </li>
+        <li>
+          <a mat-raised-button color="accent" routerLink="/register"
+            >Register</a
+          >
+        </li>
+      </ul>
+
+      <ul class="nav-links" *ngIf="isLoggedIn">
+        <li>
+          <a mat-raised-button color="accent" routerLink="/profile"
+            ><mat-icon>person</mat-icon> Profile</a
+          >
+        </li>
+        <li (click)="logout()">
+          <a mat-raised-button color="accent"
+            ><mat-icon>logout</mat-icon>Logout</a
+          >
+        </li>
+      </ul>
+    </div>
   </ul>
 </mat-toolbar>

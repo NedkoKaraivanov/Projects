@@ -27,7 +27,6 @@ mat-toolbar p {
   list-style: none;
 }
 
-
 .menu__link {
   font-size: 1.2rem;
   color: #fff;
@@ -41,4 +40,6 @@ mat-toolbar p {
 
 .menu__link:hover {
   opacity: 1;
+  transform: scale(105%);
+  text-decoration: underline;
 }
