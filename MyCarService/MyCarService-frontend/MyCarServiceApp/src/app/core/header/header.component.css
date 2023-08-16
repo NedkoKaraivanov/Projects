@@ -4,7 +4,7 @@
     box-shadow: 4px 4px 20px 0px #0000005d;
 }
 
-.logo {
+.logo a {
     color: black;
     display: flex;
     align-items: center;

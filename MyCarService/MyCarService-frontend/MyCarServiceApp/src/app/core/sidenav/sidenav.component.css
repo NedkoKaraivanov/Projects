@@ -10,7 +10,7 @@
 }
 .sidenav-content {
   display: flex;
-  height: 95%;
+  height: 100%;
   align-items: center;
   justify-content: center;
   background-color: #e2e8f0;
@@ -24,6 +24,18 @@
   align-items: center;
   justify-content: center;
   color: #333335;
+  font-size: 22px;
+}
+
+#toggle-btn {
+  display: block;
+  position: absolute;
+  top: 10px;
+  left: 10px;
+}
+
+#toggle-btn:hover {
+  transform: scale(104%);
 }
 
 

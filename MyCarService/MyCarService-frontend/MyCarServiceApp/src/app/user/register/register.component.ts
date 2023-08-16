@@ -34,6 +34,7 @@ export class RegisterComponent {
     }
     this.userService.register(this.form.value).subscribe({
       next: (response) => {
+        console.log(this.form.value);
         localStorage.setItem('access_token', response.access_token);
         localStorage.setItem('refresh_token', response.refresh_token);
         localStorage.setItem('roles', JSON.stringify(response.roles));
@@ -41,6 +42,7 @@ export class RegisterComponent {
       },
       error: (err) => {
         if (err.status === 409) {
+          console.log(this.form.value);
           this.form.setErrors({ existingUser: true });
         }
       },

@@ -17,7 +17,6 @@ export class UserService implements OnDestroy {
   public user$ = this.user$$.asObservable();
 
   user: User | undefined;
-  USER_KEY = '[user]';
 
   get isLogged(): boolean {
     return !!this.user;
@@ -53,8 +52,14 @@ export class UserService implements OnDestroy {
 
   getProfile() {
     return this.http
-    .get<User>(this.profile_url)
-    .pipe(tap(user => this.user$$.next(user)));
+      .get<User>(this.profile_url)
+      .pipe(tap((user) => this.user$$.next(user)));
+  }
+
+  updateProfile(formValue: {}) {
+    return this.http
+      .put<User>(this.profile_url, formValue)
+      .pipe(tap((user) => this.user$$.next(user)));
   }
 
   ngOnDestroy(): void {

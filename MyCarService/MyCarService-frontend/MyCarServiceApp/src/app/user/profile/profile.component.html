@@ -1,1 +1,78 @@
-<p>profile works!</p>
+<div class="container">
+  <ng-container *ngIf="!isEditMode">
+      <h2>Profile</h2>
+    <mat-card class="example-card">
+      <mat-card-header> 
+      </mat-card-header>
+      <img mat-card-image src="/assets/images/profile.png" alt="user photo" />
+      <br>
+      <mat-card-content>
+        <div class="profile-details">
+          <mat-icon>person</mat-icon> First name:
+          <span class="details">{{ profileDetails.firstName }}</span>
+        </div>
+        <div class="profile-details">
+          <mat-icon>person</mat-icon> Last name: <span class="details">{{ profileDetails.lastName }}</span>
+        </div>
+        <div class="profile-details">
+          <mat-icon>email</mat-icon> Email: <span class="details">{{ profileDetails.email }}</span>
+        </div>
+        <div class="profile-details">
+          <mat-icon>phone</mat-icon> Phone number:
+          <span class="details">{{ profileDetails.phoneNumber }}</span>
+        </div>
+      </mat-card-content>
+      <mat-card-actions>
+        <button class="edit-btn" mat-raised-button color="primary" (click)="toggleEditMode()">
+          Edit
+        </button>
+      </mat-card-actions>
+    </mat-card>
+  </ng-container>
+
+  <ng-container *ngIf="isEditMode">
+    <form class="profile" [formGroup]="form" (ngSubmit)="saveProfileHandler()">
+      <h2>Update Profile</h2>
+      <mat-card class="example-card">
+        <img mat-card-image src="/assets/images/profile.png" alt="user photo" />
+      </mat-card>
+      <br />
+      <mat-form-field>
+        <mat-label>email</mat-label>
+        <input type="email" matInput formControlName="email" required/>
+        <mat-error *ngIf="form.get('email')?.hasError('required')"
+          >Email is required</mat-error
+        >
+        <mat-error *ngIf="form.get('email')?.hasError('email')"
+          >Invalid email format</mat-error
+        >
+      </mat-form-field>
+
+      <mat-form-field>
+        <mat-label>Phone number</mat-label>
+        <input matInput formControlName="phoneNumber" />
+      </mat-form-field>
+
+      <mat-form-field>
+        <mat-label>First name</mat-label>
+        <input type="text" matInput formControlName="firstName" />
+      </mat-form-field>
+
+      <mat-form-field>
+        <mat-label>Last name</mat-label>
+        <input type="text" matInput formControlName="lastName" />
+      </mat-form-field>
+
+      <button mat-raised-button color="primary" (click)="cancelEditHandler()">
+        Cancel
+      </button>
+      <button type="submit" class="save-btn" mat-raised-button color="accent">
+        Save
+      </button>
+      <hr>
+      <mat-error *ngIf="form?.hasError('userExists')"
+        >Email is already taken</mat-error
+      >
+    </form>
+  </ng-container>
+</div>
