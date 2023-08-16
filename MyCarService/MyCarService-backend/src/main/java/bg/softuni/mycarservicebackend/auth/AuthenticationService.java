@@ -47,14 +47,15 @@ public class AuthenticationService {
         UserRoleEntity role = userRoleRepository.findByRole(UserRoleEnum.USER);
         List<UserRoleEntity> userRoles = List.of(role);
 
-        var email = userRepository.findByEmail(request.getEmail());
-        if (email.isPresent()) {
+        var existingUser = userRepository.findByEmail(request.getEmail());
+        if (existingUser.isPresent()) {
             throw new RuntimeException();
         }
 
         UserEntity user = UserEntity.builder()
                 .firstName(request.getFirstName())
                 .lastName(request.getLastName())
+                .phoneNumber(request.getPhoneNumber())
                 .email(request.getEmail())
                 .password(passwordEncoder.encode(request.getPassword()))
                 .roles(userRoles)
