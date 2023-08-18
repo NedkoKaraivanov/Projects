@@ -1,5 +1,4 @@
 import { Injectable, OnDestroy } from '@angular/core';
-import axios from 'axios';
 import { User } from '../types/user';
 import { BehaviorSubject, Observable, Subscription, tap } from 'rxjs';
 import { HttpClient } from '@angular/common/http';

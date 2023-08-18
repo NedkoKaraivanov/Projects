@@ -3,6 +3,8 @@ import { RouterModule, Routes } from '@angular/router';
 import { LoginComponent } from './login/login.component';
 import { RegisterComponent } from './register/register.component';
 import { ProfileComponent } from './profile/profile.component';
+import { AddVehicleComponent } from './add-vehicle/add-vehicle.component';
+import { CheckVehiclesComponent } from './check-vehicles/check-vehicles.component';
 
 const routes: Routes = [
   {
@@ -20,6 +22,14 @@ const routes: Routes = [
     component: ProfileComponent,
     // canActivate: [AuthActivate],
   },
+  {
+    path: 'add-vehicle',
+    component: AddVehicleComponent,
+  },
+  {
+    path: 'check-vehicles',
+    component: CheckVehiclesComponent,
+  }
 ];
 
 @NgModule({

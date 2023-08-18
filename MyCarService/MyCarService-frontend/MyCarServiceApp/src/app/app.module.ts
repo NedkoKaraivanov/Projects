@@ -13,6 +13,7 @@ import { WelcomeComponent } from './welcome/welcome.component';
 import { HttpClientModule } from '@angular/common/http';
 import { AuthenticateComponent } from './authenticate/authenticate.component';
 import { jwtInterceptorProvider } from './jwt.interceptor';
+import { ToastrModule } from 'ngx-toastr';
 
 @NgModule({
   declarations: [
@@ -29,6 +30,14 @@ import { jwtInterceptorProvider } from './jwt.interceptor';
     MaterialModule,
     HttpClientModule,
     UserModule,
+    ToastrModule.forRoot({
+      timeOut: 1500,
+      progressBar: true,
+      progressAnimation: 'increasing',
+      preventDuplicates: true,
+      positionClass: 'toast-top-center',
+      closeButton: true,
+    }),
     AppRoutingModule,
   ],
   providers: [jwtInterceptorProvider],

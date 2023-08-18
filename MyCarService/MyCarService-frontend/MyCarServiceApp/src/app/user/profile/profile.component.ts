@@ -2,6 +2,7 @@ import { Component, OnInit } from '@angular/core';
 import { UserService } from '../user.service';
 import { FormBuilder, Validators } from '@angular/forms';
 import { Router } from '@angular/router';
+import { ToastrService } from 'ngx-toastr';
 
 interface Profile {
   email: string;
@@ -16,7 +17,12 @@ interface Profile {
   styleUrls: ['./profile.component.css'],
 })
 export class ProfileComponent implements OnInit {
-  constructor(private userService: UserService, private fb: FormBuilder, private router: Router) {}
+  constructor(
+    private userService: UserService,
+    private fb: FormBuilder,
+    private router: Router,
+    private toastr: ToastrService
+  ) {}
 
   isEditMode: boolean = false;
 
@@ -39,24 +45,23 @@ export class ProfileComponent implements OnInit {
     let phoneNumber = '';
     let firstName = '';
     let lastName = '';
-    
-    this.userService.getProfile()
-    .subscribe({
+
+    this.userService.getProfile().subscribe({
       next: (profile) => {
-       email = profile.email;
-       phoneNumber = profile.phoneNumber;
-       firstName = profile.firstName;
-       lastName = profile.lastName
-       this.profileDetails = {
-         email,
-         phoneNumber,
-         firstName,
-         lastName,
-       };
-       console.log(this.profileDetails);
-       this.form.setValue(this.profileDetails);
+        email = profile.email;
+        phoneNumber = profile.phoneNumber;
+        firstName = profile.firstName;
+        lastName = profile.lastName;
+        this.profileDetails = {
+          email,
+          phoneNumber,
+          firstName,
+          lastName,
+        };
+        console.log(this.profileDetails);
+        this.form.setValue(this.profileDetails);
       },
-    })
+    });
     console.log(this.form.value);
   }
 
@@ -79,15 +84,16 @@ export class ProfileComponent implements OnInit {
 
     this.userService.updateProfile(this.form.value).subscribe({
       next: () => {
+        this.toastr.success('Profile updated', 'Success')
         console.log(this.form.value);
         this.toggleEditMode();
       },
       error: (err) => {
         if (err.status === 409) {
-           console.log(this.form.value);
+          console.log(this.form.value);
           this.form.setErrors({ userExists: true });
         }
-      }
+      },
     });
   }
 }

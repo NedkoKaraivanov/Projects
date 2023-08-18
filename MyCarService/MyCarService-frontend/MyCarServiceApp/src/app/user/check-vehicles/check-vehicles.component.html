@@ -1,0 +1,42 @@
+<h2>Your Vehicles:</h2>
+<ng-container *ngIf="!isVehicles">
+  <h3>No vehicles added yet</h3>
+  <button mat-raised-button color="primary" routerLink="/add-vehicle">
+    Add vehicle
+  </button>
+</ng-container>
+<ng-container *ngIf="isVehicles">
+  <table mat-table [dataSource]="dataSource" class="mat-elevation-z8">
+    <ng-container matColumnDef="position">
+      <th mat-header-cell *matHeaderCellDef mat-sort-header>Num.</th>
+      <td mat-cell *matCellDef="let element; let i = index">{{ i + 1 }}</td>
+    </ng-container>
+
+    <ng-container matColumnDef="brand">
+      <th mat-header-cell *matHeaderCellDef>Brand</th>
+      <td mat-cell *matCellDef="let vehicle">{{ vehicle.brand }}</td>
+    </ng-container>
+
+    <ng-container matColumnDef="model">
+      <th mat-header-cell *matHeaderCellDef>Model</th>
+      <td mat-cell *matCellDef="let vehicle">
+        {{ vehicle.model }}
+      </td>
+    </ng-container>
+
+    <ng-container matColumnDef="actions">
+      <th mat-header-cell *matHeaderCellDef>Actions</th>
+      <td mat-cell *matCellDef="let vehicle">
+        <button
+          mat-raised-button
+          color="accent"
+        >
+          Update Vehicle
+        </button>
+      </td>
+    </ng-container>
+
+    <tr mat-header-row *matHeaderRowDef="displayedColumns"></tr>
+    <tr mat-row *matRowDef="let row; columns: displayedColumns"></tr>
+  </table>
+</ng-container>
