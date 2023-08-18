@@ -42,9 +42,9 @@ public class UserEntity extends BaseEntity {
     )
     private List<UserRoleEntity> roles;
 
-    @OneToMany(targetEntity = VehicleEntity.class)
+    @OneToMany(targetEntity = VehicleEntity.class, fetch = FetchType.EAGER, cascade = CascadeType.ALL)
     private List<VehicleEntity> vehicles;
 
-    @OneToMany(targetEntity = BookingEntity.class)
+    @OneToMany(targetEntity = BookingEntity.class, fetch = FetchType.EAGER)
     private List<BookingEntity> bookings;
 }

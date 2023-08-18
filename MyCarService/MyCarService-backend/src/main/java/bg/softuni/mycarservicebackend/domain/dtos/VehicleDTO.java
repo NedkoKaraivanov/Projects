@@ -13,8 +13,6 @@ public class VehicleDTO {
 
     private Long id;
 
-    private UserDTO user;
-
     private String brand;
 
     private String model;

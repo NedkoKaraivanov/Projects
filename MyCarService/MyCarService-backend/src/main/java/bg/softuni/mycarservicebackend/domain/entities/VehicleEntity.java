@@ -1,9 +1,6 @@
 package bg.softuni.mycarservicebackend.domain.entities;
 
-import jakarta.persistence.Column;
-import jakarta.persistence.Entity;
-import jakarta.persistence.OneToOne;
-import jakarta.persistence.Table;
+import jakarta.persistence.*;
 import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Data;
@@ -17,7 +14,7 @@ import lombok.NoArgsConstructor;
 @AllArgsConstructor
 public class VehicleEntity extends BaseEntity {
 
-    @OneToOne
+    @ManyToOne
     private UserEntity user;
 
     @Column
