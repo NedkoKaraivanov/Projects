@@ -19,7 +19,6 @@ export class CheckVehiclesComponent implements OnInit {
   ngOnInit(): void {
     this.vehicleService.getUserVehicles().subscribe({
       next: (vehicles) => {
-        console.log(vehicles);
         if (vehicles.length) {
           this.isVehicles = true;
           this.dataSource = vehicles;
@@ -29,5 +28,9 @@ export class CheckVehiclesComponent implements OnInit {
         console.log(err);
       },
     });
+  }
+
+  updateVehicle(id: number) {
+    this.router.navigate([`/update-vehicle/${id}`])
   }
 }

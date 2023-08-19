@@ -5,6 +5,8 @@ import { RegisterComponent } from './register/register.component';
 import { ProfileComponent } from './profile/profile.component';
 import { AddVehicleComponent } from './add-vehicle/add-vehicle.component';
 import { CheckVehiclesComponent } from './check-vehicles/check-vehicles.component';
+import { UpdateVehicleComponent } from './update-vehicle/update-vehicle.component';
+import { AddBookingComponent } from './add-booking/add-booking.component';
 
 const routes: Routes = [
   {
@@ -29,6 +31,14 @@ const routes: Routes = [
   {
     path: 'check-vehicles',
     component: CheckVehiclesComponent,
+  },
+  {
+    path: 'update-vehicle/:id',
+    component: UpdateVehicleComponent,
+  },
+  {
+    path: 'add-booking',
+    component: AddBookingComponent,
   }
 ];
 

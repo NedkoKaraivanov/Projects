@@ -1,0 +1,54 @@
+<div class="container">
+  <form class="form" [formGroup]="form">
+    <h2>Update Vehicle Details</h2>
+    <mat-form-field>
+      <mat-label>Select car brand</mat-label>
+      <mat-select
+        [(value)]="selectedBrand"
+        (valueChange)="onBrandChange($event)"
+        formControlName="brand"
+        required
+      >
+        <mat-option>None</mat-option>
+        <mat-option *ngFor="let brand of brands" [value]="brand">{{
+          brand
+        }}</mat-option>
+      </mat-select>
+      <mat-error *ngIf="form.get('brand')?.hasError('required')"
+        >Brand is required</mat-error
+      >
+    </mat-form-field>
+
+    <mat-form-field>
+      <mat-label>Select car model</mat-label>
+      <mat-select [(value)]="selectedModel" formControlName="model" required>
+        <mat-option>None</mat-option>
+        <mat-option
+          *ngFor="let model of models[selectedBrand]"
+          [value]="model"
+          >{{ model }}</mat-option
+        >
+      </mat-select>
+      <mat-error *ngIf="form.get('model')?.hasError('required')"
+        >Model is required</mat-error
+      >
+    </mat-form-field>
+    <div class="actions">
+      <button mat-raised-button color="primary" (click)="editVehicle()">
+        Edit Vehicle
+      </button>
+      <button
+        mat-raised-button
+        color="primary"
+        type="submit"
+        [disabled]="this.form.invalid"
+        (click)="updateVehicle()"
+      >
+        Update Vehicle
+      </button>
+      <button mat-raised-button color="accent" (click)="deleteVehicle()">
+        Delete Vehicle
+      </button>
+    </div>
+  </form>
+</div>

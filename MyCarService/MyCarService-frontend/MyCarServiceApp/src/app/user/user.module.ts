@@ -9,6 +9,9 @@ import { MaterialModule } from '../material/material.module';
 import { SharedModule } from '../shared/shared.module';
 import { AddVehicleComponent } from './add-vehicle/add-vehicle.component';
 import { CheckVehiclesComponent } from './check-vehicles/check-vehicles.component';
+import { UpdateVehicleComponent } from './update-vehicle/update-vehicle.component';
+import { AddBookingComponent } from './add-booking/add-booking.component';
+import { CheckBookingsComponent } from './check-bookings/check-bookings.component';
 
 @NgModule({
   declarations: [
@@ -16,7 +19,10 @@ import { CheckVehiclesComponent } from './check-vehicles/check-vehicles.componen
     RegisterComponent,
     ProfileComponent,
     AddVehicleComponent,
-    CheckVehiclesComponent
+    CheckVehiclesComponent,
+    UpdateVehicleComponent,
+    AddBookingComponent,
+    CheckBookingsComponent
   ],
   imports: [
     CommonModule, UserRoutingModule, FormsModule, MaterialModule, ReactiveFormsModule, SharedModule

@@ -14,13 +14,14 @@ import { HttpClientModule } from '@angular/common/http';
 import { AuthenticateComponent } from './authenticate/authenticate.component';
 import { jwtInterceptorProvider } from './jwt.interceptor';
 import { ToastrModule } from 'ngx-toastr';
+import { MAT_DATE_LOCALE } from '@angular/material/core';
 
 @NgModule({
   declarations: [
     AppComponent,
     HomeComponent,
     WelcomeComponent,
-    AuthenticateComponent
+    AuthenticateComponent,
   ],
   imports: [
     BrowserModule,
@@ -40,7 +41,10 @@ import { ToastrModule } from 'ngx-toastr';
     }),
     AppRoutingModule,
   ],
-  providers: [jwtInterceptorProvider],
-  bootstrap: [AppComponent]
+  providers: [
+    jwtInterceptorProvider,
+    { provide: MAT_DATE_LOCALE, useValue: 'en-GB' },
+  ],
+  bootstrap: [AppComponent],
 })
-export class AppModule { }
+export class AppModule {}

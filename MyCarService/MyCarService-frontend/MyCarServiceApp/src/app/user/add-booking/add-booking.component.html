@@ -1,0 +1,95 @@
+<h2>Make a Booking</h2>
+
+<ng-container *ngIf="!isVehicles">
+  <h3>In order to make a Booking you must add Vehicle first</h3>
+  <button mat-raised-button color="primary" routerLink="/add-vehicle">
+    Add vehicle
+  </button>
+</ng-container>
+<ng-container *ngIf="isVehicles">
+  <div class="container">
+    <form class="form" [formGroup]="form" (ngSubmit)="addBooking()">
+      <mat-form-field>
+        <mat-label>Select Vehicle</mat-label>
+        <mat-select
+          [(value)]="selectedVehicle"
+          formControlName="vehicle"
+          required
+        >
+          <mat-option>None</mat-option>
+          <mat-option *ngFor="let vehicle of vehicles" [value]="vehicle"
+            >{{ vehicle.brand }} {{ vehicle.model }}</mat-option
+          >
+        </mat-select>
+        <mat-error *ngIf="form.get('vehicle')?.hasError('required')"
+          >Vehicle is required</mat-error
+        >
+      </mat-form-field>
+
+      <mat-form-field>
+        <mat-label>Choose a date</mat-label>
+        <input
+          formControlName="bookingDate"
+          matInput
+          [matDatepicker]="picker"
+          [min]="minDate"
+          required
+        />
+        <mat-hint>DD/MM/YYYY</mat-hint>
+        <mat-datepicker-toggle
+          matIconSuffix
+          [for]="picker"
+        ></mat-datepicker-toggle>
+        <mat-datepicker #picker>
+          <mat-datepicker-actions>
+            <button mat-button matDatepickerCancel>Cancel</button>
+            <button mat-raised-button color="primary" matDatepickerApply>
+              Apply
+            </button>
+          </mat-datepicker-actions>
+        </mat-datepicker>
+        <mat-error *ngIf="form.get('bookingDate')?.hasError('required')"
+          >Please pick up a date</mat-error
+        >
+      </mat-form-field>
+
+      <mat-form-field>
+        <mat-label>Select Service Type</mat-label>
+        <mat-select
+          [(value)]="selectedServiceType"
+          formControlName="serviceType"
+          required
+        >
+          <mat-option>None</mat-option>
+          <mat-option *ngFor="let service of serviceTypes" [value]="service">{{
+            service
+          }}</mat-option>
+        </mat-select>
+        <mat-error *ngIf="form.get('serviceType')?.hasError('required')"
+          >Please choose a Service Type</mat-error
+        >
+      </mat-form-field>
+
+      <mat-form-field>
+        <mat-label>Leave a comment</mat-label>
+        <textarea
+          matInput
+          formControlName="description"
+          placeholder="Ex. description..."
+        ></textarea>
+      </mat-form-field>
+
+      <div class="actions">
+        <button
+          mat-raised-button
+          color="primary"
+          type="submit"
+          [disabled]="this.form.invalid"
+        >
+          Make a Booking
+        </button>
+        <button mat-raised-button color="accent">Back to home</button>
+      </div>
+    </form>
+  </div>
+</ng-container>
