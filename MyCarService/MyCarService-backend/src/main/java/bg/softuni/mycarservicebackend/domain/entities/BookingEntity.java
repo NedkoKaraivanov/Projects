@@ -1,5 +1,6 @@
 package bg.softuni.mycarservicebackend.domain.entities;
 
+import bg.softuni.mycarservicebackend.domain.enums.ServiceTypeEnum;
 import jakarta.persistence.*;
 import lombok.AllArgsConstructor;
 import lombok.Builder;
@@ -19,7 +20,7 @@ public class BookingEntity extends BaseEntity{
     @ManyToOne()
     private UserEntity user;
 
-    @OneToOne()
+    @ManyToOne()
     private VehicleEntity vehicle;
 
     @Column
@@ -31,6 +32,12 @@ public class BookingEntity extends BaseEntity{
     @Column
     private String description;
 
-    @OneToOne()
-    private ProcedureInfoEntity serviceInfo;
+    @Enumerated(EnumType.STRING)
+    private ServiceTypeEnum serviceType;
+
+    @Column
+    private Double price;
+
+    @Column
+    private Boolean isReady = false;
 }

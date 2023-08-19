@@ -8,6 +8,7 @@ import bg.softuni.mycarservicebackend.domain.entities.VehicleEntity;
 import bg.softuni.mycarservicebackend.repositories.UserRepository;
 import bg.softuni.mycarservicebackend.repositories.VehicleRepository;
 import lombok.RequiredArgsConstructor;
+import org.modelmapper.ModelMapper;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Service;
@@ -26,6 +27,8 @@ import java.util.stream.Stream;
 public class VehicleService {
 
     private final UserRepository userRepository;
+
+    private final ModelMapper modelMapper;
 
     private final VehicleRepository vehicleRepository;
     public VehicleDTO addVehicle(Principal principal, VehicleDTO vehicleDTO) {
@@ -49,13 +52,25 @@ public class VehicleService {
     }
 
 
-    public void deleteVehicle(Principal principal, Long id) {
-        vehicleRepository.deleteById(id);
+    public void deleteVehicle(Principal principal,Long id) {
+        VehicleEntity vehicleEntity = vehicleRepository.findById(id).get();
+        UserEntity userEntity = vehicleEntity.getUser();
+        userEntity.getVehicles().remove(vehicleEntity);
+        userRepository.save(userEntity);
+        vehicleRepository.delete(vehicleEntity);
     }
 
     public VehicleDTO getVehicle(Long id) {
-        VehicleEntity vehicleEntity = vehicleRepository.findById(id).get();
-            return createVehicleDTO(vehicleEntity);
+        Optional<VehicleEntity> vehicleEntity = vehicleRepository.findById(id);
+        return vehicleEntity.map(this::createVehicleDTO).orElse(null);
+    }
+
+    public VehicleDTO updateVehicle(Principal principal, VehicleDTO vehicleDTO) {
+        VehicleEntity vehicleEntity = vehicleRepository.findById(vehicleDTO.getId()).get();
+        vehicleEntity.setBrand(vehicleDTO.getBrand());
+        vehicleEntity.setModel(vehicleDTO.getModel());
+        this.vehicleRepository.save(vehicleEntity);
+        return createVehicleDTO(vehicleEntity);
     }
 
     public VehicleDTO createVehicleDTO(VehicleEntity vehicle) {
@@ -65,4 +80,6 @@ public class VehicleService {
                 .model(vehicle.getModel())
                 .build();
     }
+
+
 }

@@ -6,6 +6,7 @@ import lombok.Builder;
 import lombok.Data;
 import lombok.NoArgsConstructor;
 
+import java.util.ArrayList;
 import java.util.List;
 
 @Entity
@@ -43,8 +44,8 @@ public class UserEntity extends BaseEntity {
     private List<UserRoleEntity> roles;
 
     @OneToMany(targetEntity = VehicleEntity.class, fetch = FetchType.EAGER, cascade = CascadeType.ALL)
-    private List<VehicleEntity> vehicles;
+    private List<VehicleEntity> vehicles = new ArrayList<>();
 
     @OneToMany(targetEntity = BookingEntity.class, fetch = FetchType.EAGER)
-    private List<BookingEntity> bookings;
+    private List<BookingEntity> bookings = new ArrayList<>();
 }
