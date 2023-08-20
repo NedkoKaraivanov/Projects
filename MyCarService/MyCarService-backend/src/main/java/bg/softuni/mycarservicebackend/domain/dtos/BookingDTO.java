@@ -23,4 +23,5 @@ public class BookingDTO {
     private String serviceType;
     private Double price;
     private Boolean isReady;
+    private Boolean isConfirmed;
 }

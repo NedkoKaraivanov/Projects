@@ -65,10 +65,12 @@ public class AuthenticationService {
         UserDetails userDetails = applicationUserDetailsService.loadUserByUsername(request.getEmail());
         String jwtToken = jwtService.generateToken(userDetails);
         String refreshToken = jwtService.generateRefreshToken(userDetails);
+        var roles = user.getRoles().stream().map((r) -> String.valueOf(r.getId())).collect(Collectors.toList());
         saveUserToken(savedUser, jwtToken);
         return AuthenticationResponse.builder()
                 .accessToken(jwtToken)
                 .refreshToken(refreshToken)
+                .roles(roles)
                 .build();
     }
 

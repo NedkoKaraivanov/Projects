@@ -46,6 +46,6 @@ public class UserEntity extends BaseEntity {
     @OneToMany(targetEntity = VehicleEntity.class, fetch = FetchType.EAGER, cascade = CascadeType.ALL)
     private List<VehicleEntity> vehicles = new ArrayList<>();
 
-    @OneToMany(targetEntity = BookingEntity.class, fetch = FetchType.EAGER)
+    @OneToMany(targetEntity = BookingEntity.class, fetch = FetchType.EAGER, cascade = CascadeType.ALL)
     private List<BookingEntity> bookings = new ArrayList<>();
 }

@@ -40,4 +40,7 @@ public class BookingEntity extends BaseEntity{
 
     @Column
     private Boolean isReady = false;
+
+    @Column
+    private Boolean isConfirmed = false;
 }

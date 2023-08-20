@@ -1,6 +1,7 @@
 package bg.softuni.mycarservicebackend.services;
 
 import bg.softuni.mycarservicebackend.domain.dtos.BookingDTO;
+import bg.softuni.mycarservicebackend.domain.dtos.UserDTO;
 import bg.softuni.mycarservicebackend.domain.dtos.VehicleDTO;
 import bg.softuni.mycarservicebackend.domain.entities.BookingEntity;
 import bg.softuni.mycarservicebackend.domain.entities.UserEntity;
@@ -11,10 +12,10 @@ import bg.softuni.mycarservicebackend.repositories.UserRepository;
 import bg.softuni.mycarservicebackend.repositories.VehicleRepository;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
-
 import java.security.Principal;
-import java.time.LocalDate;
-import java.time.format.DateTimeFormatter;
+import java.util.List;
+import java.util.Optional;
+import java.util.stream.Collectors;
 
 @Service
 @RequiredArgsConstructor
@@ -22,11 +23,24 @@ public class BookingService {
 
     private final UserRepository userRepository;
 
+    private final UserService userService;
+
     private final BookingRepository bookingRepository;
 
     private final VehicleRepository vehicleRepository;
 
     private final VehicleService vehicleService;
+
+    public List<BookingDTO> getUserBookings(Principal principal) {
+        UserEntity userEntity = this.userRepository.findByEmail(principal.getName()).get();
+        List<BookingEntity> userBookings = this.bookingRepository.findAllByUser(userEntity);
+        return userBookings.stream().map(this::createBookingDTO).collect(Collectors.toList());
+    }
+
+    public List<BookingDTO> getAllBookings() {
+        List<BookingEntity> allBookings = this.bookingRepository.findAll();
+        return allBookings.stream().map(this::createBookingDTO).collect(Collectors.toList());
+    }
     public BookingDTO createBooking(Principal principal, BookingDTO bookingDTO) {
         UserEntity userEntity = userRepository.findByEmail(principal.getName()).get();
         Long vehicleId = bookingDTO.getVehicle().getId();
@@ -43,6 +57,44 @@ public class BookingService {
         return createBookingDTO(this.bookingRepository.save(bookingEntity));
     }
 
+    public BookingDTO getBooking(Long id) {
+        BookingEntity bookingEntity = bookingRepository.findById(id).get();
+        VehicleEntity vehicleEntity = bookingEntity.getVehicle();
+        UserEntity userEntity = bookingEntity.getUser();
+        VehicleDTO vehicleDTO = this.vehicleService.createVehicleDTO(vehicleEntity);
+        UserDTO userDTO = this.userService.createUserDTO(userEntity);
+        return BookingDTO.builder()
+                .id(bookingEntity.getId())
+                .user(userDTO)
+                .vehicle(vehicleDTO)
+                .bookDate(bookingEntity.getBookDate())
+                .finishDate(bookingEntity.getFinishDate())
+                .isConfirmed(bookingEntity.getIsConfirmed())
+                .isReady(bookingEntity.getIsReady())
+                .price(bookingEntity.getPrice())
+                .description(bookingEntity.getDescription())
+                .serviceType(String.valueOf(bookingEntity.getServiceType()))
+                .build();
+    }
+
+    public BookingDTO updateBooking(Long id, BookingDTO bookingDTO) {
+        BookingEntity bookingEntity = bookingRepository.findById(id).get();
+        bookingEntity.setPrice(bookingEntity.getPrice());
+        bookingEntity.setIsReady(bookingDTO.getIsReady());
+        bookingEntity.setIsConfirmed(bookingDTO.getIsConfirmed());
+        this.bookingRepository.save(bookingEntity);
+        return createBookingDTO(bookingEntity);
+    }
+
+    public void deleteBooking(Long id) {
+        BookingEntity bookingEntity = this.bookingRepository.findById(id).get();
+        Long userId = bookingEntity.getUser().getId();
+        UserEntity userEntity = this.userRepository.findById(userId).get();
+        userEntity.getBookings().remove(bookingEntity);
+        this.userRepository.save(userEntity);
+        this.bookingRepository.delete(bookingEntity);
+    }
+
     private ServiceTypeEnum getServiceType(String serviceType) {
 
         return switch (serviceType) {
@@ -56,14 +108,19 @@ public class BookingService {
 
     public BookingDTO createBookingDTO(BookingEntity bookingEntity) {
         VehicleDTO vehicleDTO = vehicleService.createVehicleDTO(bookingEntity.getVehicle());
+        UserEntity userEntity = bookingEntity.getUser();
+        UserDTO userDTO = this.userService.createUserDTO(userEntity);
         return BookingDTO.builder()
                 .id(bookingEntity.getId())
+                .user(userDTO)
                 .vehicle(vehicleDTO)
                 .bookDate(bookingEntity.getBookDate())
                 .finishDate(bookingEntity.getFinishDate())
                 .serviceType(String.valueOf(bookingEntity.getServiceType()))
                 .price(bookingEntity.getPrice())
                 .description(bookingEntity.getDescription())
+                .isReady(bookingEntity.getIsReady())
+                .isConfirmed(bookingEntity.getIsConfirmed())
                 .build();
     }
 }
