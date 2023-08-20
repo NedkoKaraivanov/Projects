@@ -7,39 +7,61 @@ import { AddVehicleComponent } from './add-vehicle/add-vehicle.component';
 import { CheckVehiclesComponent } from './check-vehicles/check-vehicles.component';
 import { UpdateVehicleComponent } from './update-vehicle/update-vehicle.component';
 import { AddBookingComponent } from './add-booking/add-booking.component';
+import { CheckBookingsComponent } from './check-bookings/check-bookings.component';
+import { AnonymousActivate } from '../core/guards/anonymous.activate';
+import { UserActivate } from '../core/guards/user.activate';
+import { ServicesPageComponent } from '../services-page/services-page.component';
+import { AboutPageComponent } from '../about-page/about-page.component';
 
 const routes: Routes = [
   {
     path: 'login',
     component: LoginComponent,
-    // canActivate: [AuthActivate],
+    canActivate: [AnonymousActivate],
   },
   {
     path: 'register',
     component: RegisterComponent,
-    // canActivate: [AuthActivate],
+    canActivate: [AnonymousActivate],
   },
   {
     path: 'profile',
     component: ProfileComponent,
-    // canActivate: [AuthActivate],
+    canActivate: [UserActivate],
+  },
+  {
+    path: 'services',
+    component: ServicesPageComponent,
+  },
+  {
+    path: 'about',
+    component: AboutPageComponent,
   },
   {
     path: 'add-vehicle',
     component: AddVehicleComponent,
+    canActivate: [UserActivate],
   },
   {
     path: 'check-vehicles',
     component: CheckVehiclesComponent,
+    canActivate: [UserActivate],
   },
   {
     path: 'update-vehicle/:id',
     component: UpdateVehicleComponent,
+    canActivate: [UserActivate],
   },
   {
     path: 'add-booking',
     component: AddBookingComponent,
-  }
+    canActivate: [UserActivate],
+  },
+  {
+    path: 'check-bookings',
+    component: CheckBookingsComponent,
+    canActivate: [UserActivate],
+  },
 ];
 
 @NgModule({

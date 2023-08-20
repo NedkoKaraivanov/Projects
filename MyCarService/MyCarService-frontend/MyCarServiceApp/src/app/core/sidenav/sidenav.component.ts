@@ -13,4 +13,7 @@ export class SidenavComponent {
     return this.userService.isLogged;
   }
 
+  get isAdminIn(): boolean {
+    return this.userService.isAdmin;
+  }
 }

@@ -1,0 +1,56 @@
+<div id="grid-container">
+  <h3 class="info-msg">We offer a wide variety of services such as</h3>
+  <mat-grid-list cols="4" rowHeight="250px" gutterSize="10px">
+    <mat-grid-tile
+      class="tile"
+      class="first-tile"
+      colspan="4"
+      rowspan="1"
+      [ngStyle]="{ backgroundImage: 'url(' + image1 + ')' }"
+    >
+      <mat-grid-tile-header>Diagnostics</mat-grid-tile-header>
+      <mat-grid-tile-footer
+        >We have the latest and most advanced automotive diagnostic equipment.
+        Our team undergoes annual training to keep up with the latest
+        innovations</mat-grid-tile-footer
+      >
+    </mat-grid-tile>
+    <mat-grid-tile
+      class="tile"
+      class="second-tile"
+      colspan="4"
+      rowspan="1"
+      [ngStyle]="{ backgroundImage: 'url(' + image2 + ')' }"
+      ><mat-grid-tile-header>Oil change</mat-grid-tile-header>
+      <mat-grid-tile-footer>
+        Lorem ipsum dolor sit amet consectetur adipisicing elit. A porro vel veritatis laudantium amet voluptatibus voluptatum cumque magni ad dicta?
+      </mat-grid-tile-footer></mat-grid-tile
+    >
+    <mat-grid-tile
+      class="tile"
+      class="third-tile"
+      colspan="4"
+      rowspan="1"
+      [ngStyle]="{ backgroundImage: 'url(' + image3 + ')' }"
+      ><mat-grid-tile-header
+        >Suspension work</mat-grid-tile-header
+      >
+      <mat-grid-tile-footer>
+        Lorem ipsum dolor sit amet consectetur adipisicing elit. A porro vel veritatis laudantium amet voluptatibus voluptatum cumque magni ad dicta?
+      </mat-grid-tile-footer>
+      </mat-grid-tile
+    >
+    <mat-grid-tile
+      class="tile"
+      class="fourth-tile"
+      colspan="4"
+      rowspan="1"
+      [ngStyle]="{ backgroundImage: 'url(' + image4 + ')' }"
+      ><mat-grid-tile-header>Tire change</mat-grid-tile-header>
+      <mat-grid-tile-footer>
+        Lorem ipsum dolor sit amet consectetur adipisicing elit. A porro vel veritatis laudantium amet voluptatibus voluptatum cumque magni ad dicta?
+      </mat-grid-tile-footer>
+      </mat-grid-tile
+    >
+  </mat-grid-list>
+</div>

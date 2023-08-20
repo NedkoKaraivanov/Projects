@@ -60,13 +60,19 @@ export class AddBookingComponent implements OnInit {
   addBooking() {
     this.bookingService.addBooking(this.form.value).subscribe({
       next: (response) => {
-        console.log(this.form.value);
-        console.log(response);
+        this.form.reset();
         this.toastr.success('You have made a booking', 'success');
+        this.form.controls.vehicle.setErrors(null);
+        this.form.controls.bookingDate.setErrors(null);
+        this.form.controls.serviceType.setErrors(null);
       },
       error: (err) => {
         console.log(err);
       },
     });
+  }
+
+  backToHome() {
+    this.router.navigate(['/']);
   }
 }

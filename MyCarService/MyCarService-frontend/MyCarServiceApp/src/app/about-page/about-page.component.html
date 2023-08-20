@@ -1,0 +1,19 @@
+<div id="grid-container">
+      <h3 class="info-msg">About us</h3>
+  <mat-grid-list cols="4" rowHeight="200px" gutterSize="10px">
+    <mat-grid-tile
+      class="tile"
+      class="first-tile"
+      colspan="4"
+      rowspan="2"
+      [ngStyle]="{ backgroundImage: 'url(' + image1 + ')' }"
+    >
+      <mat-grid-tile-header>Diagnostics</mat-grid-tile-header>
+      <mat-grid-tile-footer
+        >We have the latest and most advanced automotive diagnostic equipment.
+        Our team undergoes annual training to keep up with the latest
+        innovations</mat-grid-tile-footer
+      >
+    </mat-grid-tile>
+  </mat-grid-list>
+</div>

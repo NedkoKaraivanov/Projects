@@ -26,9 +26,6 @@ export class UpdateVehicleComponent implements OnInit {
     this.id = this.route.snapshot.params['id'];
     this.vehicleService.getVehicle(Number(this.id)).subscribe({
       next: (vehicle) => {
-        console.log(this.id);
-
-        console.log(vehicle);
         this.vehicle = vehicle;
         this.selectedBrand = vehicle.brand;
         this.selectedModel = vehicle.model;

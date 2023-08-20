@@ -44,6 +44,7 @@ export class AddVehicleComponent {
 
   onBrandChange($event: Event): void {
     this.selectedModel = '';
+    this.form.controls.model.setErrors(null);
   }
   
   cancelAddVehicleHandler() {

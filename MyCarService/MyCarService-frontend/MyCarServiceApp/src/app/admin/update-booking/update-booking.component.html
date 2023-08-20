@@ -1,0 +1,42 @@
+<div class="container">
+  <form class="form" [formGroup]="form">
+    <h2>Update Booking Details</h2>
+    <mat-form-field>
+      <mat-label>Confirm Booking Date</mat-label>
+      <mat-select [(value)]="selectedIsConfirmed" formControlName="isConfirmed">
+        <mat-option>None</mat-option>
+        <mat-option [value]="true">Confirm Booking</mat-option>
+        <mat-option [value]="false">Reject Booking</mat-option>
+      </mat-select>
+    </mat-form-field>
+    <mat-form-field>
+      <mat-label>Set Ready Status</mat-label>
+      <mat-select [(value)]="selectedIsReady" formControlName="isReady">
+        <mat-option>None</mat-option>
+        <mat-option [value]="true">Ready</mat-option>
+        <mat-option [value]="false">Still not ready</mat-option>
+      </mat-select>
+    </mat-form-field>
+    <div class="price-input">
+      <mat-form-field floatLabel="always">
+        <mat-label>Set Price</mat-label>
+        <input matInput [value]="existingPrice" type="number" class="right-align" placeholder="0" />
+        <span matTextPrefix>$&nbsp;</span>
+        <span matTextSuffix>.00</span>
+      </mat-form-field>
+    </div>
+    <div class="actions">
+      <button mat-raised-button color="primary" (click)="editBooking()">
+        Edit Booking
+      </button>
+      <button
+        mat-raised-button
+        color="primary"
+        (click)="updateBooking()"
+      >
+        Update Booking
+      </button>
+      <button mat-raised-button color="accent" (click)="deleteBooking()">Delete Booking</button>
+    </div>
+  </form>
+</div>

@@ -15,6 +15,10 @@ import { AuthenticateComponent } from './authenticate/authenticate.component';
 import { jwtInterceptorProvider } from './jwt.interceptor';
 import { ToastrModule } from 'ngx-toastr';
 import { MAT_DATE_LOCALE } from '@angular/material/core';
+import { AdminModule } from './admin/admin.module';
+import { NotFoundComponent } from './not-found/not-found.component';
+import { ServicesPageComponent } from './services-page/services-page.component';
+import { AboutPageComponent } from './about-page/about-page.component';
 
 @NgModule({
   declarations: [
@@ -22,6 +26,9 @@ import { MAT_DATE_LOCALE } from '@angular/material/core';
     HomeComponent,
     WelcomeComponent,
     AuthenticateComponent,
+    NotFoundComponent,
+    ServicesPageComponent,
+    AboutPageComponent,
   ],
   imports: [
     BrowserModule,
@@ -31,6 +38,7 @@ import { MAT_DATE_LOCALE } from '@angular/material/core';
     MaterialModule,
     HttpClientModule,
     UserModule,
+    AdminModule,
     ToastrModule.forRoot({
       timeOut: 1500,
       progressBar: true,

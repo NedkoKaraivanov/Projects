@@ -21,6 +21,14 @@ export class UserService implements OnDestroy {
     return !!this.user;
   }
 
+  get isAnonymous(): boolean {
+    return !!this.user ? false : true;
+  }
+
+  get isAdmin(): boolean {
+    return !!this.user?.roles.includes('2');
+  }
+
   subscription: Subscription;
 
   constructor(private http: HttpClient) {

@@ -6,11 +6,15 @@ import { Booking } from '../types/booking';
   providedIn: 'root',
 })
 export class BookingService {
-  addBookingUrl: string = 'http://localhost:8080/api/users/bookings';
+  apiUrl: string = 'http://localhost:8080/api/users/bookings';
 
   constructor(private http: HttpClient) {}
 
   addBooking(formValue: {}) {
-    return this.http.post<Booking>(this.addBookingUrl, formValue);
+    return this.http.post<Booking>(this.apiUrl, formValue);
+  }
+
+  getUserBookings() {
+    return this.http.get<Booking[]>(this.apiUrl);
   }
 }

@@ -6,11 +6,12 @@ import {
   HttpInterceptor,
   HTTP_INTERCEPTORS
 } from '@angular/common/http';
-import { Observable } from 'rxjs';
+import { Observable, catchError } from 'rxjs';
+import { Router } from '@angular/router';
 
 @Injectable()
 export class JwtInterceptor implements HttpInterceptor {
-  constructor() {}
+  constructor(private router: Router) {}
 
   intercept(
     request: HttpRequest<any>,
@@ -27,7 +28,6 @@ export class JwtInterceptor implements HttpInterceptor {
       });
       return next.handle(clonedRequest);
     }
-
     return next.handle(request);
   }
 }

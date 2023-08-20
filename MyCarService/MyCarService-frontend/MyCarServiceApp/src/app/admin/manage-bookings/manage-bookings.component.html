@@ -1,9 +1,7 @@
-<h2>Your Bookings</h2>
+<h2>Manage All Bookings</h2>
 <ng-container *ngIf="!isBookings">
-  <h3>You haven't made any Bookings yet</h3>
-  <button mat-raised-button color="primary" routerLink="/add-booking">
-    Make a Booking
-  </button>
+  <h3>Booking List Is Empty</h3>
+  <button mat-raised-button color="primary" routerLink="/">Back to Home</button>
 </ng-container>
 <ng-container *ngIf="isBookings">
   <table mat-table [dataSource]="dataSource" class="mat-elevation-z8">
@@ -24,17 +22,31 @@
       </td>
     </ng-container>
 
+    <ng-container matColumnDef="client">
+      <th mat-header-cell *matHeaderCellDef>Client</th>
+      <td mat-cell *matCellDef="let booking">
+        {{ booking.user.email }}
+      </td>
+    </ng-container>
+
+        <ng-container matColumnDef="service-type">
+      <th mat-header-cell *matHeaderCellDef>Service Type</th>
+      <td mat-cell *matCellDef="let booking">
+        {{ getServiceType(booking.serviceType) }}
+      </td>
+    </ng-container>
+
     <ng-container matColumnDef="confirmed">
       <th mat-header-cell *matHeaderCellDef>Booking status</th>
       <td mat-cell *matCellDef="let booking">
-        {{ booking.isConfirmed ? 'Yes' : 'Pending'}}
+        {{ booking.isConfirmed ? "Yes" : "Pending" }}
       </td>
     </ng-container>
 
     <ng-container matColumnDef="status">
       <th mat-header-cell *matHeaderCellDef>Vehicle status</th>
       <td mat-cell *matCellDef="let booking">
-        {{ booking.isReady ? 'Ready' : ''}}
+        {{ booking.isReady ? "Ready" : "" }}
       </td>
     </ng-container>
 
@@ -45,12 +57,14 @@
       </td>
     </ng-container>
 
-    <!-- <ng-container matColumnDef="actions">
+    <ng-container matColumnDef="actions">
       <th mat-header-cell *matHeaderCellDef>Actions</th>
       <td mat-cell *matCellDef="let booking">
-        <button mat-raised-button color="accent">Update Booking</button>
+        <button mat-raised-button color="accent" (click)="updateBooking(booking.id)">
+          Update Booking
+        </button>
       </td>
-    </ng-container> -->
+    </ng-container>
 
     <tr mat-header-row *matHeaderRowDef="displayedColumns"></tr>
     <tr mat-row *matRowDef="let row; columns: displayedColumns"></tr>

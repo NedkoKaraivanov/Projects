@@ -1,0 +1,18 @@
+.info-msg {
+  box-sizing: border-box;
+  padding: 5px 10px;
+  text-align: center;
+}
+
+mat-grid-tile {
+  border: 2px solid #ffffff;
+  border-radius: 6px;
+  background-size: cover;
+  background-repeat: no-repeat;
+  background-position: center center;
+  border-radius: 10px;
+}
+
+#grid-container {
+    width: 600px;
+}
