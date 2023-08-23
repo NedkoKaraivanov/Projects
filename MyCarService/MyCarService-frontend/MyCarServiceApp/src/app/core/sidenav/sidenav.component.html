@@ -1,5 +1,5 @@
 <mat-sidenav-container class="sidenav-container">
-  <mat-sidenav #sidenav class="sidenav" mode="side">
+  <mat-sidenav #sidenav class="sidenav" mode="side" >
     <ng-container *ngIf="!isAdminIn">
       <a mat-button routerLink="/add-vehicle">Add Vehicle</a>
       <a mat-button routerLink="/check-vehicles">Check Vehicles</a>
@@ -11,12 +11,12 @@
       <a mat-button routerLink="/manage-bookings">Manage Bookings</a>
     </ng-container>
   </mat-sidenav>
-  <section class="sidenav-content">
-    <button id="toggle-btn" mat-button (click)="sidenav.toggle()" *ngIf="isLoggedIn">
+  <mat-sidenav-content class="sidenav-content">
+    <button id="toggle-btn" mat-button (click)="sidenav.toggle()"  *ngIf="isLoggedIn">
       <span class="menu-link" *ngIf="!sidenav.opened" ><mat-icon>menu</mat-icon>Menu</span>
       <span *ngIf="sidenav.opened"><mat-icon>close</mat-icon></span>
     </button>
     <router-outlet>
     </router-outlet>
-  </section>
+  </mat-sidenav-content>
 </mat-sidenav-container>

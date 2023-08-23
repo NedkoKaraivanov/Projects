@@ -1,5 +1,6 @@
 import { Component, OnInit } from '@angular/core';
 import { Router } from '@angular/router';
+import { SidenavService } from 'src/app/sidenav.service';
 import { UserService } from 'src/app/user/user.service';
 
 @Component({
@@ -8,7 +9,7 @@ import { UserService } from 'src/app/user/user.service';
   styleUrls: ['./header.component.css'],
 })
 export class HeaderComponent {
-  constructor(private userService: UserService, private router: Router) {}
+  constructor(private userService: UserService, private router: Router, private sidenavService: SidenavService) {}
 
   get isLoggedIn(): boolean {
     return this.userService.isLogged;
@@ -20,6 +21,7 @@ export class HeaderComponent {
         localStorage.setItem('access_token', '');
         localStorage.setItem('refresh_token', '');
         localStorage.setItem('roles', '');
+        this.sidenavService.close(); 
         this.router.navigate(['/']);
       },
       error: () => {
@@ -27,5 +29,4 @@ export class HeaderComponent {
       },
     });
   }
-
 }

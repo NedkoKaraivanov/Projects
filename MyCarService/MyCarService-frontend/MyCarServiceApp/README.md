@@ -40,8 +40,10 @@ To run this project locally, you need to have Angular v16, Node.js, JS installed
     - You can use them in order to explore the application
 * You also can register new normal user in the application
 
-* Normal user can:
+* Anonymous user can:
   * `Register`, `Login`
+  
+* Normal user can:
   * Update its profile
   * Add, Edit or Delete the information for it's vehicle
   * Add, Edit or Delete booking for it's vehicle

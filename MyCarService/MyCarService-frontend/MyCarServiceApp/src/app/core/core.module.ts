@@ -6,7 +6,6 @@ import { FooterComponent } from './footer/footer.component';
 import { SidenavComponent } from './sidenav/sidenav.component';
 import { RouterModule } from '@angular/router';
 
-
 @NgModule({
   declarations: [
     HeaderComponent,
