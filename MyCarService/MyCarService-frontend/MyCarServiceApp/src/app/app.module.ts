@@ -1,6 +1,5 @@
 import { NgModule } from '@angular/core';
 import { BrowserModule } from '@angular/platform-browser';
-
 import { AppRoutingModule } from './app-routing.module';
 import { AppComponent } from './app.component';
 import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
@@ -14,11 +13,11 @@ import { HttpClientModule } from '@angular/common/http';
 import { AuthenticateComponent } from './authenticate/authenticate.component';
 import { jwtInterceptorProvider } from './jwt.interceptor';
 import { ToastrModule } from 'ngx-toastr';
-import { MAT_DATE_LOCALE } from '@angular/material/core';
 import { AdminModule } from './admin/admin.module';
 import { NotFoundComponent } from './not-found/not-found.component';
 import { ServicesPageComponent } from './services-page/services-page.component';
 import { AboutPageComponent } from './about-page/about-page.component';
+import { MAT_MOMENT_DATE_ADAPTER_OPTIONS } from '@angular/material-moment-adapter';
 
 @NgModule({
   declarations: [
@@ -51,8 +50,9 @@ import { AboutPageComponent } from './about-page/about-page.component';
   ],
   providers: [
     jwtInterceptorProvider,
-    { provide: MAT_DATE_LOCALE, useValue: 'en-GB' },
+    { provide: MAT_MOMENT_DATE_ADAPTER_OPTIONS, useValue: { strict: true } },
   ],
   bootstrap: [AppComponent],
 })
 export class AppModule {}
+

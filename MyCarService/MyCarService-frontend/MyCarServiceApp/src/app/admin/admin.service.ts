@@ -6,10 +6,10 @@ import { Booking } from '../types/booking';
   providedIn: 'root',
 })
 export class AdminService {
-  getAllBookingsUrl = 'http://localhost:8080/api/users/all-bookings';
-  getBookingUrl = 'http://localhost:8080/api/users/bookings';
-  updateBookingUrl = 'http://localhost:8080/api/users/bookings';
-  deleteBookingUrl = 'http://localhost:8080/api/users/bookings';
+  getAllBookingsUrl = 'http://localhost:8080/api/admin/all-bookings';
+  getBookingUrl = 'http://localhost:8080/api/admin/bookings';
+  updateBookingUrl = 'http://localhost:8080/api/admin/bookings';
+  deleteBookingUrl = 'http://localhost:8080/api/admin/bookings';
 
   constructor(private http: HttpClient) {}
 

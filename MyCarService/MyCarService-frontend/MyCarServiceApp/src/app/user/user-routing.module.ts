@@ -12,6 +12,7 @@ import { AnonymousActivate } from '../core/guards/anonymous.activate';
 import { UserActivate } from '../core/guards/user.activate';
 import { ServicesPageComponent } from '../services-page/services-page.component';
 import { AboutPageComponent } from '../about-page/about-page.component';
+import { UpdateUserBookingComponent } from './update-user-booking/update-user-booking.component';
 
 const routes: Routes = [
   {
@@ -60,6 +61,11 @@ const routes: Routes = [
   {
     path: 'check-bookings',
     component: CheckBookingsComponent,
+    canActivate: [UserActivate],
+  },
+  {
+    path: 'update-user-booking/:id',
+    component: UpdateUserBookingComponent,
     canActivate: [UserActivate],
   },
 ];

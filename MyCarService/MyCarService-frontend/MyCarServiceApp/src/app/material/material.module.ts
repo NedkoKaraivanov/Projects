@@ -11,7 +11,9 @@ import { MatSelectModule} from '@angular/material/select';
 import { MatTableModule } from '@angular/material/table';
 import { MatDatepickerModule } from '@angular/material/datepicker';
 import { MatNativeDateModule } from '@angular/material/core';
-
+import {
+  MatMomentDateModule,
+} from '@angular/material-moment-adapter';
 
 const material = [
   MatButtonModule,
@@ -25,6 +27,7 @@ const material = [
   MatSelectModule,
   MatTableModule,
   MatDatepickerModule,
+  MatMomentDateModule,
   MatNativeDateModule,
 ];
 

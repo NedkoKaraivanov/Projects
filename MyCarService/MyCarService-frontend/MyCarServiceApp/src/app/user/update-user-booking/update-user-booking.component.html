@@ -1,0 +1,79 @@
+<div class="container">
+  <form class="form" [formGroup]="form">
+    <h2>Update Booking Details</h2>
+    <mat-form-field>
+      <mat-label>Update Vehicle</mat-label>
+      <mat-select [(value)]="selectedVehicle" formControlName="vehicle" required>
+        <mat-option [value]="selectedVehicle">{{ selectedVehicle?.brand }} {{ selectedVehicle?.model }}</mat-option>
+        <mat-option *ngFor="let vehicle of vehicles" [value]="vehicle"
+          >{{ vehicle?.brand }} {{ vehicle?.model }}</mat-option
+        >
+      </mat-select>
+      <mat-error *ngIf="form.get('vehicle')?.hasError('required')"
+        >Vehicle is required</mat-error
+      >
+    </mat-form-field>
+    <mat-form-field>
+      <mat-label>Update Booking Date</mat-label>
+      <input
+        [(ngModel)]="selectedBookingDate"
+        formControlName="bookingDate"
+        matInput
+        [matDatepicker]="picker"
+        [min]="minDate"
+        required
+      />
+      <mat-hint>DD/MM/YYYY</mat-hint>
+      <mat-datepicker-toggle
+        matIconSuffix
+        [for]="picker"
+      ></mat-datepicker-toggle>
+      <mat-datepicker #picker>
+        <mat-datepicker-actions>
+          <button mat-button matDatepickerCancel>Cancel</button>
+          <button mat-raised-button color="primary" matDatepickerApply>
+            Apply
+          </button>
+        </mat-datepicker-actions>
+      </mat-datepicker>
+      <mat-error *ngIf="form.get('bookingDate')?.hasError('required')"
+        >Please pick up a date</mat-error
+      >
+    </mat-form-field>
+    <mat-form-field>
+      <mat-label>Update Service Type</mat-label>
+      <mat-select
+        [(value)]="selectedServiceType"
+        formControlName="serviceType"
+        required
+      >
+        <mat-option>None</mat-option>
+        <mat-option
+          *ngFor="let serviceType of serviceTypes"
+          [value]="serviceType"
+          >{{ serviceType }}</mat-option
+        >
+      </mat-select>
+      <mat-error *ngIf="form.get('serviceType')?.hasError('required')"
+        >Please choose a Service Type</mat-error
+      >
+    </mat-form-field>
+    <mat-form-field>
+      <mat-label>Update comment</mat-label>
+      <textarea
+       [(ngModel)]="selectedDescription"
+        matInput
+        formControlName="description"
+        > {{selectedDescription}} </textarea
+      >
+    </mat-form-field>
+    <div class="actions">
+      <button mat-raised-button color="primary" (click)="editBooking()">
+        Edit Booking
+      </button>
+      <button mat-raised-button color="primary" (click)="updateBooking()">Update Booking</button>
+      <button mat-raised-button color="accent" (click)="deleteBooking()">Delete Booking</button>
+    </div>
+  </form>
+</div>
+

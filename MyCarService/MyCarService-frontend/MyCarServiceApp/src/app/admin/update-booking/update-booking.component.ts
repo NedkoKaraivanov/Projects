@@ -2,7 +2,6 @@ import { Component, OnInit } from '@angular/core';
 import { FormBuilder } from '@angular/forms';
 import { Router, ActivatedRoute } from '@angular/router';
 import { ToastrService } from 'ngx-toastr';
-import { VehicleService } from 'src/app/user/vehicle.service';
 import { AdminService } from '../admin.service';
 import { Booking } from 'src/app/types/booking';
 
@@ -34,7 +33,6 @@ export class UpdateBookingComponent implements OnInit {
         this.selectedIsConfirmed = booking.isConfirmed;
         this.selectedIsReady = booking.isReady;
         this.existingPrice = booking.price;
-        console.log(booking);
         this.booking = booking;
       },
       error: (err) => {

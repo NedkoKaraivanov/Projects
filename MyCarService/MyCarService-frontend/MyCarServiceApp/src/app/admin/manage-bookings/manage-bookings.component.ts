@@ -3,8 +3,6 @@ import { FormBuilder } from '@angular/forms';
 import { Router } from '@angular/router';
 import { ToastrService } from 'ngx-toastr';
 import { Booking } from 'src/app/types/booking';
-import { BookingService } from 'src/app/user/booking.service';
-import { VehicleService } from 'src/app/user/vehicle.service';
 import { AdminService } from '../admin.service';
 
 @Component({
@@ -26,6 +24,7 @@ export class ManageBookingsComponent implements OnInit {
     'brand',
     'model',
     'client',
+    'bookingDate',
     'service-type',
     'confirmed',
     'status',
@@ -38,7 +37,6 @@ export class ManageBookingsComponent implements OnInit {
     this.adminService.getAllBookings().subscribe({
       next: (bookings) => {
         if (bookings.length > 0) {
-          console.log(bookings);
           this.dataSource = bookings;
           this.isBookings = true;
         }

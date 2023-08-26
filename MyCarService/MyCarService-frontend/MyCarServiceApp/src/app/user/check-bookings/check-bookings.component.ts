@@ -1,10 +1,7 @@
 import { Component, OnInit } from '@angular/core';
-import { FormBuilder } from '@angular/forms';
 import { Router } from '@angular/router';
 import { ToastrService } from 'ngx-toastr';
 import { BookingService } from '../booking.service';
-import { VehicleService } from '../vehicle.service';
-import { Vehicle } from 'src/app/types/vehicle';
 import { Booking } from 'src/app/types/booking';
 
 @Component({
@@ -12,36 +9,46 @@ import { Booking } from 'src/app/types/booking';
   templateUrl: './check-bookings.component.html',
   styleUrls: ['./check-bookings.component.css'],
 })
-export class CheckBookingsComponent implements OnInit{
+export class CheckBookingsComponent implements OnInit {
   constructor(
     private bookingService: BookingService,
-    private vehicleService: VehicleService,
     private router: Router,
-    private fb: FormBuilder,
     private toastr: ToastrService
   ) {}
-  
-  isBookings: boolean | undefined;
-  displayedColumns: string[] = ['position', 'brand', 'model', 'confirmed', 'status', 'price'];
-  dataSource: Booking[] = [];
-  
 
+  isBookings: boolean | undefined;
+  displayedColumns: string[] = [
+    'position',
+    'brand',
+    'model',
+    'serviceType',
+    'bookingDate',
+    'confirmed',
+    'status',
+    'price',
+    'actions',
+  ];
+  dataSource: Booking[] = [];
 
   ngOnInit(): void {
-    this.bookingService.getUserBookings()
-    .subscribe({
+    this.bookingService.getUserBookings().subscribe({
       next: (bookings) => {
         if (bookings.length > 0) {
-          console.log(bookings);
-          
           this.dataSource = bookings;
           this.isBookings = true;
-        } 
-      }, 
+        }
+      },
       error: (err) => {
         console.log(err);
-      }
-    })
-  
+      },
+    });
+  }
+
+  getServiceType(serviceType: string): string {
+    return this.bookingService.getServiceType(serviceType);
+  }
+
+  updateBooking(id: number) {
+    this.router.navigate([`/update-user-booking/${id}`]);
   }
 }

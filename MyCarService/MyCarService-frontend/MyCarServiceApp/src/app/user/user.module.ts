@@ -12,6 +12,7 @@ import { CheckVehiclesComponent } from './check-vehicles/check-vehicles.componen
 import { UpdateVehicleComponent } from './update-vehicle/update-vehicle.component';
 import { AddBookingComponent } from './add-booking/add-booking.component';
 import { CheckBookingsComponent } from './check-bookings/check-bookings.component';
+import { UpdateUserBookingComponent } from './update-user-booking/update-user-booking.component';
 
 @NgModule({
   declarations: [
@@ -22,7 +23,8 @@ import { CheckBookingsComponent } from './check-bookings/check-bookings.componen
     CheckVehiclesComponent,
     UpdateVehicleComponent,
     AddBookingComponent,
-    CheckBookingsComponent
+    CheckBookingsComponent,
+    UpdateUserBookingComponent
   ],
   imports: [
     CommonModule, UserRoutingModule, FormsModule, MaterialModule, ReactiveFormsModule, SharedModule

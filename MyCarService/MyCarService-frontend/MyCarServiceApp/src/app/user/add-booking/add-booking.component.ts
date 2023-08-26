@@ -1,10 +1,12 @@
-import { Component, OnInit } from '@angular/core';
+import { Component, OnInit, ViewChild } from '@angular/core';
 import { FormBuilder, Validators } from '@angular/forms';
 import { Router } from '@angular/router';
 import { ToastrService } from 'ngx-toastr';
 import { Vehicle } from 'src/app/types/vehicle';
 import { BookingService } from '../booking.service';
 import { VehicleService } from '../vehicle.service';
+import * as moment from 'moment';
+import { MatDatepickerInput } from '@angular/material/datepicker';
 
 @Component({
   selector: 'app-add-booking',
@@ -12,6 +14,8 @@ import { VehicleService } from '../vehicle.service';
   styleUrls: ['./add-booking.component.css'],
 })
 export class AddBookingComponent implements OnInit {
+  @ViewChild(MatDatepickerInput) datepickerInput: MatDatepickerInput<Date> | undefined;
+
   constructor(
     private bookingService: BookingService,
     private vehicleService: VehicleService,
@@ -42,7 +46,6 @@ export class AddBookingComponent implements OnInit {
   ngOnInit(): void {
     this.vehicleService.getUserVehicles().subscribe({
       next: (vehicles) => {
-        console.log(vehicles);
         if (vehicles.length === 0) {
           this.isVehicles = false;
           this.form.disable();
@@ -60,6 +63,8 @@ export class AddBookingComponent implements OnInit {
   addBooking() {
     this.bookingService.addBooking(this.form.value).subscribe({
       next: (response) => {
+        console.log(this.datepickerInput?.value);
+        
         this.form.reset();
         this.toastr.success('You have made a booking', 'success');
         this.form.controls.vehicle.setErrors(null);
