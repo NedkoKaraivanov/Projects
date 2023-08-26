@@ -11,8 +11,10 @@ import bg.softuni.mycarservicebackend.repositories.BookingRepository;
 import bg.softuni.mycarservicebackend.repositories.UserRepository;
 import bg.softuni.mycarservicebackend.repositories.VehicleRepository;
 import lombok.RequiredArgsConstructor;
+import org.modelmapper.ModelMapper;
 import org.springframework.stereotype.Service;
 import java.security.Principal;
+import java.time.LocalDate;
 import java.util.List;
 import java.util.Optional;
 import java.util.stream.Collectors;
@@ -22,6 +24,8 @@ import java.util.stream.Collectors;
 public class BookingService {
 
     private final UserRepository userRepository;
+
+    private final ModelMapper modelMapper;
 
     private final UserService userService;
 
@@ -49,7 +53,7 @@ public class BookingService {
         BookingEntity bookingEntity = BookingEntity.builder()
                 .user(userEntity)
                 .vehicle(vehicleEntity)
-                .bookDate(bookingDTO.getBookDate())
+                .bookingDate(bookingDTO.getBookingDate())
                 .description(bookingDTO.getDescription())
                 .serviceType(getServiceType(bookingDTO.getServiceType()))
                 .build();
@@ -67,7 +71,7 @@ public class BookingService {
                 .id(bookingEntity.getId())
                 .user(userDTO)
                 .vehicle(vehicleDTO)
-                .bookDate(bookingEntity.getBookDate())
+                .bookingDate(bookingEntity.getBookingDate())
                 .finishDate(bookingEntity.getFinishDate())
                 .isConfirmed(bookingEntity.getIsConfirmed())
                 .isReady(bookingEntity.getIsReady())
@@ -79,7 +83,18 @@ public class BookingService {
 
     public BookingDTO updateBooking(Long id, BookingDTO bookingDTO) {
         BookingEntity bookingEntity = bookingRepository.findById(id).get();
-        bookingEntity.setPrice(bookingEntity.getPrice());
+        VehicleEntity vehicleEntity = this.vehicleRepository.findById(bookingDTO.getVehicle().getId()).get();
+        bookingEntity.setVehicle(vehicleEntity);
+        bookingEntity.setBookingDate(bookingDTO.getBookingDate());
+        bookingEntity.setServiceType(getServiceType(bookingDTO.getServiceType()));
+        bookingEntity.setDescription(bookingDTO.getDescription());
+        this.bookingRepository.save(bookingEntity);
+        return createBookingDTO(bookingEntity);
+    }
+
+    public BookingDTO updateAdminBooking(Long id, BookingDTO bookingDTO) {
+        BookingEntity bookingEntity = bookingRepository.findById(id).get();
+        bookingEntity.setPrice(bookingDTO.getPrice());
         bookingEntity.setIsReady(bookingDTO.getIsReady());
         bookingEntity.setIsConfirmed(bookingDTO.getIsConfirmed());
         this.bookingRepository.save(bookingEntity);
@@ -114,7 +129,7 @@ public class BookingService {
                 .id(bookingEntity.getId())
                 .user(userDTO)
                 .vehicle(vehicleDTO)
-                .bookDate(bookingEntity.getBookDate())
+                .bookingDate(bookingEntity.getBookingDate())
                 .finishDate(bookingEntity.getFinishDate())
                 .serviceType(String.valueOf(bookingEntity.getServiceType()))
                 .price(bookingEntity.getPrice())

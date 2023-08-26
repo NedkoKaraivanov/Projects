@@ -8,6 +8,8 @@ import lombok.Data;
 import lombok.NoArgsConstructor;
 
 import java.time.LocalDate;
+import java.time.LocalDateTime;
+import java.time.ZonedDateTime;
 
 @Entity
 @Table(name = "bookings")
@@ -24,10 +26,10 @@ public class BookingEntity extends BaseEntity{
     private VehicleEntity vehicle;
 
     @Column
-    private LocalDate bookDate;
+    private String bookingDate;
 
     @Column
-    private LocalDate finishDate;
+    private String finishDate;
 
     @Column
     private String description;

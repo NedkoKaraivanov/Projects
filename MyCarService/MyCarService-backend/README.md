@@ -27,9 +27,13 @@ To run this project locally, you need to have Angular v16, Node.js, JS installed
   * Backend:
     * Open `MyCarService-backend` in your IDE
     * Edit the `application.yml` file in the src/main/resources folder and change the username and password for your MySQL connection
+    * `Important` there is CORS configuration, in order to make requests follow these steps:
+      1. Navigate to src\main\java\bg\softuni\mycarservicebackend\config
+      1. In the `SecurityConfiguration` class, find the CorsConfigurationSource Bean,
+      1. Add to the configuration your domain name, ex. `configuration.setAllowedOrigins(List.of("http://example.com"));`
     * Run the application from your IDE
     * Backend (RestApi) will be started at `http://localhost:8080/`
-  * Frontend:
+    * Frontend:
     * Open `MyCarServiceApp` in you IDE
     * In the terminal run `npm install` to install all dependencies
     * Then run `ng serve` to start the application
@@ -43,8 +47,10 @@ To run this project locally, you need to have Angular v16, Node.js, JS installed
     - You can use them in order to explore the application
 * You also can register new normal user in the application
 
-* Normal user can:
+* Anonymous user can:
   * `Register`, `Login`
+  
+* Normal user can:
   * Update its profile
   * Add, Edit or Delete the information for it's vehicle
   * Add, Edit or Delete booking for it's vehicle

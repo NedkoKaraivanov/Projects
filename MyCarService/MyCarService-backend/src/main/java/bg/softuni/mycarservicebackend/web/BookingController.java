@@ -35,12 +35,6 @@ public class BookingController {
         return ResponseEntity.ok(bookingService.getBooking(id));
     }
 
-    @GetMapping("/all-bookings")
-    public ResponseEntity<List<BookingDTO>> getAllBookings() {
-        List<BookingDTO> allBookings = bookingService.getAllBookings();
-        return ResponseEntity.ok(allBookings);
-    }
-
     @PostMapping("/bookings")
     public ResponseEntity<BookingDTO> createBooking(Principal principal, @RequestBody BookingDTO bookingDTO) {
         BookingDTO bookingDtoCreated = this.bookingService.createBooking(principal, bookingDTO);
