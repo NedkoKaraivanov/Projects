@@ -20,7 +20,8 @@
     <div class="price-input">
       <mat-form-field floatLabel="always">
         <mat-label>Set Price</mat-label>
-        <input matInput [value]="existingPrice" type="number" class="right-align" placeholder="0" />
+        <input matInput [value]="existingPrice" type="number" formControlName="price" class="right-align" placeholder="0" />
+        
         <span matTextPrefix>$&nbsp;</span>
         <span matTextSuffix>.00</span>
       </mat-form-field>

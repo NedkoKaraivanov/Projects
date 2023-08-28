@@ -15,7 +15,7 @@ export class UpdateBookingComponent implements OnInit {
   booking: Booking | undefined;
   selectedIsConfirmed: boolean | undefined;
   selectedIsReady: boolean | undefined;
-  existingPrice: Number | undefined;
+  existingPrice: number | null | undefined;
 
   constructor(
     private adminService: AdminService,
@@ -44,14 +44,16 @@ export class UpdateBookingComponent implements OnInit {
   form = this.fb.group({
     isReady: [''],
     isConfirmed: [''],
-    price: [''],
+    price: [0],
   });
 
   updateBooking() {
-    this.adminService.updateBooking(Number(this.id), this.form.value)
+    this.adminService
+      .updateBooking(Number(this.id), this.form.value)
       .subscribe({
         next: () => {
           this.toastr.success('Booking Updated', 'Success');
+          console.log(this.form.value);
           this.router.navigate(['/manage-bookings']);
         },
         error: (err) => {

@@ -10,6 +10,6 @@ export interface Booking {
     serviceType: string,
     isReady: boolean,
     isConfirmed: boolean,
-    price: Number,
+    price: number,
     description: string,
 }

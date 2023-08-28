@@ -29,11 +29,12 @@ export class LoginComponent {
       next: (response) => {
         localStorage.setItem('access_token', response.access_token);
         localStorage.setItem('refresh_token', response.refresh_token);
-        localStorage.setItem('roles', JSON.stringify(response.roles));   
+        localStorage.setItem('roles', JSON.stringify(response.roles)); 
+        localStorage.setItem('isLogged', 'true');  
         if (response.roles.includes('1')) {
           this.router.navigate(['/home']);
         } else {
-          this.router.navigate(['/manage-bookings'])
+          this.router.navigate(['/manage-bookings']);
         }    
       },
       error: (err) => {

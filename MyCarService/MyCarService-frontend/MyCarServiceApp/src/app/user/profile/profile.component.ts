@@ -58,7 +58,6 @@ export class ProfileComponent implements OnInit {
           firstName,
           lastName,
         };
-        console.log(this.profileDetails);
         this.form.setValue(this.profileDetails);
       },
     });
@@ -84,13 +83,12 @@ export class ProfileComponent implements OnInit {
 
     this.userService.updateProfile(this.form.value).subscribe({
       next: () => {
-        this.toastr.success('Profile updated', 'Success')
-        console.log(this.form.value);
+        this.toastr.success('Profile updated', 'Success');
         this.toggleEditMode();
       },
       error: (err) => {
         if (err.status === 409) {
-          console.log(this.form.value);
+          console.log(err);
           this.form.setErrors({ userExists: true });
         }
       },

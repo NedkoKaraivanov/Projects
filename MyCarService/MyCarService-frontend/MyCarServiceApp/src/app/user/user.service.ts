@@ -18,15 +18,15 @@ export class UserService implements OnDestroy {
   user: User | undefined;
 
   get isLogged(): boolean {
-    return !!this.user;
+    return localStorage.getItem('isLogged') === 'true';
   }
 
   get isAnonymous(): boolean {
-    return !!this.user ? false : true;
+    return localStorage.getItem('isLogged') !== 'true';
   }
 
   get isAdmin(): boolean {
-    return !!this.user?.roles.includes('2');
+    return localStorage.getItem('roles')!.includes('2');
   }
 
   subscription: Subscription;
@@ -52,6 +52,7 @@ export class UserService implements OnDestroy {
   }
 
   logout() {
+    localStorage.setItem('isLogged', '');
     return this.http
       .post<User>(this.logout_url, {})
       .pipe(tap(() => this.user$$.next(undefined)));
