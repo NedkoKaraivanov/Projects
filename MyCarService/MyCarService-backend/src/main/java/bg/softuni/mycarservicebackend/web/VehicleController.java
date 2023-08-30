@@ -9,6 +9,7 @@ import org.springframework.web.bind.annotation.*;
 
 import java.security.Principal;
 import java.util.List;
+import java.util.Objects;
 
 @RestController
 @RequestMapping(value = "/api/users")
@@ -41,7 +42,7 @@ public class VehicleController {
     @GetMapping("/vehicles/{id}")
     public ResponseEntity<VehicleDTO> getVehicle(@PathVariable Long id) {
         VehicleDTO vehicleDTO = vehicleService.getVehicle(id);
-        if (vehicleDTO != null) {
+        if (Objects.nonNull(vehicleDTO)) {
             return ResponseEntity.ok(vehicleDTO);
         }
         return ResponseEntity.status(HttpStatus.NOT_FOUND).build();

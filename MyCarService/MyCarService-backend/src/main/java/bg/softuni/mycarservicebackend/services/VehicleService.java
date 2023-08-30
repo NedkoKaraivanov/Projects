@@ -1,7 +1,5 @@
 package bg.softuni.mycarservicebackend.services;
 
-import bg.softuni.mycarservicebackend.domain.dtos.UserDTO;
-import bg.softuni.mycarservicebackend.domain.dtos.UserRoleDTO;
 import bg.softuni.mycarservicebackend.domain.dtos.VehicleDTO;
 import bg.softuni.mycarservicebackend.domain.entities.UserEntity;
 import bg.softuni.mycarservicebackend.domain.entities.VehicleEntity;
@@ -9,18 +7,12 @@ import bg.softuni.mycarservicebackend.repositories.UserRepository;
 import bg.softuni.mycarservicebackend.repositories.VehicleRepository;
 import lombok.RequiredArgsConstructor;
 import org.modelmapper.ModelMapper;
-import org.springframework.http.HttpStatus;
-import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Service;
-import org.springframework.transaction.annotation.Transactional;
-import org.springframework.web.bind.annotation.ResponseStatus;
 
 import java.security.Principal;
 import java.util.List;
-import java.util.Objects;
 import java.util.Optional;
 import java.util.stream.Collectors;
-import java.util.stream.Stream;
 
 @Service
 @RequiredArgsConstructor

@@ -1,15 +1,10 @@
 package bg.softuni.mycarservicebackend.domain.entities;
-
 import bg.softuni.mycarservicebackend.domain.enums.ServiceTypeEnum;
 import jakarta.persistence.*;
 import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Data;
 import lombok.NoArgsConstructor;
-
-import java.time.LocalDate;
-import java.time.LocalDateTime;
-import java.time.ZonedDateTime;
 
 @Entity
 @Table(name = "bookings")

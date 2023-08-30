@@ -50,7 +50,7 @@ To run this project locally, you need to have Angular v16, Node.js, JS installed
 * Anonymous user can:
   * `Register`, `Login`
   
-* Normal user can:
+* Normal logged-in user can:
   * Update its profile
   * Add, Edit or Delete the information for it's vehicle
   * Add, Edit or Delete booking for it's vehicle
@@ -72,6 +72,11 @@ To run this project locally, you need to have Angular v16, Node.js, JS installed
 ### User Controller
 * GET api/users/profile - retrieve user information
 * PUT api/users/profile - update user information
+### Admin Controller
+* GET api/admin/all-bookings - retrieve all existing bookings
+* GET api/admin/bookings/id - retrieve single booking
+* PUT api/admin/bookings/id - update single booking
+* DELETE api/admin/bookings/id - delete booking
 ### Vehicle Controller
 * GET api/users/vehicles/id - retrieve single vehicle information
 * DELETE api/users/vehicles/id - delete vehicle
@@ -79,11 +84,10 @@ To run this project locally, you need to have Angular v16, Node.js, JS installed
 * POST api/users/vehicles - create new vehicle
 * PUT api/users/vehicles - update vehicle information
 ### Booking Controller
-* GET api/users/bookings - retrieve all users bookings
+* GET api/users/bookings - retrieve all logged-in user's bookings
 * POST api/users/bookings - create new booking
 * GET api/users/bookings/id - retrieve single booking
 * PUT api/users/bookings/id - update single booking
-* GET api/users/all-bookings - get all existing bookings
 * DELETE api/users/bookings/id - delete booking
 
 ## License
