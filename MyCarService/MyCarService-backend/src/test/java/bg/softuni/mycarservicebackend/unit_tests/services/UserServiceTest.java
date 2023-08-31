@@ -165,12 +165,10 @@ public class UserServiceTest {
         UserRoleEntity testAdminRole = UserRoleEntity.builder().role(UserRoleEnum.ADMIN).build();
         UserRoleEntity testUserRole = UserRoleEntity.builder().role(UserRoleEnum.USER).build();
 
-
         when(mockUserRoleRepository.findByRole(UserRoleEnum.ADMIN))
                 .thenReturn(testAdminRole);
         when(mockUserRoleRepository.findByRole(UserRoleEnum.USER))
                 .thenReturn(testUserRole);
-
 
         UserEntity testAdminEntity = UserEntity.builder()
                 .email(EXISTING_EMAIL)

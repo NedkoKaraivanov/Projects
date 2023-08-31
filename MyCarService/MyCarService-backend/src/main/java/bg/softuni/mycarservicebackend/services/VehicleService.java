@@ -6,7 +6,6 @@ import bg.softuni.mycarservicebackend.domain.entities.VehicleEntity;
 import bg.softuni.mycarservicebackend.repositories.UserRepository;
 import bg.softuni.mycarservicebackend.repositories.VehicleRepository;
 import lombok.RequiredArgsConstructor;
-import org.modelmapper.ModelMapper;
 import org.springframework.stereotype.Service;
 
 import java.security.Principal;
@@ -19,8 +18,6 @@ import java.util.stream.Collectors;
 public class VehicleService {
 
     private final UserRepository userRepository;
-
-    private final ModelMapper modelMapper;
 
     private final VehicleRepository vehicleRepository;
     public VehicleDTO addVehicle(Principal principal, VehicleDTO vehicleDTO) {
@@ -44,7 +41,7 @@ public class VehicleService {
     }
 
 
-    public void deleteVehicle(Principal principal,Long id) {
+    public void deleteVehicle(Long id) {
         VehicleEntity vehicleEntity = vehicleRepository.findById(id).get();
         UserEntity userEntity = vehicleEntity.getUser();
         userEntity.getVehicles().remove(vehicleEntity);
@@ -57,7 +54,7 @@ public class VehicleService {
         return vehicleEntity.map(this::createVehicleDTO).orElse(null);
     }
 
-    public VehicleDTO updateVehicle(Principal principal, VehicleDTO vehicleDTO) {
+    public VehicleDTO updateVehicle(VehicleDTO vehicleDTO) {
         VehicleEntity vehicleEntity = vehicleRepository.findById(vehicleDTO.getId()).get();
         vehicleEntity.setBrand(vehicleDTO.getBrand());
         vehicleEntity.setModel(vehicleDTO.getModel());
