@@ -11,12 +11,10 @@ import bg.softuni.mycarservicebackend.repositories.BookingRepository;
 import bg.softuni.mycarservicebackend.repositories.UserRepository;
 import bg.softuni.mycarservicebackend.repositories.VehicleRepository;
 import lombok.RequiredArgsConstructor;
-import org.modelmapper.ModelMapper;
 import org.springframework.stereotype.Service;
+
 import java.security.Principal;
-import java.time.LocalDate;
 import java.util.List;
-import java.util.Optional;
 import java.util.stream.Collectors;
 
 @Service
@@ -24,8 +22,6 @@ import java.util.stream.Collectors;
 public class BookingService {
 
     private final UserRepository userRepository;
-
-    private final ModelMapper modelMapper;
 
     private final UserService userService;
 

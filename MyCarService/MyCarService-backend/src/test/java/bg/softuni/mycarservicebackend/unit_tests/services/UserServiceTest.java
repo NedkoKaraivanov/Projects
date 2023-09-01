@@ -15,11 +15,9 @@ import org.mockito.Mock;
 import org.mockito.Mockito;
 import org.mockito.junit.jupiter.MockitoExtension;
 import org.modelmapper.ModelMapper;
-import org.springframework.security.core.AuthenticatedPrincipal;
 import org.springframework.security.core.userdetails.UsernameNotFoundException;
 import org.springframework.security.crypto.password.PasswordEncoder;
 
-import javax.security.auth.x500.X500Principal;
 import java.security.Principal;
 import java.util.List;
 import java.util.Optional;
@@ -116,14 +114,14 @@ public class UserServiceTest {
                 .roles(List.of(testAdminRole))
                 .build();
 
-        when(mockUserRepository.findByEmail(EXISTING_EMAIL))
-                .thenReturn(Optional.of(testUserEntity));
-
         UserDTO newUserInformation = UserDTO.builder()
                 .email("newAdminEmail")
                 .password("123123").build();
 
-        toTest.updateProfile(principal, newUserInformation);
+        when(mockUserRepository.findByEmail(EXISTING_EMAIL))
+                .thenReturn(Optional.of(testUserEntity));
+
+        UserDTO resultDTO = toTest.updateProfile(principal, newUserInformation);
 
         Assertions.assertNotEquals(testUserEntity.getEmail(), newUserInformation.getEmail());
         Mockito.verify(mockUserRepository).save(any());

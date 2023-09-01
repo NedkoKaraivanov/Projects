@@ -41,7 +41,7 @@ To run this project locally, you need to have Angular v16, Node.js, JS installed
 
 ## Usage
 
-* When you start the backend there will be two user already created in the database:
+* When you start the backend there will be two users already created in the database:
     - Normal User:  email: user@test.com, password:123123
     - Administrator: email admin@test.com, password:123123
     - You can use them in order to explore the application
@@ -62,7 +62,7 @@ To run this project locally, you need to have Angular v16, Node.js, JS installed
 
 ## Authentication
 
-* The server is using Json Web Token for authentication, which is provided on login
+* The server is using Json Web Token for authentication, which is provided on login and register
 
 ## Endpoints
 
