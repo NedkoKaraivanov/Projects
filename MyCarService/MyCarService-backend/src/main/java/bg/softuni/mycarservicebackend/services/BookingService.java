@@ -42,7 +42,7 @@ public class BookingService {
         return allBookings.stream().map(this::createBookingDTO).collect(Collectors.toList());
     }
     public BookingDTO createBooking(Principal principal, BookingDTO bookingDTO) {
-        UserEntity userEntity = userRepository.findByEmail(principal.getName()).get();
+         UserEntity userEntity = userRepository.findByEmail(principal.getName()).get();
         Long vehicleId = bookingDTO.getVehicle().getId();
         VehicleEntity vehicleEntity = vehicleRepository.findById(vehicleId).get();
 
@@ -54,7 +54,9 @@ public class BookingService {
                 .serviceType(getServiceType(bookingDTO.getServiceType()))
                 .build();
 
-        return createBookingDTO(this.bookingRepository.save(bookingEntity));
+        BookingEntity savedBookingEntity = this.bookingRepository.save(bookingEntity);
+
+        return createBookingDTO(savedBookingEntity);
     }
 
     public BookingDTO getBooking(Long id) {

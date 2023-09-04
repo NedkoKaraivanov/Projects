@@ -19,6 +19,8 @@ import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.ExtendWith;
+import org.mockito.ArgumentCaptor;
+import org.mockito.Captor;
 import org.mockito.Mock;
 import org.mockito.Mockito;
 import org.mockito.junit.jupiter.MockitoExtension;
@@ -35,6 +37,18 @@ import static org.mockito.Mockito.when;
 public class BookingServiceTest {
 
     private final String TEST_EMAIL = "user@test.com";
+
+    private final String BRAND_BMW = "BMW";
+
+    private final String BMW_MODEL = "1st-Series";
+
+    private final String BRAND_AUDI = "Audi";
+
+    private final String AUDI_MODEL = "A4";
+
+    private final String TEST_DESCRIPTION = "Some description";
+
+    private final Double TEST_PRICE = 500.00;
     private BookingService toTest;
 
     @Mock
@@ -51,6 +65,9 @@ public class BookingServiceTest {
 
     @Mock
     private VehicleService mockVehicleService;
+
+    @Captor
+    private ArgumentCaptor<BookingEntity> bookingEntityArgumentCaptor;
 
     UserRoleEntity testUserRole;
 
@@ -73,8 +90,8 @@ public class BookingServiceTest {
         testUserRole = UserRoleEntity.builder().role(UserRoleEnum.USER).build();
 
         testVehicleEntity = VehicleEntity.builder()
-                .brand("BMW")
-                .model("1st-Series")
+                .brand(BRAND_BMW)
+                .model(BMW_MODEL)
                 .build();
 
         testUserEntity = UserEntity.builder()
@@ -154,7 +171,134 @@ public class BookingServiceTest {
 
     @Test
     void testCreateBooking() {
-        
+        Principal principal = new TestPrincipal(TEST_EMAIL);
+
+        VehicleDTO vehicleDTO = VehicleDTO.builder()
+                .id(1L)
+                .brand(BRAND_BMW)
+                .model(BMW_MODEL)
+                .build();
+
+        UserDTO userDTO = UserDTO.builder()
+                .id(1L)
+                .email(TEST_EMAIL)
+                .password("123123")
+                .vehicles(List.of(vehicleDTO))
+                .build();
+
+        BookingDTO bookingDTO = BookingDTO.builder()
+                .user(userDTO)
+                .vehicle(vehicleDTO)
+                .isConfirmed(true)
+                .serviceType("DIAGNOSTICS").build();
+
+        BookingEntity bookingToBeSaved = BookingEntity
+                .builder()
+                .user(testUserEntity)
+                .vehicle(testVehicleEntity)
+                .serviceType(ServiceTypeEnum.DIAGNOSTICS)
+                .isConfirmed(true)
+                .build();
+
+        when(mockUserRepository.findByEmail(principal.getName()))
+                .thenReturn(Optional.of(testUserEntity));
+
+        when(mockVehicleRepository.findById(1L))
+                .thenReturn(Optional.of(testVehicleEntity));
+
+        when(mockVehicleService.createVehicleDTO(testVehicleEntity))
+                .thenReturn(vehicleDTO);
+
+        when(mockBookingRepository.save(any()))
+                .thenReturn(bookingToBeSaved);
+
+        toTest.createBooking(principal, bookingDTO);
+
+        Mockito.verify(mockBookingRepository).save(bookingEntityArgumentCaptor.capture());
+
+        BookingEntity actualSavedBooking = bookingEntityArgumentCaptor.getValue();
+
+        Assertions.assertNotNull(actualSavedBooking);
+        Assertions.assertEquals(bookingToBeSaved.getUser().getEmail(), actualSavedBooking.getUser().getEmail());
+        Assertions.assertEquals(bookingToBeSaved.getVehicle().getBrand(), actualSavedBooking.getVehicle().getBrand());
     }
 
+    @Test
+    void testUpdateBooking() {
+        Long bookingId = 1L;
+
+        VehicleDTO vehicleDTO = VehicleDTO.builder()
+                .id(1L)
+                .brand(BRAND_AUDI)
+                .model(AUDI_MODEL)
+                .build();
+
+        UserDTO userDTO = UserDTO.builder()
+                .id(1L)
+                .email(TEST_EMAIL)
+                .password("123123")
+                .vehicles(List.of(vehicleDTO))
+                .build();
+
+        BookingDTO bookingDTO = BookingDTO.builder()
+                .user(userDTO)
+                .vehicle(vehicleDTO)
+                .serviceType("Oil Change")
+                .description(TEST_DESCRIPTION)
+                .build();
+
+        VehicleEntity newTestVehicle = VehicleEntity.builder()
+                .brand(BRAND_AUDI)
+                .model(AUDI_MODEL)
+                .build();
+
+        when(mockBookingRepository.findById(bookingId))
+                .thenReturn(Optional.of(firstBookingEntity));
+
+        when(mockVehicleRepository.findById(bookingDTO.getVehicle().getId()))
+                .thenReturn(Optional.of(newTestVehicle));
+
+        firstBookingEntity.setServiceType(ServiceTypeEnum.OIL_CHANGE);
+        firstBookingEntity.setDescription(bookingDTO.getDescription());
+        firstBookingEntity.setVehicle(newTestVehicle);
+
+        toTest.updateBooking(bookingId, bookingDTO);
+
+        Mockito.verify(mockBookingRepository).save(bookingEntityArgumentCaptor.capture());
+
+        BookingEntity actualSavedBooking = bookingEntityArgumentCaptor.getValue();
+
+        Assertions.assertEquals(bookingDTO.getDescription(), actualSavedBooking.getDescription());
+        Assertions.assertEquals(ServiceTypeEnum.OIL_CHANGE, actualSavedBooking.getServiceType());
+        Assertions.assertEquals(bookingDTO.getVehicle().getBrand(), actualSavedBooking.getVehicle().getBrand());
+        Assertions.assertEquals(bookingDTO.getVehicle().getModel(), actualSavedBooking.getVehicle().getModel());
+    }
+
+    @Test
+    void testUpdateAdminBooking() {
+        Long bookingId = 1L;
+
+        BookingDTO bookingDTO = BookingDTO.builder()
+                .isReady(true)
+                .isConfirmed(true)
+                .price(TEST_PRICE)
+                .build();
+
+        when(mockBookingRepository.findById(bookingId))
+                .thenReturn(Optional.of(firstBookingEntity));
+
+        firstBookingEntity.setIsReady(bookingDTO.getIsReady());
+        firstBookingEntity.setIsConfirmed(bookingDTO.getIsConfirmed());
+        firstBookingEntity.setPrice(bookingDTO.getPrice());
+
+        toTest.updateAdminBooking(bookingId, bookingDTO);
+
+        Mockito.verify(mockBookingRepository).save(bookingEntityArgumentCaptor.capture());
+
+        BookingEntity actualSavedBooking = bookingEntityArgumentCaptor.getValue();
+
+        Assertions.assertTrue(actualSavedBooking.getIsConfirmed());
+        Assertions.assertTrue(actualSavedBooking.getIsReady());
+        Assertions.assertEquals(firstBookingEntity.getPrice(), actualSavedBooking.getPrice());
+    }
 }
