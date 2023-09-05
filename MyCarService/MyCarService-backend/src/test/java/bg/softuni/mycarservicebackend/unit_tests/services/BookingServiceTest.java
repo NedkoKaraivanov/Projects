@@ -26,6 +26,7 @@ import org.mockito.Mockito;
 import org.mockito.junit.jupiter.MockitoExtension;
 
 import java.security.Principal;
+import java.util.ArrayList;
 import java.util.List;
 import java.util.Optional;
 
@@ -49,6 +50,8 @@ public class BookingServiceTest {
     private final String TEST_DESCRIPTION = "Some description";
 
     private final Double TEST_PRICE = 500.00;
+
+    private final String TEST_SERVICE_TYPE_DIAGNOSTICS = "Diagnostics";
     private BookingService toTest;
 
     @Mock
@@ -300,5 +303,39 @@ public class BookingServiceTest {
         Assertions.assertTrue(actualSavedBooking.getIsConfirmed());
         Assertions.assertTrue(actualSavedBooking.getIsReady());
         Assertions.assertEquals(firstBookingEntity.getPrice(), actualSavedBooking.getPrice());
+    }
+
+    @Test
+    void testDeleteBooking() {
+        Long bookingId = 1L;
+
+        UserEntity mockUserEntity = mock(UserEntity.class);
+
+        when(mockBookingRepository.findById(bookingId))
+                .thenReturn(Optional.of(firstBookingEntity));
+
+        Long userId = firstBookingEntity.getUser().getId();
+
+        when(mockUserRepository.findById(userId))
+                .thenReturn(Optional.of(mockUserEntity));
+
+        List<BookingEntity> bookingsList = new ArrayList<>();
+        bookingsList.add(firstBookingEntity);
+
+        when(mockUserEntity.getBookings()).thenReturn(bookingsList);
+
+        toTest.deleteBooking(bookingId);
+
+        Mockito.verify(mockUserRepository).save(any());
+        Mockito.verify(mockBookingRepository).delete(any());
+    }
+
+    @Test
+    void testGetServiceType() {
+
+        ServiceTypeEnum serviceTypeEnum = toTest.getServiceType(TEST_SERVICE_TYPE_DIAGNOSTICS);
+
+        Assertions.assertNotNull(serviceTypeEnum);
+        Assertions.assertEquals(ServiceTypeEnum.DIAGNOSTICS, serviceTypeEnum);
     }
 }

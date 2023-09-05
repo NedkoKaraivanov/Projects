@@ -34,6 +34,8 @@ public class UserServiceTest {
 
     private final String EXISTING_RANDOM_EMAIL = "existingRandomEmail@test.com";
 
+    private final String TEST_PASSWORD = "123123";
+
     private UserService toTest;
 
     @Mock
@@ -75,7 +77,7 @@ public class UserServiceTest {
 
         UserEntity testUserEntity = UserEntity.builder()
                 .email(EXISTING_EMAIL)
-                .password("123123")
+                .password(TEST_PASSWORD)
                 .firstName("adminFirstName")
                 .lastName("adminLastName")
                 .roles(List.of(testAdminRole, testUserRole)).build();
@@ -110,13 +112,13 @@ public class UserServiceTest {
 
         UserEntity testUserEntity = UserEntity.builder()
                 .email(EXISTING_EMAIL)
-                .password("123123")
+                .password(TEST_PASSWORD)
                 .roles(List.of(testAdminRole))
                 .build();
 
         UserDTO newUserInformation = UserDTO.builder()
                 .email("newAdminEmail")
-                .password("123123").build();
+                .password(TEST_PASSWORD).build();
 
         when(mockUserRepository.findByEmail(EXISTING_EMAIL))
                 .thenReturn(Optional.of(testUserEntity));
@@ -134,13 +136,13 @@ public class UserServiceTest {
 
         UserEntity testUserEntity = UserEntity.builder()
                 .email(EXISTING_EMAIL)
-                .password("123123")
+                .password(TEST_PASSWORD)
                 .roles(List.of(testAdminRole))
                 .build();
 
         UserEntity existingRandomUser = UserEntity.builder()
                 .email(EXISTING_RANDOM_EMAIL)
-                .password("123123")
+                .password(TEST_PASSWORD)
                 .roles(List.of(new UserRoleEntity(UserRoleEnum.USER))).build();
 
         when(mockUserRepository.findByEmail(principal.getName()))

@@ -108,7 +108,7 @@ public class BookingService {
         this.bookingRepository.delete(bookingEntity);
     }
 
-    private ServiceTypeEnum getServiceType(String serviceType) {
+    public ServiceTypeEnum getServiceType(String serviceType) {
 
         return switch (serviceType) {
             case "Diagnostics" -> ServiceTypeEnum.DIAGNOSTICS;

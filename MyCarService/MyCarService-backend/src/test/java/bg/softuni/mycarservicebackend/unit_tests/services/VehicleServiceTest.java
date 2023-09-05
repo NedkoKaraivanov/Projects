@@ -29,6 +29,10 @@ public class VehicleServiceTest {
 
     private final String EXISTING_EMAIL = "user@test.com";
 
+    private final String BRAND_BMW = "BMW";
+
+    private final String BMW_MODEL = "1st-Series";
+
     private VehicleService toTest;
     @Mock
     private UserRepository mockUserRepository;
@@ -60,8 +64,8 @@ public class VehicleServiceTest {
         UserRoleEntity testAdminRole = UserRoleEntity.builder().role(UserRoleEnum.ADMIN).build();
 
         VehicleEntity testVehicleEntity = VehicleEntity.builder()
-                .brand("BMW")
-                .model("1st-Series")
+                .brand(BRAND_BMW)
+                .model(BMW_MODEL)
                 .build();
 
         UserEntity testUserEntity = UserEntity.builder()
@@ -86,8 +90,8 @@ public class VehicleServiceTest {
     void testGetVehicle_ExistingVehicle() {
 
         VehicleEntity testVehicleEntity = VehicleEntity.builder()
-                .brand("BMW")
-                .model("1st-Series")
+                .brand(BRAND_BMW)
+                .model(BMW_MODEL)
                 .build();
 
         when(mockVehicleRepository.findById(1L))
@@ -105,8 +109,8 @@ public class VehicleServiceTest {
         UserRoleEntity testUserRole = UserRoleEntity.builder().role(UserRoleEnum.USER).build();
 
         VehicleDTO testVehicleDTO = VehicleDTO.builder()
-                .brand("BMW")
-                .model("1st-Series")
+                .brand(BRAND_BMW)
+                .model(BMW_MODEL)
                 .build();
 
         UserEntity testUserEntity = UserEntity.builder()
@@ -131,8 +135,8 @@ public class VehicleServiceTest {
     void testUpdateVehicle() {
         VehicleDTO testVehicleDTO = VehicleDTO.builder()
                 .id(1L)
-                .brand("BMW")
-                .model("1st-Series")
+                .brand(BRAND_BMW)
+                .model(BMW_MODEL)
                 .build();
 
         VehicleEntity testVehicleEntity = VehicleEntity.builder()
@@ -162,8 +166,8 @@ public class VehicleServiceTest {
 
         VehicleEntity testVehicleEntity = VehicleEntity.builder()
                 .user(testUserEntity)
-                .brand("BMW")
-                .model("1st-Series")
+                .brand(BRAND_BMW)
+                .model(BMW_MODEL)
                 .build();
 
         when(mockVehicleRepository.findById(vehicleId))
