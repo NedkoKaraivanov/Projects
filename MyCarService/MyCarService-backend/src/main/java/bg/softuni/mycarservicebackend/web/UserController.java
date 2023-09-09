@@ -15,8 +15,6 @@ public class UserController {
 
     private final UserService userService;
 
-    private final VehicleService vehicleService;
-
     @GetMapping("/profile")
     public ResponseEntity<UserDTO> getUserProfile(Principal principal) {
         String userEmail = principal.getName();

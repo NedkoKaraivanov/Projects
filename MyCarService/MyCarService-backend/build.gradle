@@ -40,6 +40,7 @@ dependencies {
 	implementation 'io.jsonwebtoken:jjwt-jackson:0.11.5'
 
 	implementation group: 'org.junit', name: 'junit5-engine', version: '5.0.0-ALPHA'
+	runtimeOnly 'com.h2database:h2'
 }
 
 tasks.named('test') {
