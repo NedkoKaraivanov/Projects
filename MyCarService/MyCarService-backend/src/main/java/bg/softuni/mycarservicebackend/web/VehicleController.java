@@ -35,8 +35,13 @@ public class VehicleController {
     }
 
     @DeleteMapping("/vehicles/{id}")
-    public void deleteVehicle(@PathVariable Long id) {
-        vehicleService.deleteVehicle(id);
+    public ResponseEntity<Void> deleteVehicle(@PathVariable Long id) {
+        try {
+            vehicleService.deleteVehicle(id);
+            return ResponseEntity.status(HttpStatus.NO_CONTENT).build();
+        } catch (RuntimeException e) {
+            return ResponseEntity.status(HttpStatus.NOT_FOUND).build();
+        }
     }
 
     @GetMapping("/vehicles/{id}")

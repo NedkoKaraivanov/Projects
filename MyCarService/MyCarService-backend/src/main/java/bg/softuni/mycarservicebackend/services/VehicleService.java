@@ -42,7 +42,7 @@ public class VehicleService {
 
 
     public void deleteVehicle(Long id) {
-        VehicleEntity vehicleEntity = vehicleRepository.findById(id).get();
+        VehicleEntity vehicleEntity = vehicleRepository.findById(id).orElseThrow(()-> new RuntimeException("No such vehicle exists"));
         UserEntity userEntity = vehicleEntity.getUser();
         userEntity.getVehicles().remove(vehicleEntity);
         userRepository.save(userEntity);
