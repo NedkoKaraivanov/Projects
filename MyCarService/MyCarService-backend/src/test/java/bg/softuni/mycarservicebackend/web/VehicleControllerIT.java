@@ -72,13 +72,13 @@ public class VehicleControllerIT {
 
     @AfterAll
     void tearDown() {
-        userRepository.deleteAll();
         vehicleRepository.deleteAll();
+        userRepository.deleteAll();
     }
 
     @Test
     @WithMockUser(username = "userEmail@test.com", roles = "USER")
-    void getUserVehicles_Request_Successful() throws Exception {
+    void getUserVehicles_Vehicles_Returned() throws Exception {
         mockMvc.perform(MockMvcRequestBuilders.get("/api/users/vehicles"))
                 .andExpect(MockMvcResultMatchers.status().isOk())
                 .andExpect(MockMvcResultMatchers.jsonPath("$.[0].brand", is("BMW")))
@@ -97,7 +97,7 @@ public class VehicleControllerIT {
     @Test
     @WithMockUser(username = "userEmail@test.com", roles = "USER")
     void getVehicle_Vehicle_Not_Exist() throws Exception {
-        mockMvc.perform(MockMvcRequestBuilders.get("/api/users/vehicles/3"))
+        mockMvc.perform(MockMvcRequestBuilders.get("/api/users/vehicles/10"))
                 .andExpect(MockMvcResultMatchers.status().isNotFound());
     }
 

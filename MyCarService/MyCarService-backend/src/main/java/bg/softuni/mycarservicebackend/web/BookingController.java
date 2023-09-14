@@ -1,10 +1,8 @@
 package bg.softuni.mycarservicebackend.web;
 
 import bg.softuni.mycarservicebackend.domain.dtos.BookingDTO;
-import bg.softuni.mycarservicebackend.domain.dtos.VehicleDTO;
 import bg.softuni.mycarservicebackend.services.BookingService;
 import lombok.RequiredArgsConstructor;
-import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
