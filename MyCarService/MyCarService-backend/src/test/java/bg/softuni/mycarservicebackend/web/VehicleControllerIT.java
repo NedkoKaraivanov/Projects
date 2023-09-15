@@ -140,14 +140,14 @@ public class VehicleControllerIT {
 
     @Test
     @WithMockUser(username = "userEmail@test.com", roles = "USER")
-    void deleteVehicle_VehicleExist() throws Exception {
+    void deleteVehicle_Vehicle_Exist() throws Exception {
         mockMvc.perform(MockMvcRequestBuilders.delete("/api/users/vehicles/2"))
                 .andExpect(MockMvcResultMatchers.status().isNoContent());
     }
 
     @Test
     @WithMockUser(username = "userEmail@test.com", roles = "USER")
-    void deleteVehicle_Vehicle_Not_Exist() throws Exception {
+    void deleteVehicle_Vehicle_Does_Not_Exist() throws Exception {
         mockMvc.perform(MockMvcRequestBuilders.delete("/api/users/vehicles/10"))
                 .andExpect(MockMvcResultMatchers.status().isNotFound());
     }

@@ -41,8 +41,9 @@ public class BookingService {
         List<BookingEntity> allBookings = this.bookingRepository.findAll();
         return allBookings.stream().map(this::createBookingDTO).collect(Collectors.toList());
     }
+
     public BookingDTO createBooking(Principal principal, BookingDTO bookingDTO) {
-         UserEntity userEntity = userRepository.findByEmail(principal.getName()).get();
+        UserEntity userEntity = userRepository.findByEmail(principal.getName()).get();
         Long vehicleId = bookingDTO.getVehicle().getId();
         VehicleEntity vehicleEntity = vehicleRepository.findById(vehicleId).get();
 
@@ -100,7 +101,7 @@ public class BookingService {
     }
 
     public void deleteBooking(Long id) {
-        BookingEntity bookingEntity = this.bookingRepository.findById(id).get();
+        BookingEntity bookingEntity = this.bookingRepository.findById(id).orElseThrow(()-> new RuntimeException("No such booking exists"));
         Long userId = bookingEntity.getUser().getId();
         UserEntity userEntity = this.userRepository.findById(userId).get();
         userEntity.getBookings().remove(bookingEntity);
