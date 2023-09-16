@@ -3,6 +3,7 @@ package bg.softuni.mycarservicebackend.web;
 import bg.softuni.mycarservicebackend.domain.dtos.BookingDTO;
 import bg.softuni.mycarservicebackend.services.BookingService;
 import lombok.RequiredArgsConstructor;
+import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
@@ -21,7 +22,7 @@ public class AdminController {
         return ResponseEntity.ok(allBookings);
     }
 
-    @GetMapping("bookings/{id}")
+    @GetMapping("/bookings/{id}")
     public ResponseEntity<BookingDTO> getBooking(@PathVariable Long id) {
         return ResponseEntity.ok(bookingService.getBooking(id));
     }
@@ -32,7 +33,8 @@ public class AdminController {
     }
 
     @DeleteMapping("/bookings/{id}")
-    public void deleteBooking(@PathVariable Long id) {
+    public ResponseEntity<Void> deleteBooking(@PathVariable Long id) {
         bookingService.deleteBooking(id);
+        return ResponseEntity.status(HttpStatus.NO_CONTENT).build();
     }
 }
