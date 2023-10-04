@@ -6,11 +6,10 @@ import bg.softuni.mycarservicebackend.domain.entities.UserRoleEntity;
 import bg.softuni.mycarservicebackend.domain.enums.UserRoleEnum;
 import bg.softuni.mycarservicebackend.repositories.UserRepository;
 import bg.softuni.mycarservicebackend.repositories.UserRoleRepository;
-import bg.softuni.mycarservicebackend.services.UserService;
 import org.junit.gen5.api.Assertions;
-import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.ExtendWith;
+import org.mockito.InjectMocks;
 import org.mockito.Mock;
 import org.mockito.Mockito;
 import org.mockito.junit.jupiter.MockitoExtension;
@@ -28,15 +27,19 @@ import static org.mockito.Mockito.when;
 @ExtendWith(MockitoExtension.class)
 public class UserServiceTest {
 
-    private final String NOT_EXISTING_EMAIL = "notExisting@test.com";
+    private static final String NOT_EXISTING_EMAIL = "notExisting@test.com";
 
-    private final String EXISTING_EMAIL = "admin@test.com";
+    private static final String EXISTING_EMAIL = "admin@test.com";
 
-    private final String EXISTING_RANDOM_EMAIL = "existingRandomEmail@test.com";
+    private static final String ADMIN_FIRST_NAME = "adminFirstName";
+    private static final String ADMIN_LAST_NAME = "adminLastName";
 
-    private final String TEST_PASSWORD = "123123";
+    private static final String NEW_ADMIN_EMAIL = "newAdminEmail";
+    private static final String USER_EMAIL = "user@test.com";
 
-    private UserService toTest;
+    private static final String EXISTING_RANDOM_EMAIL = "existingRandomEmail@test.com";
+
+    private static final String TEST_PASSWORD = "123123";
 
     @Mock
     private UserRepository mockUserRepository;
@@ -50,10 +53,8 @@ public class UserServiceTest {
     @Mock
     private PasswordEncoder mockPasswordEncoder;
 
-    @BeforeEach
-    void setUp() {
-        toTest = new UserService(mockUserRepository, mockUserRoleRepository, mockModelMapper, mockPasswordEncoder);
-    }
+    @InjectMocks
+    private UserService toTest;
 
     public static class TestPrincipal implements Principal {
         private final String email;
@@ -74,12 +75,11 @@ public class UserServiceTest {
         UserRoleEntity testAdminRole = UserRoleEntity.builder().role(UserRoleEnum.ADMIN).build();
         UserRoleEntity testUserRole = UserRoleEntity.builder().role(UserRoleEnum.USER).build();
 
-
         UserEntity testUserEntity = UserEntity.builder()
                 .email(EXISTING_EMAIL)
                 .password(TEST_PASSWORD)
-                .firstName("adminFirstName")
-                .lastName("adminLastName")
+                .firstName(ADMIN_FIRST_NAME)
+                .lastName(ADMIN_LAST_NAME)
                 .roles(List.of(testAdminRole, testUserRole)).build();
 
         when(mockUserRepository.findByEmail(EXISTING_EMAIL))
@@ -117,7 +117,7 @@ public class UserServiceTest {
                 .build();
 
         UserDTO newUserInformation = UserDTO.builder()
-                .email("newAdminEmail")
+                .email(NEW_ADMIN_EMAIL)
                 .password(TEST_PASSWORD).build();
 
         when(mockUserRepository.findByEmail(EXISTING_EMAIL))
@@ -176,7 +176,7 @@ public class UserServiceTest {
                 .build();
 
         UserEntity testUserEntity = UserEntity.builder()
-                .email("user@test.com")
+                .email(USER_EMAIL)
                 .roles(List.of(testUserRole))
                 .build();
 

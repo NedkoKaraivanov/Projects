@@ -23,7 +23,7 @@ public class ApplicationUserDetailsService implements UserDetailsService {
 
     @Override
     @Transactional
-    public UserDetails loadUserByUsername(String email) throws UsernameNotFoundException {
+    public UserDetails loadUserByUsername(String email) {
         return userRepository
                 .findByEmail(email)
                 .map(this::map)

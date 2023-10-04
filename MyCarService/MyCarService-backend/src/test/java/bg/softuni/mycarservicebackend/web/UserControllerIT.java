@@ -28,6 +28,24 @@ import static org.hamcrest.Matchers.is;
 @ActiveProfiles("test")
 public class UserControllerIT {
 
+    private static final String TEST_EMAIL = "userEmail@test.com";
+
+    private static final String UPDATED_EMAIL = "updatedEmail@test.com";
+
+    private static final String EXISTING_USER_EMAIL = "anotherUser@test.com";
+
+    private static final String PHONE_NUMBER = "123123";
+
+    private static final String UPDATED_PHONE_NUMBER = "321321";
+
+    private static final String PASSWORD = "123123";
+
+    private static final String NAME_PETER = "Peter";
+
+    private static final String NAME_GEORGE = "George";
+
+    private static final String NAME_TOMAS = "Tomas";
+
     @Autowired
     private MockMvc mockMvc;
 
@@ -43,11 +61,6 @@ public class UserControllerIT {
     @Autowired
     private ObjectMapper objectMapper;
 
-    private final String TEST_EMAIL = "userEmail@test.com";
-
-    private final String NEW_EMAIL = "updatedEmail@test.com";
-
-    private final String TEST_PHONE_NUMBER = "123123";
 
     @BeforeAll
     void setUp() {
@@ -66,17 +79,17 @@ public class UserControllerIT {
         mockMvc.perform(MockMvcRequestBuilders.get("/api/users/profile"))
                 .andExpect(MockMvcResultMatchers.status().isOk())
                 .andExpect(MockMvcResultMatchers.jsonPath("$.email", is(TEST_EMAIL)))
-                .andExpect(MockMvcResultMatchers.jsonPath("$.firstName", is("Peter")))
-                .andExpect(MockMvcResultMatchers.jsonPath("$.phoneNumber", is("123123")));
+                .andExpect(MockMvcResultMatchers.jsonPath("$.firstName", is(NAME_PETER)))
+                .andExpect(MockMvcResultMatchers.jsonPath("$.phoneNumber", is(PHONE_NUMBER)));
     }
 
     @Test
     @WithMockUser(username = "userEmail@test.com", roles = "USER")
     void updateProfile_Valid_NewEmail_Update_Successful() throws Exception {
         UserDTO updatedInfo = UserDTO.builder()
-                .email(NEW_EMAIL)
-                .firstName("George")
-                .phoneNumber("321321")
+                .email(UPDATED_EMAIL)
+                .firstName(NAME_GEORGE)
+                .phoneNumber(UPDATED_PHONE_NUMBER)
                 .build();
 
         String jsonRequestBody = objectMapper.writeValueAsString(updatedInfo);
@@ -85,27 +98,27 @@ public class UserControllerIT {
                         .contentType(MediaType.APPLICATION_JSON)
                         .content(jsonRequestBody))
                 .andExpect(MockMvcResultMatchers.status().isOk())
-                .andExpect(MockMvcResultMatchers.jsonPath("$.email", is(NEW_EMAIL)))
-                .andExpect(MockMvcResultMatchers.jsonPath("$.firstName", is("George")))
-                .andExpect(MockMvcResultMatchers.jsonPath("$.phoneNumber", is("321321")));
+                .andExpect(MockMvcResultMatchers.jsonPath("$.email", is(UPDATED_EMAIL)))
+                .andExpect(MockMvcResultMatchers.jsonPath("$.firstName", is(NAME_GEORGE)))
+                .andExpect(MockMvcResultMatchers.jsonPath("$.phoneNumber", is(UPDATED_PHONE_NUMBER)));
     }
 
     @Test
     @WithMockUser(username = "userEmail@test.com", roles = "USER")
     void updateProfile_Invalid_NewEmail_ExceptionThrown() throws Exception {
         UserEntity existingUser = UserEntity.builder()
-                .email("anotherUser@test.com")
-                .password(passwordEncoder.encode("123123"))
-                .phoneNumber(TEST_PHONE_NUMBER)
-                .firstName("Tomas")
+                .email(EXISTING_USER_EMAIL)
+                .password(passwordEncoder.encode(PASSWORD))
+                .phoneNumber(PHONE_NUMBER)
+                .firstName(NAME_TOMAS)
                 .build();
 
         userRepository.save(existingUser);
 
         UserDTO updatedInfo = UserDTO.builder()
-                .email("anotherUser@test.com")
-                .firstName("George")
-                .phoneNumber("321321")
+                .email(EXISTING_USER_EMAIL)
+                .firstName(NAME_GEORGE)
+                .phoneNumber(UPDATED_PHONE_NUMBER)
                 .build();
 
         String jsonRequestBody = objectMapper.writeValueAsString(updatedInfo);
@@ -120,9 +133,9 @@ public class UserControllerIT {
     private UserEntity createTestUser() {
         return UserEntity.builder()
                 .email(TEST_EMAIL)
-                .password(passwordEncoder.encode("123123"))
-                .phoneNumber(TEST_PHONE_NUMBER)
-                .firstName("Peter")
+                .password(passwordEncoder.encode(PASSWORD))
+                .phoneNumber(PHONE_NUMBER)
+                .firstName(NAME_PETER)
                 .build();
     }
 }

@@ -7,7 +7,6 @@ import bg.softuni.mycarservicebackend.domain.entities.VehicleEntity;
 import bg.softuni.mycarservicebackend.domain.enums.UserRoleEnum;
 import bg.softuni.mycarservicebackend.repositories.UserRepository;
 import bg.softuni.mycarservicebackend.repositories.VehicleRepository;
-import bg.softuni.mycarservicebackend.services.VehicleService;
 import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
@@ -27,11 +26,14 @@ import static org.mockito.Mockito.when;
 @ExtendWith(MockitoExtension.class)
 public class VehicleServiceTest {
 
-    private final String EXISTING_EMAIL = "user@test.com";
+    public static final String PASSWORD = "123123";
+    private static final String EXISTING_EMAIL = "user@test.com";
 
-    private final String BRAND_BMW = "BMW";
+    private static final String BRAND_BMW = "BMW";
 
-    private final String BMW_MODEL = "1st-Series";
+    private static final String BMW_MODEL = "1st-Series";
+
+    private static final Long VEHICLE_ID = 1L;
 
     private VehicleService toTest;
     @Mock
@@ -70,7 +72,7 @@ public class VehicleServiceTest {
 
         UserEntity testUserEntity = UserEntity.builder()
                 .email(EXISTING_EMAIL)
-                .password("123123")
+                .password(PASSWORD)
                 .roles(List.of(testAdminRole))
                 .vehicles(List.of(testVehicleEntity))
                 .build();
@@ -94,10 +96,10 @@ public class VehicleServiceTest {
                 .model(BMW_MODEL)
                 .build();
 
-        when(mockVehicleRepository.findById(1L))
+        when(mockVehicleRepository.findById(VEHICLE_ID))
                 .thenReturn(Optional.of(testVehicleEntity));
 
-        VehicleDTO vehicleDTO = toTest.getVehicle(1L);
+        VehicleDTO vehicleDTO = toTest.getVehicle(VEHICLE_ID);
 
         Assertions.assertEquals(vehicleDTO.getBrand(), testVehicleEntity.getBrand());
         Assertions.assertEquals(vehicleDTO.getModel(), testVehicleEntity.getModel());
@@ -115,7 +117,7 @@ public class VehicleServiceTest {
 
         UserEntity testUserEntity = UserEntity.builder()
                 .email(EXISTING_EMAIL)
-                .password("123123")
+                .password(PASSWORD)
                 .roles(List.of(testUserRole))
                 .vehicles(new ArrayList<>())
                 .build();
@@ -134,7 +136,7 @@ public class VehicleServiceTest {
     @Test
     void testUpdateVehicle() {
         VehicleDTO testVehicleDTO = VehicleDTO.builder()
-                .id(1L)
+                .id(VEHICLE_ID)
                 .brand(BRAND_BMW)
                 .model(BMW_MODEL)
                 .build();
@@ -154,12 +156,11 @@ public class VehicleServiceTest {
 
     @Test
     void testDeleteVehicle() {
-        Long vehicleId = 1L;
         UserRoleEntity testUserRole = UserRoleEntity.builder().role(UserRoleEnum.USER).build();
 
         UserEntity testUserEntity = UserEntity.builder()
                 .email(EXISTING_EMAIL)
-                .password("123123")
+                .password(PASSWORD)
                 .roles(List.of(testUserRole))
                 .vehicles(new ArrayList<>())
                 .build();
@@ -170,10 +171,10 @@ public class VehicleServiceTest {
                 .model(BMW_MODEL)
                 .build();
 
-        when(mockVehicleRepository.findById(vehicleId))
+        when(mockVehicleRepository.findById(VEHICLE_ID))
                 .thenReturn(Optional.of(testVehicleEntity));
 
-        toTest.deleteVehicle(vehicleId);
+        toTest.deleteVehicle(VEHICLE_ID);
 
         Mockito.verify(mockUserRepository).save(any());
         Mockito.verify(mockVehicleRepository).delete(any());

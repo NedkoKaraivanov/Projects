@@ -31,6 +31,29 @@ import java.util.ArrayList;
 @ActiveProfiles("Test")
 public class AdminControllerIT {
 
+    private final String USER_EMAIL_TEST = "userEmail@test.com";
+
+    private static final String TEST_PASSWORD = "123123";
+
+    private static final String TEST_PHONE_NUMBER = "123123";
+
+    private static final String BRAND_BMW = "BMW";
+
+    private static final String BRAND_AUDI = "Audi";
+
+    private static final String BMW_MODEL = "3rd-Series";
+
+    private static final String AUDI_MODEL_A6 = "A6";
+
+    private static final String SERVICE_TYPE_DIAGNOSTICS = "DIAGNOSTICS";
+
+    private static final String SERVICE_TYPE_OIL_CHANGE = "OIL_CHANGE";
+
+    private static final String FIRST_DESCRIPTION = "Some description";
+
+    private static final String SECOND_DESCRIPTION = "Some test description";
+
+    private static final Double SERVICE_PRICE = 300.00;
     @Autowired
     private MockMvc mockMvc;
     @Autowired
@@ -48,36 +71,36 @@ public class AdminControllerIT {
     @BeforeAll
     void setUp() {
         UserEntity testUser = UserEntity.builder()
-                .email("userEmail@test.com")
-                .password("123123")
-                .phoneNumber("123123")
+                .email(USER_EMAIL_TEST)
+                .password(TEST_PASSWORD)
+                .phoneNumber(TEST_PHONE_NUMBER)
                 .vehicles(new ArrayList<>())
                 .build();
 
         VehicleEntity firstVehicle = VehicleEntity.builder()
                 .user(testUser)
-                .brand("BMW")
-                .model("3rd-Series")
+                .brand(BRAND_BMW)
+                .model(BMW_MODEL)
                 .build();
 
         VehicleEntity secondVehicle = VehicleEntity.builder()
                 .user(testUser)
-                .brand("Audi")
-                .model("A6")
+                .brand(BRAND_AUDI)
+                .model(AUDI_MODEL_A6)
                 .build();
 
         BookingEntity firstTestBooking = BookingEntity.builder()
                 .user(testUser)
                 .vehicle(firstVehicle)
                 .serviceType(ServiceTypeEnum.DIAGNOSTICS)
-                .description("Some description")
+                .description(FIRST_DESCRIPTION)
                 .build();
 
         BookingEntity secondTestBooking = BookingEntity.builder()
                 .user(testUser)
                 .vehicle(secondVehicle)
                 .serviceType(ServiceTypeEnum.OIL_CHANGE)
-                .description("Some test description")
+                .description(SECOND_DESCRIPTION)
                 .build();
 
         userRepository.save(testUser);
@@ -100,13 +123,13 @@ public class AdminControllerIT {
         mockMvc.perform(MockMvcRequestBuilders.get("/api/admin/all-bookings"))
                 .andExpect(MockMvcResultMatchers.status().isOk())
                 .andExpect(MockMvcResultMatchers.jsonPath("$.size()").value(2))
-                .andExpect(MockMvcResultMatchers.jsonPath("$.[0].user.email").value("userEmail@test.com"))
-                .andExpect(MockMvcResultMatchers.jsonPath("$.[0].vehicle.brand").value("BMW"))
-                .andExpect(MockMvcResultMatchers.jsonPath("$.[0].serviceType").value("DIAGNOSTICS"))
-                .andExpect(MockMvcResultMatchers.jsonPath("$.[0].description").value("Some description"))
-                .andExpect(MockMvcResultMatchers.jsonPath("$.[1].vehicle.brand").value("Audi"))
-                .andExpect(MockMvcResultMatchers.jsonPath("$.[1].serviceType").value("OIL_CHANGE"))
-                .andExpect(MockMvcResultMatchers.jsonPath("$.[1].description").value("Some test description"));
+                .andExpect(MockMvcResultMatchers.jsonPath("$.[0].user.email").value(USER_EMAIL_TEST))
+                .andExpect(MockMvcResultMatchers.jsonPath("$.[0].vehicle.brand").value(BRAND_BMW))
+                .andExpect(MockMvcResultMatchers.jsonPath("$.[0].serviceType").value(SERVICE_TYPE_DIAGNOSTICS))
+                .andExpect(MockMvcResultMatchers.jsonPath("$.[0].description").value(FIRST_DESCRIPTION))
+                .andExpect(MockMvcResultMatchers.jsonPath("$.[1].vehicle.brand").value(BRAND_AUDI))
+                .andExpect(MockMvcResultMatchers.jsonPath("$.[1].serviceType").value(SERVICE_TYPE_OIL_CHANGE))
+                .andExpect(MockMvcResultMatchers.jsonPath("$.[1].description").value(SECOND_DESCRIPTION));
     }
 
     @Test
@@ -114,10 +137,10 @@ public class AdminControllerIT {
     void getBooking_Booking_Returned() throws Exception {
         mockMvc.perform(MockMvcRequestBuilders.get("/api/admin/bookings/1"))
                 .andExpect(MockMvcResultMatchers.status().isOk())
-                .andExpect(MockMvcResultMatchers.jsonPath("$.user.email").value("userEmail@test.com"))
-                .andExpect(MockMvcResultMatchers.jsonPath("$.vehicle.brand").value("BMW"))
-                .andExpect(MockMvcResultMatchers.jsonPath("$.serviceType").value("DIAGNOSTICS"))
-                .andExpect(MockMvcResultMatchers.jsonPath("$.description").value("Some description"));
+                .andExpect(MockMvcResultMatchers.jsonPath("$.user.email").value(USER_EMAIL_TEST))
+                .andExpect(MockMvcResultMatchers.jsonPath("$.vehicle.brand").value(BRAND_BMW))
+                .andExpect(MockMvcResultMatchers.jsonPath("$.serviceType").value(SERVICE_TYPE_DIAGNOSTICS))
+                .andExpect(MockMvcResultMatchers.jsonPath("$.description").value(FIRST_DESCRIPTION));
     }
 
     @Test
@@ -126,7 +149,7 @@ public class AdminControllerIT {
         BookingDTO bookingDTO = BookingDTO.builder()
                 .isConfirmed(true)
                 .isReady(true)
-                .price(300.00)
+                .price(SERVICE_PRICE)
                 .build();
 
         String jsonRequestBody = objectMapper.writeValueAsString(bookingDTO);
@@ -136,11 +159,11 @@ public class AdminControllerIT {
                         .content(jsonRequestBody))
                 .andExpect(MockMvcResultMatchers.status().isOk())
                 .andExpect(MockMvcResultMatchers.jsonPath("$.id").value(2))
-                .andExpect(MockMvcResultMatchers.jsonPath("$.user.email").value("userEmail@test.com"))
-                .andExpect(MockMvcResultMatchers.jsonPath("$.vehicle.brand").value("Audi"))
+                .andExpect(MockMvcResultMatchers.jsonPath("$.user.email").value(USER_EMAIL_TEST))
+                .andExpect(MockMvcResultMatchers.jsonPath("$.vehicle.brand").value(BRAND_AUDI))
                 .andExpect(MockMvcResultMatchers.jsonPath("$.isConfirmed").value(true))
                 .andExpect(MockMvcResultMatchers.jsonPath("$.isReady").value(true))
-                .andExpect(MockMvcResultMatchers.jsonPath("$.price").value(300.00));
+                .andExpect(MockMvcResultMatchers.jsonPath("$.price").value(SERVICE_PRICE));
     }
 
     @Test

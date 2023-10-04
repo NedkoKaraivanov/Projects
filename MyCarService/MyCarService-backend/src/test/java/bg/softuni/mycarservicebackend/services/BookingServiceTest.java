@@ -37,21 +37,31 @@ import static org.mockito.Mockito.when;
 @ExtendWith(MockitoExtension.class)
 public class BookingServiceTest {
 
-    private final String TEST_EMAIL = "user@test.com";
+    private static final String TEST_EMAIL = "user@test.com";
 
-    private final String BRAND_BMW = "BMW";
+    private static final String TEST_PASSWORD = "123123";
 
-    private final String BMW_MODEL = "1st-Series";
+    private static final String ENUM_DIAGNOSTICS = "DIAGNOSTICS";
 
-    private final String BRAND_AUDI = "Audi";
+    private static final String BRAND_BMW = "BMW";
 
-    private final String AUDI_MODEL = "A4";
+    private static final String BMW_MODEL = "1st-Series";
 
-    private final String TEST_DESCRIPTION = "Some description";
+    private static final String BRAND_AUDI = "Audi";
 
-    private final Double TEST_PRICE = 500.00;
+    private static final String AUDI_MODEL = "A4";
 
-    private final String TEST_SERVICE_TYPE_DIAGNOSTICS = "Diagnostics";
+    private static final String TEST_DESCRIPTION = "Some description";
+
+    private static final Double TEST_PRICE = 500.00;
+
+    private static final Long BOOKING_ID = 1L;
+
+    private static final Long VEHICLE_ID = 1L;
+
+    private static final Long USER_ID = 1L;
+
+    private static final String TEST_SERVICE_TYPE_DIAGNOSTICS = "Diagnostics";
     private BookingService toTest;
 
     @Mock
@@ -99,7 +109,7 @@ public class BookingServiceTest {
 
         testUserEntity = UserEntity.builder()
                 .email(TEST_EMAIL)
-                .password("123123")
+                .password(TEST_PASSWORD)
                 .roles(List.of(testUserRole, testUserRole))
                 .vehicles(List.of(testVehicleEntity))
                 .build();
@@ -143,7 +153,7 @@ public class BookingServiceTest {
         List<BookingDTO> testUserBookings = toTest.getUserBookings(principal);
         Assertions.assertEquals(1, testUserBookings.size());
         Assertions.assertEquals(TEST_EMAIL, firstBookingEntity.getUser().getEmail());
-        Assertions.assertEquals("DIAGNOSTICS", testUserBookings.get(0).getServiceType());
+        Assertions.assertEquals(ENUM_DIAGNOSTICS, testUserBookings.get(0).getServiceType());
     }
 
     @Test
@@ -160,16 +170,14 @@ public class BookingServiceTest {
 
     @Test
     void testGetBooking() {
-        Long bookingId = 1L;
-
-        when(mockBookingRepository.findById(bookingId))
+        when(mockBookingRepository.findById(BOOKING_ID))
                 .thenReturn(Optional.of(firstBookingEntity));
 
-        BookingDTO bookingDTO = toTest.getBooking(bookingId);
+        BookingDTO bookingDTO = toTest.getBooking(BOOKING_ID);
 
         Assertions.assertEquals(firstBookingEntity.getId(), bookingDTO.getId());
         Assertions.assertTrue(firstBookingEntity.getIsConfirmed());
-        Assertions.assertEquals("DIAGNOSTICS", bookingDTO.getServiceType());
+        Assertions.assertEquals(ENUM_DIAGNOSTICS, bookingDTO.getServiceType());
     }
 
     @Test
@@ -177,15 +185,15 @@ public class BookingServiceTest {
         Principal principal = new TestPrincipal(TEST_EMAIL);
 
         VehicleDTO vehicleDTO = VehicleDTO.builder()
-                .id(1L)
+                .id(VEHICLE_ID)
                 .brand(BRAND_BMW)
                 .model(BMW_MODEL)
                 .build();
 
         UserDTO userDTO = UserDTO.builder()
-                .id(1L)
+                .id(USER_ID)
                 .email(TEST_EMAIL)
-                .password("123123")
+                .password(TEST_PASSWORD)
                 .vehicles(List.of(vehicleDTO))
                 .build();
 
@@ -193,7 +201,7 @@ public class BookingServiceTest {
                 .user(userDTO)
                 .vehicle(vehicleDTO)
                 .isConfirmed(true)
-                .serviceType("DIAGNOSTICS").build();
+                .serviceType(ENUM_DIAGNOSTICS).build();
 
         BookingEntity bookingToBeSaved = BookingEntity
                 .builder()
@@ -206,7 +214,7 @@ public class BookingServiceTest {
         when(mockUserRepository.findByEmail(principal.getName()))
                 .thenReturn(Optional.of(testUserEntity));
 
-        when(mockVehicleRepository.findById(1L))
+        when(mockVehicleRepository.findById(VEHICLE_ID))
                 .thenReturn(Optional.of(testVehicleEntity));
 
         when(mockVehicleService.createVehicleDTO(testVehicleEntity))
@@ -228,18 +236,17 @@ public class BookingServiceTest {
 
     @Test
     void testUpdateBooking() {
-        Long bookingId = 1L;
 
         VehicleDTO vehicleDTO = VehicleDTO.builder()
-                .id(1L)
+                .id(VEHICLE_ID)
                 .brand(BRAND_AUDI)
                 .model(AUDI_MODEL)
                 .build();
 
         UserDTO userDTO = UserDTO.builder()
-                .id(1L)
+                .id(USER_ID)
                 .email(TEST_EMAIL)
-                .password("123123")
+                .password(TEST_PASSWORD)
                 .vehicles(List.of(vehicleDTO))
                 .build();
 
@@ -255,7 +262,7 @@ public class BookingServiceTest {
                 .model(AUDI_MODEL)
                 .build();
 
-        when(mockBookingRepository.findById(bookingId))
+        when(mockBookingRepository.findById(BOOKING_ID))
                 .thenReturn(Optional.of(firstBookingEntity));
 
         when(mockVehicleRepository.findById(bookingDTO.getVehicle().getId()))
@@ -265,7 +272,7 @@ public class BookingServiceTest {
         firstBookingEntity.setDescription(bookingDTO.getDescription());
         firstBookingEntity.setVehicle(newTestVehicle);
 
-        toTest.updateBooking(bookingId, bookingDTO);
+        toTest.updateBooking(BOOKING_ID, bookingDTO);
 
         Mockito.verify(mockBookingRepository).save(bookingEntityArgumentCaptor.capture());
 
@@ -279,7 +286,6 @@ public class BookingServiceTest {
 
     @Test
     void testUpdateAdminBooking() {
-        Long bookingId = 1L;
 
         BookingDTO bookingDTO = BookingDTO.builder()
                 .isReady(true)
@@ -287,14 +293,14 @@ public class BookingServiceTest {
                 .price(TEST_PRICE)
                 .build();
 
-        when(mockBookingRepository.findById(bookingId))
+        when(mockBookingRepository.findById(BOOKING_ID))
                 .thenReturn(Optional.of(firstBookingEntity));
 
         firstBookingEntity.setIsReady(bookingDTO.getIsReady());
         firstBookingEntity.setIsConfirmed(bookingDTO.getIsConfirmed());
         firstBookingEntity.setPrice(bookingDTO.getPrice());
 
-        toTest.updateAdminBooking(bookingId, bookingDTO);
+        toTest.updateAdminBooking(BOOKING_ID, bookingDTO);
 
         Mockito.verify(mockBookingRepository).save(bookingEntityArgumentCaptor.capture());
 
@@ -307,11 +313,9 @@ public class BookingServiceTest {
 
     @Test
     void testDeleteBooking() {
-        Long bookingId = 1L;
-
         UserEntity mockUserEntity = mock(UserEntity.class);
 
-        when(mockBookingRepository.findById(bookingId))
+        when(mockBookingRepository.findById(BOOKING_ID))
                 .thenReturn(Optional.of(firstBookingEntity));
 
         Long userId = firstBookingEntity.getUser().getId();
@@ -324,7 +328,7 @@ public class BookingServiceTest {
 
         when(mockUserEntity.getBookings()).thenReturn(bookingsList);
 
-        toTest.deleteBooking(bookingId);
+        toTest.deleteBooking(BOOKING_ID);
 
         Mockito.verify(mockUserRepository).save(any());
         Mockito.verify(mockBookingRepository).delete(any());

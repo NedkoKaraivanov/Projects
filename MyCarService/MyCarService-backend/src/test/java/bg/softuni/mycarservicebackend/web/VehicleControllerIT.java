@@ -30,6 +30,25 @@ import static org.hamcrest.Matchers.is;
 @ActiveProfiles("test")
 public class VehicleControllerIT {
 
+    private static final String TEST_EMAIL = "userEmail@test.com";
+
+    private static final String PASSWORD = "123123";
+
+    private static final String PHONE_NUMBER = "123123";
+
+
+    private static final String BRAND_BMW = "BMW";
+
+    private static final String BRAND_AUDI = "Audi";
+
+    private static final String BRAND_MERCEDES = "Mercedes";
+
+    private static final String MODEL_E_CLASS = "E-Class";
+
+    private static final String MODEL_S_CLASS = "S-Class";
+
+    private static final String MODEL_A6 = "A6";
+    private static final String MODEL_3_Series = "3rd-Series";
     @Autowired
     private MockMvc mockMvc;
 
@@ -45,22 +64,22 @@ public class VehicleControllerIT {
     @BeforeAll
     void setUp() {
         UserEntity testUser = UserEntity.builder()
-                .email("userEmail@test.com")
-                .password("123123")
-                .phoneNumber("123123")
+                .email(TEST_EMAIL)
+                .password(PASSWORD)
+                .phoneNumber(PHONE_NUMBER)
                 .vehicles(new ArrayList<>())
                 .build();
 
         VehicleEntity firstVehicle = VehicleEntity.builder()
                 .user(testUser)
-                .brand("BMW")
-                .model("3rd-Series")
+                .brand(BRAND_BMW)
+                .model(MODEL_3_Series)
                 .build();
 
         VehicleEntity secondVehicle = VehicleEntity.builder()
                 .user(testUser)
-                .brand("Audi")
-                .model("A6")
+                .brand(BRAND_AUDI)
+                .model(MODEL_A6)
                 .build();
 
         testUser.getVehicles().add(firstVehicle);
@@ -81,8 +100,8 @@ public class VehicleControllerIT {
     void getUserVehicles_Vehicles_Returned() throws Exception {
         mockMvc.perform(MockMvcRequestBuilders.get("/api/users/vehicles"))
                 .andExpect(MockMvcResultMatchers.status().isOk())
-                .andExpect(MockMvcResultMatchers.jsonPath("$.[0].brand", is("BMW")))
-                .andExpect(MockMvcResultMatchers.jsonPath("$.[0].model", is("3rd-Series")));
+                .andExpect(MockMvcResultMatchers.jsonPath("$.[0].brand", is(BRAND_BMW)))
+                .andExpect(MockMvcResultMatchers.jsonPath("$.[0].model", is(MODEL_3_Series)));
     }
 
     @Test
@@ -90,8 +109,8 @@ public class VehicleControllerIT {
     void getVehicle_VehicleExist() throws Exception {
         mockMvc.perform(MockMvcRequestBuilders.get("/api/users/vehicles/1"))
                 .andExpect(MockMvcResultMatchers.status().isOk())
-                .andExpect(MockMvcResultMatchers.jsonPath("$.brand", is("BMW")))
-                .andExpect(MockMvcResultMatchers.jsonPath("$.model", is("3rd-Series")));
+                .andExpect(MockMvcResultMatchers.jsonPath("$.brand", is(BRAND_BMW)))
+                .andExpect(MockMvcResultMatchers.jsonPath("$.model", is(MODEL_3_Series)));
     }
 
     @Test
@@ -105,8 +124,8 @@ public class VehicleControllerIT {
     @WithMockUser(username = "userEmail@test.com", roles = "USER")
     void addVehicle_Request_Successful() throws Exception {
         VehicleDTO vehicleDTO = VehicleDTO.builder()
-                .brand("Mercedes")
-                .model("E-Class")
+                .brand(BRAND_MERCEDES)
+                .model(MODEL_E_CLASS)
                 .build();
 
         String jsonRequestBody = objectMapper.writeValueAsString(vehicleDTO);
@@ -115,8 +134,8 @@ public class VehicleControllerIT {
                         .contentType(MediaType.APPLICATION_JSON)
                         .content(jsonRequestBody))
                 .andExpect(MockMvcResultMatchers.status().isOk())
-                .andExpect(MockMvcResultMatchers.jsonPath("$.brand", is("Mercedes")))
-                .andExpect(MockMvcResultMatchers.jsonPath("$.model", is("E-Class")));
+                .andExpect(MockMvcResultMatchers.jsonPath("$.brand", is(BRAND_MERCEDES)))
+                .andExpect(MockMvcResultMatchers.jsonPath("$.model", is(MODEL_E_CLASS)));
     }
 
     @Test
@@ -124,8 +143,8 @@ public class VehicleControllerIT {
     void updateVehicle_Request_Successful() throws Exception {
         VehicleDTO vehicleDTO = VehicleDTO.builder()
                 .id(1L)
-                .brand("Mercedes")
-                .model("S-Class")
+                .brand(BRAND_MERCEDES)
+                .model(MODEL_S_CLASS)
                 .build();
 
         String jsonRequestBody = objectMapper.writeValueAsString(vehicleDTO);
@@ -134,8 +153,8 @@ public class VehicleControllerIT {
                         .contentType(MediaType.APPLICATION_JSON)
                         .content(jsonRequestBody))
                 .andExpect(MockMvcResultMatchers.status().isOk())
-                .andExpect(MockMvcResultMatchers.jsonPath("$.brand", is("Mercedes")))
-                .andExpect(MockMvcResultMatchers.jsonPath("$.model", is("S-Class")));
+                .andExpect(MockMvcResultMatchers.jsonPath("$.brand", is(BRAND_MERCEDES)))
+                .andExpect(MockMvcResultMatchers.jsonPath("$.model", is(MODEL_S_CLASS)));
     }
 
     @Test

@@ -27,6 +27,14 @@ import org.springframework.test.web.servlet.result.MockMvcResultMatchers;
 @ActiveProfiles("Test")
 public class AuthenticationControllerIT {
 
+    private static final String USER_EMAIL_TEST = "userEmail@test.com";
+
+    private static final String NEW_USER_EMAIL = "newUser@test.com";
+
+    private static final String PASSWORD = "123123";
+
+    private static final String WRONG_PASSWORD = "wrongPassword";
+
     @Autowired
     private MockMvc mockMvc;
 
@@ -45,8 +53,8 @@ public class AuthenticationControllerIT {
     @BeforeAll
     void setUp() {
         UserEntity testUser = UserEntity.builder()
-                .email("userEmail@test.com")
-                .password(passwordEncoder.encode("123123"))
+                .email(USER_EMAIL_TEST)
+                .password(passwordEncoder.encode(PASSWORD))
                 .build();
         userRepository.save(testUser);
     }
@@ -60,8 +68,8 @@ public class AuthenticationControllerIT {
     @Test
     void register_Valid_User_Request_Successful() throws Exception {
         RegisterRequest requestBody = RegisterRequest.builder()
-                .email("newUser@test.com")
-                .password("123123")
+                .email(NEW_USER_EMAIL)
+                .password(PASSWORD)
                 .build();
 
         String jsonRequestBody = objectMapper.writeValueAsString(requestBody);
@@ -76,8 +84,8 @@ public class AuthenticationControllerIT {
     @Test
     void register_With_Existing_User_Request_Invalid() throws Exception {
         RegisterRequest requestBody = RegisterRequest.builder()
-                .email("userEmail@test.com")
-                .password("123123")
+                .email(USER_EMAIL_TEST)
+                .password(PASSWORD)
                 .build();
 
         String jsonRequestBody = objectMapper.writeValueAsString(requestBody);
@@ -91,8 +99,8 @@ public class AuthenticationControllerIT {
     @Test
     void authenticate_With_Valid_User() throws Exception {
         AuthenticationRequest authRequest = AuthenticationRequest.builder()
-                .email("userEmail@test.com")
-                .password("123123")
+                .email(USER_EMAIL_TEST)
+                .password(PASSWORD)
                 .build();
 
         String jsonRequestBody = objectMapper.writeValueAsString(authRequest);
@@ -106,8 +114,8 @@ public class AuthenticationControllerIT {
     @Test
     void authenticate_With_Wrong_Password_Unauthorized_Status_Returned() throws Exception {
         AuthenticationRequest authRequest = AuthenticationRequest.builder()
-                .email("userEmail@test.com")
-                .password("wrongPassword")
+                .email(USER_EMAIL_TEST)
+                .password(WRONG_PASSWORD)
                 .build();
 
         String jsonRequestBody = objectMapper.writeValueAsString(authRequest);

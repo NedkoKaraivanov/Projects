@@ -32,8 +32,13 @@ public class ApplicationConfiguration {
         return new BCryptPasswordEncoder();
     }
 
+//    @Bean
+//    public UserDetailsService userDetailsService() {
+//        return new ApplicationUserDetailsService(userRepository);
+//    }
+
     @Bean
-    public UserDetailsService userDetailsService() {
+    public ApplicationUserDetailsService userDetailsService() {
         return new ApplicationUserDetailsService(userRepository);
     }
 

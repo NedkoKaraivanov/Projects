@@ -21,10 +21,10 @@ import static org.mockito.Mockito.when;
 @ExtendWith(MockitoExtension.class)
 public class UserRoleServiceTest {
 
+    private static final Long COUNT_ROLES = 0L;
+
     @Mock
     private UserRoleRepository mockUserRoleRepository;
-
-    private Long COUNT_ROLES = 0L;
 
     private UserRoleService toTest;
 

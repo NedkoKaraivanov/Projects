@@ -1,5 +1,7 @@
 package bg.softuni.mycarservicebackend.services;
 
+import bg.softuni.mycarservicebackend.auth.AuthenticationService;
+import bg.softuni.mycarservicebackend.config.JwtService;
 import bg.softuni.mycarservicebackend.domain.dtos.UserDTO;
 import bg.softuni.mycarservicebackend.domain.dtos.UserRoleDTO;
 import bg.softuni.mycarservicebackend.domain.entities.UserEntity;
@@ -8,6 +10,7 @@ import bg.softuni.mycarservicebackend.repositories.UserRepository;
 import bg.softuni.mycarservicebackend.repositories.UserRoleRepository;
 import lombok.RequiredArgsConstructor;
 import org.modelmapper.ModelMapper;
+import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.security.core.userdetails.UsernameNotFoundException;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
@@ -41,6 +44,7 @@ public class UserService {
 
         modelMapper.map(userDTO, existingUser);
         userRepository.save(existingUser);
+
         return createUserDTO(existingUser);
     }
 

@@ -9,13 +9,11 @@ import bg.softuni.mycarservicebackend.domain.enums.ServiceTypeEnum;
 import bg.softuni.mycarservicebackend.repositories.BookingRepository;
 import bg.softuni.mycarservicebackend.repositories.UserRepository;
 import bg.softuni.mycarservicebackend.repositories.VehicleRepository;
-import com.fasterxml.jackson.core.JsonProcessingException;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import org.junit.jupiter.api.AfterAll;
 import org.junit.jupiter.api.BeforeAll;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.TestInstance;
-import org.mockito.Mock;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.autoconfigure.web.servlet.AutoConfigureMockMvc;
 import org.springframework.boot.test.context.SpringBootTest;
@@ -36,6 +34,30 @@ import java.util.ArrayList;
 @DirtiesContext
 public class BookingControllerIT {
 
+    private static final String USER_EMAIL_TEST = "userEmail@test.com";
+
+    private static final String PASSWORD = "123123";
+
+    private static final String PHONE_NUMBER = "123123";
+
+    private static final String BRAND_BMW = "BMW";
+
+    private static final String BRAND_AUDI = "Audi";
+
+    private static final String BMW_MODEL = "3rd-Series";
+
+    private static final String AUDI_MODEL = "A6";
+
+    private static final String FIRST_DESCRIPTION = "Some description";
+
+    private static final String SECOND_DESCRIPTION = "Some test description";
+
+    private static final String UPDATED_DESCRIPTION = "Updated description";
+
+    private static final String SERVICE_TYPE_DIAGNOSTICS = "DIAGNOSTICS";
+
+    private static final String SERVICE_TYPE_SUSPENSION_WORK = "SUSPENSION_WORK";
+
     @Autowired
     private MockMvc mockMvc;
 
@@ -54,36 +76,36 @@ public class BookingControllerIT {
     @BeforeAll
     void setUp() {
         UserEntity testUser = UserEntity.builder()
-                .email("userEmail@test.com")
-                .password("123123")
-                .phoneNumber("123123")
+                .email(USER_EMAIL_TEST)
+                .password(PASSWORD)
+                .phoneNumber(PHONE_NUMBER)
                 .vehicles(new ArrayList<>())
                 .build();
 
         VehicleEntity firstVehicle = VehicleEntity.builder()
                 .user(testUser)
-                .brand("BMW")
-                .model("3rd-Series")
+                .brand(BRAND_BMW)
+                .model(BMW_MODEL)
                 .build();
 
         VehicleEntity secondVehicle = VehicleEntity.builder()
                 .user(testUser)
-                .brand("Audi")
-                .model("A6")
+                .brand(BRAND_AUDI)
+                .model(AUDI_MODEL)
                 .build();
 
         BookingEntity firstTestBooking = BookingEntity.builder()
                 .user(testUser)
                 .vehicle(firstVehicle)
                 .serviceType(ServiceTypeEnum.DIAGNOSTICS)
-                .description("Some description")
+                .description(FIRST_DESCRIPTION)
                 .build();
 
         BookingEntity secondTestBooking = BookingEntity.builder()
                 .user(testUser)
                 .vehicle(secondVehicle)
                 .serviceType(ServiceTypeEnum.OIL_CHANGE)
-                .description("Some test description")
+                .description(SECOND_DESCRIPTION)
                 .build();
 
         userRepository.save(testUser);
@@ -105,10 +127,10 @@ public class BookingControllerIT {
     void getUserBookings_Bookings_Returned() throws Exception {
         mockMvc.perform(MockMvcRequestBuilders.get("/api/users/bookings"))
                 .andExpect(MockMvcResultMatchers.status().isOk())
-                .andExpect(MockMvcResultMatchers.jsonPath("$.[0].user.email").value("userEmail@test.com"))
-                .andExpect(MockMvcResultMatchers.jsonPath("$.[0].vehicle.brand").value("BMW"))
-                .andExpect(MockMvcResultMatchers.jsonPath("$.[0].serviceType").value("DIAGNOSTICS"))
-                .andExpect(MockMvcResultMatchers.jsonPath("$.[0].description").value("Some description"));
+                .andExpect(MockMvcResultMatchers.jsonPath("$.[0].user.email").value(USER_EMAIL_TEST))
+                .andExpect(MockMvcResultMatchers.jsonPath("$.[0].vehicle.brand").value(BRAND_BMW))
+                .andExpect(MockMvcResultMatchers.jsonPath("$.[0].serviceType").value(SERVICE_TYPE_DIAGNOSTICS))
+                .andExpect(MockMvcResultMatchers.jsonPath("$.[0].description").value(FIRST_DESCRIPTION));
     }
 
     @Test
@@ -116,10 +138,10 @@ public class BookingControllerIT {
     void getBooking_Booking_Returned() throws Exception {
         mockMvc.perform(MockMvcRequestBuilders.get("/api/users/bookings/1"))
                 .andExpect(MockMvcResultMatchers.status().isOk())
-                .andExpect(MockMvcResultMatchers.jsonPath("$.user.email").value("userEmail@test.com"))
-                .andExpect(MockMvcResultMatchers.jsonPath("$.vehicle.brand").value("BMW"))
-                .andExpect(MockMvcResultMatchers.jsonPath("$.serviceType").value("DIAGNOSTICS"))
-                .andExpect(MockMvcResultMatchers.jsonPath("$.description").value("Some description"));
+                .andExpect(MockMvcResultMatchers.jsonPath("$.user.email").value(USER_EMAIL_TEST))
+                .andExpect(MockMvcResultMatchers.jsonPath("$.vehicle.brand").value(BRAND_BMW))
+                .andExpect(MockMvcResultMatchers.jsonPath("$.serviceType").value(SERVICE_TYPE_DIAGNOSTICS))
+                .andExpect(MockMvcResultMatchers.jsonPath("$.description").value(FIRST_DESCRIPTION));
     }
 
     @Test
@@ -127,14 +149,14 @@ public class BookingControllerIT {
     void createBooking_Booking_Created() throws Exception {
         VehicleDTO vehicleDTO = VehicleDTO.builder()
                 .id(2L)
-                .brand("Audi")
-                .model("A6")
+                .brand(BRAND_AUDI)
+                .model(AUDI_MODEL)
                 .build();
 
         BookingDTO bookingDTO = BookingDTO.builder()
                 .vehicle(vehicleDTO)
                 .serviceType("Diagnostics")
-                .description("Some description")
+                .description(FIRST_DESCRIPTION)
                 .build();
 
         String jsonRequestBody = objectMapper.writeValueAsString(bookingDTO);
@@ -143,10 +165,10 @@ public class BookingControllerIT {
                 .contentType(MediaType.APPLICATION_JSON)
                 .content(jsonRequestBody))
                 .andExpect(MockMvcResultMatchers.status().isCreated())
-                .andExpect(MockMvcResultMatchers.jsonPath("$.vehicle.brand").value("Audi"))
-                .andExpect(MockMvcResultMatchers.jsonPath("$.vehicle.model").value("A6"))
-                .andExpect(MockMvcResultMatchers.jsonPath("$.serviceType").value("DIAGNOSTICS"))
-                .andExpect(MockMvcResultMatchers.jsonPath("$.description").value("Some description"));
+                .andExpect(MockMvcResultMatchers.jsonPath("$.vehicle.brand").value(BRAND_AUDI))
+                .andExpect(MockMvcResultMatchers.jsonPath("$.vehicle.model").value(AUDI_MODEL))
+                .andExpect(MockMvcResultMatchers.jsonPath("$.serviceType").value(SERVICE_TYPE_DIAGNOSTICS))
+                .andExpect(MockMvcResultMatchers.jsonPath("$.description").value(FIRST_DESCRIPTION));
     }
 
     @Test
@@ -154,14 +176,14 @@ public class BookingControllerIT {
     void updateBooking_Booking_Updated() throws Exception {
         VehicleDTO vehicleDTO = VehicleDTO.builder()
                 .id(1L)
-                .brand("BMW")
-                .model("3rd-Series")
+                .brand(BRAND_BMW)
+                .model(BMW_MODEL)
                 .build();
 
         BookingDTO bookingDTO = BookingDTO.builder()
                 .vehicle(vehicleDTO)
                 .serviceType("Suspension Work")
-                .description("Updated description")
+                .description(UPDATED_DESCRIPTION)
                 .build();
 
         String jsonRequestBody = objectMapper.writeValueAsString(bookingDTO);
@@ -170,9 +192,9 @@ public class BookingControllerIT {
                 .content(jsonRequestBody))
                 .andExpect(MockMvcResultMatchers.status().isOk())
                 .andExpect(MockMvcResultMatchers.jsonPath("$.vehicle.id").value(1))
-                .andExpect(MockMvcResultMatchers.jsonPath("$.vehicle.brand").value("BMW"))
-                .andExpect(MockMvcResultMatchers.jsonPath("$.serviceType").value("SUSPENSION_WORK"))
-                .andExpect(MockMvcResultMatchers.jsonPath("$.description").value("Updated description"));
+                .andExpect(MockMvcResultMatchers.jsonPath("$.vehicle.brand").value(BRAND_BMW))
+                .andExpect(MockMvcResultMatchers.jsonPath("$.serviceType").value(SERVICE_TYPE_SUSPENSION_WORK))
+                .andExpect(MockMvcResultMatchers.jsonPath("$.description").value(UPDATED_DESCRIPTION));
     }
 
     @Test
