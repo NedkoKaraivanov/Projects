@@ -34,7 +34,7 @@ public class UserServiceTest {
     private static final String ADMIN_FIRST_NAME = "adminFirstName";
     private static final String ADMIN_LAST_NAME = "adminLastName";
 
-    private static final String NEW_ADMIN_EMAIL = "newAdminEmail";
+    private static final String NEW_ADMIN_EMAIL = "newAdminEmail@test.com";
     private static final String USER_EMAIL = "user@test.com";
 
     private static final String EXISTING_RANDOM_EMAIL = "existingRandomEmail@test.com";
@@ -53,25 +53,14 @@ public class UserServiceTest {
     @Mock
     private PasswordEncoder mockPasswordEncoder;
 
+    @Mock
+    private Principal principal;
+
     @InjectMocks
     private UserService toTest;
 
-    public static class TestPrincipal implements Principal {
-        private final String email;
-
-        public TestPrincipal(String email) {
-            this.email = email;
-        }
-
-        @Override
-        public String getName() {
-            return email;
-        }
-    }
-
     @Test()
     void testGetUserByEmailUserFound() {
-
         UserRoleEntity testAdminRole = UserRoleEntity.builder().role(UserRoleEnum.ADMIN).build();
         UserRoleEntity testUserRole = UserRoleEntity.builder().role(UserRoleEnum.USER).build();
 
@@ -107,7 +96,6 @@ public class UserServiceTest {
 
     @Test
     void testUpdateProfileValidEmail() {
-        Principal principal = new TestPrincipal(EXISTING_EMAIL);
         UserRoleEntity testAdminRole = UserRoleEntity.builder().role(UserRoleEnum.ADMIN).build();
 
         UserEntity testUserEntity = UserEntity.builder()
@@ -120,7 +108,9 @@ public class UserServiceTest {
                 .email(NEW_ADMIN_EMAIL)
                 .password(TEST_PASSWORD).build();
 
-        when(mockUserRepository.findByEmail(EXISTING_EMAIL))
+        when(principal.getName()).thenReturn(EXISTING_EMAIL);
+
+        when(mockUserRepository.findByEmail(principal.getName()))
                 .thenReturn(Optional.of(testUserEntity));
 
         UserDTO resultDTO = toTest.updateProfile(principal, newUserInformation);
@@ -131,7 +121,6 @@ public class UserServiceTest {
 
     @Test
     void testUpdateProfileInvalidEmail() {
-        Principal principal = new TestPrincipal(EXISTING_EMAIL);
         UserRoleEntity testAdminRole = UserRoleEntity.builder().role(UserRoleEnum.ADMIN).build();
 
         UserEntity testUserEntity = UserEntity.builder()
@@ -144,6 +133,8 @@ public class UserServiceTest {
                 .email(EXISTING_RANDOM_EMAIL)
                 .password(TEST_PASSWORD)
                 .roles(List.of(new UserRoleEntity(UserRoleEnum.USER))).build();
+
+        when(principal.getName()).thenReturn(USER_EMAIL);
 
         when(mockUserRepository.findByEmail(principal.getName()))
                 .thenReturn(Optional.of(testUserEntity));

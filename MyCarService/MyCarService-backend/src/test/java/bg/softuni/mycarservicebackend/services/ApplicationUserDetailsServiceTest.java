@@ -4,11 +4,10 @@ import bg.softuni.mycarservicebackend.domain.entities.UserEntity;
 import bg.softuni.mycarservicebackend.domain.entities.UserRoleEntity;
 import bg.softuni.mycarservicebackend.domain.enums.UserRoleEnum;
 import bg.softuni.mycarservicebackend.repositories.UserRepository;
-import bg.softuni.mycarservicebackend.services.ApplicationUserDetailsService;
 import org.junit.gen5.api.Assertions;
-import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.ExtendWith;
+import org.mockito.InjectMocks;
 import org.mockito.Mock;
 import org.mockito.junit.jupiter.MockitoExtension;
 import org.springframework.security.core.userdetails.UserDetails;
@@ -29,15 +28,11 @@ public class ApplicationUserDetailsServiceTest {
 
     private final String TEST_PASSWORD = "123123";
 
-    private ApplicationUserDetailsService toTest;
-
     @Mock
     private UserRepository mockUserRepository;
 
-    @BeforeEach
-    void setUp() {
-        toTest = new ApplicationUserDetailsService(mockUserRepository);
-    }
+    @InjectMocks
+    private ApplicationUserDetailsService toTest;
 
     @Test
     void testUserFound() {

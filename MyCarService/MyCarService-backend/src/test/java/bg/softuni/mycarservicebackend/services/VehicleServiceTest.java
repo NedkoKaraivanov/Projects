@@ -8,9 +8,9 @@ import bg.softuni.mycarservicebackend.domain.enums.UserRoleEnum;
 import bg.softuni.mycarservicebackend.repositories.UserRepository;
 import bg.softuni.mycarservicebackend.repositories.VehicleRepository;
 import org.junit.jupiter.api.Assertions;
-import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.ExtendWith;
+import org.mockito.InjectMocks;
 import org.mockito.Mock;
 import org.mockito.Mockito;
 import org.mockito.junit.jupiter.MockitoExtension;
@@ -35,34 +35,20 @@ public class VehicleServiceTest {
 
     private static final Long VEHICLE_ID = 1L;
 
-    private VehicleService toTest;
     @Mock
     private UserRepository mockUserRepository;
 
     @Mock
     private VehicleRepository mockVehicleRepository;
 
-    @BeforeEach
-    void setUp() {
-        toTest = new VehicleService(mockUserRepository, mockVehicleRepository);
-    }
+    @Mock
+    private Principal principal;
 
-    public static class TestPrincipal implements Principal {
-        private final String email;
-
-        public TestPrincipal(String email) {
-            this.email = email;
-        }
-
-        @Override
-        public String getName() {
-            return email;
-        }
-    }
+    @InjectMocks
+    private VehicleService toTest;
 
     @Test
     void testGetUserVehicles() {
-        Principal principal = new TestPrincipal(EXISTING_EMAIL);
         UserRoleEntity testAdminRole = UserRoleEntity.builder().role(UserRoleEnum.ADMIN).build();
 
         VehicleEntity testVehicleEntity = VehicleEntity.builder()
@@ -77,6 +63,8 @@ public class VehicleServiceTest {
                 .vehicles(List.of(testVehicleEntity))
                 .build();
 
+        when(principal.getName()).thenReturn(EXISTING_EMAIL);
+
         when(mockUserRepository.findByEmail(principal.getName()))
                 .thenReturn(Optional.of(testUserEntity));
 
@@ -90,7 +78,6 @@ public class VehicleServiceTest {
 
     @Test
     void testGetVehicle_ExistingVehicle() {
-
         VehicleEntity testVehicleEntity = VehicleEntity.builder()
                 .brand(BRAND_BMW)
                 .model(BMW_MODEL)
@@ -107,7 +94,6 @@ public class VehicleServiceTest {
 
     @Test
     void testAddVehicle() {
-        Principal principal = new TestPrincipal(EXISTING_EMAIL);
         UserRoleEntity testUserRole = UserRoleEntity.builder().role(UserRoleEnum.USER).build();
 
         VehicleDTO testVehicleDTO = VehicleDTO.builder()
@@ -121,6 +107,8 @@ public class VehicleServiceTest {
                 .roles(List.of(testUserRole))
                 .vehicles(new ArrayList<>())
                 .build();
+
+        when(principal.getName()).thenReturn(EXISTING_EMAIL);
 
         when(mockUserRepository.findByEmail(principal.getName()))
                 .thenReturn(Optional.of(testUserEntity));

@@ -12,17 +12,11 @@ import bg.softuni.mycarservicebackend.domain.enums.UserRoleEnum;
 import bg.softuni.mycarservicebackend.repositories.BookingRepository;
 import bg.softuni.mycarservicebackend.repositories.UserRepository;
 import bg.softuni.mycarservicebackend.repositories.VehicleRepository;
-import bg.softuni.mycarservicebackend.services.BookingService;
-import bg.softuni.mycarservicebackend.services.UserService;
-import bg.softuni.mycarservicebackend.services.VehicleService;
 import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.ExtendWith;
-import org.mockito.ArgumentCaptor;
-import org.mockito.Captor;
-import org.mockito.Mock;
-import org.mockito.Mockito;
+import org.mockito.*;
 import org.mockito.junit.jupiter.MockitoExtension;
 
 import java.security.Principal;
@@ -62,7 +56,6 @@ public class BookingServiceTest {
     private static final Long USER_ID = 1L;
 
     private static final String TEST_SERVICE_TYPE_DIAGNOSTICS = "Diagnostics";
-    private BookingService toTest;
 
     @Mock
     private UserRepository mockUserRepository;
@@ -79,8 +72,14 @@ public class BookingServiceTest {
     @Mock
     private VehicleService mockVehicleService;
 
+    @Mock
+    private Principal principal;
+
     @Captor
     private ArgumentCaptor<BookingEntity> bookingEntityArgumentCaptor;
+
+    @InjectMocks
+    private BookingService toTest;
 
     UserRoleEntity testUserRole;
 
@@ -94,12 +93,6 @@ public class BookingServiceTest {
 
     @BeforeEach
     void setUp() {
-        toTest = new BookingService(mockUserRepository,
-                mockUserService,
-                mockBookingRepository,
-                mockVehicleRepository,
-                mockVehicleService);
-
         testUserRole = UserRoleEntity.builder().role(UserRoleEnum.USER).build();
 
         testVehicleEntity = VehicleEntity.builder()
@@ -128,25 +121,13 @@ public class BookingServiceTest {
                 .build();
     }
 
-    public static class TestPrincipal implements Principal {
-        private final String email;
-
-        public TestPrincipal(String email) {
-            this.email = email;
-        }
-
-        @Override
-        public String getName() {
-            return email;
-        }
-    }
-
     @Test
     void testGetUserBookings() {
-        Principal principal = new TestPrincipal(TEST_EMAIL);
+        when(principal.getName()).thenReturn(TEST_EMAIL);
 
         when(mockUserRepository.findByEmail(principal.getName()))
                 .thenReturn(Optional.of(testUserEntity));
+
         when(mockBookingRepository.findAllByUser(testUserEntity))
                 .thenReturn(List.of(firstBookingEntity));
 
@@ -182,8 +163,6 @@ public class BookingServiceTest {
 
     @Test
     void testCreateBooking() {
-        Principal principal = new TestPrincipal(TEST_EMAIL);
-
         VehicleDTO vehicleDTO = VehicleDTO.builder()
                 .id(VEHICLE_ID)
                 .brand(BRAND_BMW)
@@ -211,6 +190,8 @@ public class BookingServiceTest {
                 .isConfirmed(true)
                 .build();
 
+        when(principal.getName()).thenReturn(TEST_EMAIL);
+
         when(mockUserRepository.findByEmail(principal.getName()))
                 .thenReturn(Optional.of(testUserEntity));
 
@@ -236,7 +217,6 @@ public class BookingServiceTest {
 
     @Test
     void testUpdateBooking() {
-
         VehicleDTO vehicleDTO = VehicleDTO.builder()
                 .id(VEHICLE_ID)
                 .brand(BRAND_AUDI)
@@ -286,7 +266,6 @@ public class BookingServiceTest {
 
     @Test
     void testUpdateAdminBooking() {
-
         BookingDTO bookingDTO = BookingDTO.builder()
                 .isReady(true)
                 .isConfirmed(true)
@@ -336,7 +315,6 @@ public class BookingServiceTest {
 
     @Test
     void testGetServiceType() {
-
         ServiceTypeEnum serviceTypeEnum = toTest.getServiceType(TEST_SERVICE_TYPE_DIAGNOSTICS);
 
         Assertions.assertNotNull(serviceTypeEnum);
