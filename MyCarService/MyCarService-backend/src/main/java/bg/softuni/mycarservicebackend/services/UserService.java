@@ -1,22 +1,24 @@
 package bg.softuni.mycarservicebackend.services;
 
-import bg.softuni.mycarservicebackend.auth.AuthenticationService;
-import bg.softuni.mycarservicebackend.config.JwtService;
+import bg.softuni.mycarservicebackend.domain.dtos.ChangeEmailDTO;
 import bg.softuni.mycarservicebackend.domain.dtos.UserDTO;
 import bg.softuni.mycarservicebackend.domain.dtos.UserRoleDTO;
 import bg.softuni.mycarservicebackend.domain.entities.UserEntity;
 import bg.softuni.mycarservicebackend.domain.enums.UserRoleEnum;
+import bg.softuni.mycarservicebackend.exceptions.ExistingUserException;
 import bg.softuni.mycarservicebackend.repositories.UserRepository;
 import bg.softuni.mycarservicebackend.repositories.UserRoleRepository;
 import lombok.RequiredArgsConstructor;
 import org.modelmapper.ModelMapper;
-import org.springframework.security.core.userdetails.UserDetails;
+import org.springframework.security.authentication.AuthenticationManager;
+import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
 import org.springframework.security.core.userdetails.UsernameNotFoundException;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 
 import java.security.Principal;
 import java.util.List;
+import java.util.Optional;
 import java.util.stream.Collectors;
 
 @Service
@@ -30,6 +32,8 @@ public class UserService {
     private final ModelMapper modelMapper;
 
     private final PasswordEncoder passwordEncoder;
+
+    private final AuthenticationManager authenticationManager;
 
     public UserEntity getUserByEmail(String email) {
         return userRepository.findByEmail(email).orElseThrow(() -> new UsernameNotFoundException("UserEntity with name " + email + " not found!"));
@@ -77,5 +81,22 @@ public class UserService {
                 .roles(List.of(userRolesAdmin))
                 .build();
         userRepository.save(adminUser);
+    }
+
+    public void updateEmail(Principal principal, ChangeEmailDTO changeEmailDTO) {
+
+        UserEntity existingUser = this.userRepository.findByEmail(principal.getName()).get();
+
+        authenticationManager.authenticate(
+                new UsernamePasswordAuthenticationToken(
+                        existingUser.getEmail(),
+                        changeEmailDTO.getPassword()));
+
+        if (this.userRepository.findByEmail(changeEmailDTO.getNewEmail()).isPresent()) {
+            throw new ExistingUserException();
+        }
+
+        existingUser.setEmail(changeEmailDTO.getNewEmail());
+        this.userRepository.save(existingUser);
     }
 }

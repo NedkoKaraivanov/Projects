@@ -1,9 +1,13 @@
 package bg.softuni.mycarservicebackend.web;
 
+import bg.softuni.mycarservicebackend.domain.dtos.ChangeEmailDTO;
 import bg.softuni.mycarservicebackend.domain.dtos.UserDTO;
+import bg.softuni.mycarservicebackend.exceptions.ExistingUserException;
 import bg.softuni.mycarservicebackend.services.UserService;
 import lombok.RequiredArgsConstructor;
+import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
+import org.springframework.security.core.AuthenticationException;
 import org.springframework.web.bind.annotation.*;
 
 import java.security.Principal;
@@ -27,6 +31,18 @@ public class UserController {
             return ResponseEntity.ok(this.userService.updateProfile(principal, userDTO));
         } catch (RuntimeException e) {
             return ResponseEntity.status(409).build();
+        }
+    }
+
+    @PatchMapping("/update-email")
+    public ResponseEntity<Void> updateEmail(Principal principal, @RequestBody ChangeEmailDTO changeEmailDTO) {
+        try {
+            this.userService.updateEmail(principal, changeEmailDTO);
+            return ResponseEntity.status(HttpStatus.OK).build();
+        } catch (ExistingUserException e) {
+            return ResponseEntity.status(HttpStatus.CONFLICT).build();
+        } catch (AuthenticationException e) {
+            return ResponseEntity.status(HttpStatus.UNAUTHORIZED).build();
         }
     }
 
