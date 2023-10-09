@@ -1,0 +1,65 @@
+<form class="profile" [formGroup]="form" (ngSubmit)="updateEmailHandler()">
+  <h2>Update Email</h2>
+  <div class="note">
+  Please Note: After Successful Email change, you will be automatically logged
+  out.
+</div>
+<hr>
+  <mat-card class="example-card">
+    <img mat-card-image src="/assets/images/profile.png" alt="user photo" />
+  </mat-card>
+  <br />
+  <mat-form-field>
+    <mat-label>New Email</mat-label>
+    <input type="email" matInput formControlName="email" required />
+    <mat-error *ngIf="form.get('email')?.hasError('required')"
+      >Email is required</mat-error
+    >
+    <mat-error *ngIf="form.get('email')?.hasError('email')"
+      >Invalid email format</mat-error
+    >
+  </mat-form-field>
+  <mat-form-field>
+    <mat-label>Confirm Email</mat-label>
+    <input
+      type="email"
+      matInput
+      formControlName="confirmEmail"
+      required
+      pattern="{{ form.value.email }}"
+    />
+    <mat-error *ngIf="form.get('email')?.hasError('required')"
+      >Email is required</mat-error
+    >
+    <mat-error *ngIf="form.value.confirmEmail">Email does not match</mat-error>
+  </mat-form-field>
+  <mat-form-field>
+    <mat-label>Password</mat-label>
+    <input type="password" matInput formControlName="password" required />
+    <mat-error *ngIf="form.get('password')?.hasError('required')"
+      >Password is required</mat-error
+    >
+    <mat-error *ngIf="form.get('password')?.hasError('minlength')"
+      >Must be at least 6 symbols</mat-error
+    >
+  </mat-form-field>
+  <mat-error *ngIf="form?.hasError('unauthenticated')"
+    >Wrong Email or Password</mat-error
+  >
+  <mat-error *ngIf="form?.hasError('userExists')"
+    >Email is already taken</mat-error
+  >
+  <br />
+  <button
+  mat-raised-button
+  color="primary"
+  class="cancel-btn"
+  (click)="cancelUpdateHandler()"
+  >
+  Cancel
+</button>
+<button type="submit" class="save-btn" mat-raised-button color="accent">
+    Save
+</button>
+  <hr />
+</form>

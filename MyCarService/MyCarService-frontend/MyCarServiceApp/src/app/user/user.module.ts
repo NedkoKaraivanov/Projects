@@ -13,6 +13,7 @@ import { UpdateVehicleComponent } from './update-vehicle/update-vehicle.componen
 import { AddBookingComponent } from './add-booking/add-booking.component';
 import { CheckBookingsComponent } from './check-bookings/check-bookings.component';
 import { UpdateUserBookingComponent } from './update-user-booking/update-user-booking.component';
+import { UpdateEmailComponent } from './update-email/update-email.component';
 
 @NgModule({
   declarations: [
@@ -24,7 +25,8 @@ import { UpdateUserBookingComponent } from './update-user-booking/update-user-bo
     UpdateVehicleComponent,
     AddBookingComponent,
     CheckBookingsComponent,
-    UpdateUserBookingComponent
+    UpdateUserBookingComponent,
+    UpdateEmailComponent
   ],
   imports: [
     CommonModule, UserRoutingModule, FormsModule, MaterialModule, ReactiveFormsModule, SharedModule

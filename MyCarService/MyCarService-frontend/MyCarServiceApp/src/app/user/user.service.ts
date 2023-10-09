@@ -2,6 +2,7 @@ import { Injectable, OnDestroy } from '@angular/core';
 import { User } from '../types/user';
 import { BehaviorSubject, Observable, Subscription, tap } from 'rxjs';
 import { HttpClient } from '@angular/common/http';
+import { UpdateEmailDto } from '../types/updateEmailDto';
 
 @Injectable({
   providedIn: 'root',
@@ -11,6 +12,7 @@ export class UserService implements OnDestroy {
   login_url: string = 'http://localhost:8080/api/auth/authenticate';
   logout_url: string = 'http://localhost:8080/api/auth/logout';
   profile_url: string = 'http://localhost:8080/api/users/profile';
+  update_email_url: string = 'http://localhost:8080/api/users/update-email';
 
   private user$$ = new BehaviorSubject<User | undefined>(undefined);
   public user$ = this.user$$.asObservable();
@@ -53,6 +55,9 @@ export class UserService implements OnDestroy {
 
   logout() {
     localStorage.setItem('isLogged', '');
+    localStorage.setItem('access_token', '');
+    localStorage.setItem('refresh_token', '');
+    localStorage.setItem('roles', '');
     return this.http
       .post<User>(this.logout_url, {})
       .pipe(tap(() => this.user$$.next(undefined)));
@@ -68,6 +73,10 @@ export class UserService implements OnDestroy {
     return this.http
       .put<User>(this.profile_url, formValue)
       .pipe(tap((user) => this.user$$.next(user)));
+  }
+
+  updateEmail(data: UpdateEmailDto) {
+    return this.http.patch<UpdateEmailDto>(this.update_email_url, data);
   }
 
   ngOnDestroy(): void {

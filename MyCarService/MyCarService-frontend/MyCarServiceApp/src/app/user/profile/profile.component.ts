@@ -3,13 +3,7 @@ import { UserService } from '../user.service';
 import { FormBuilder, Validators } from '@angular/forms';
 import { Router } from '@angular/router';
 import { ToastrService } from 'ngx-toastr';
-
-interface Profile {
-  email: string;
-  phoneNumber: string;
-  firstName: string;
-  lastName: string;
-}
+import { Profile } from 'src/app/types/profile';
 
 @Component({
   selector: 'app-profile',
@@ -61,7 +55,6 @@ export class ProfileComponent implements OnInit {
         this.form.setValue(this.profileDetails);
       },
     });
-    console.log(this.form.value);
   }
 
   toggleEditMode(): void {
@@ -70,7 +63,11 @@ export class ProfileComponent implements OnInit {
 
   cancelEditHandler(): void {
     this.form.setValue(this.profileDetails);
-    this.isEditMode = !this.isEditMode;
+    this.isEditMode = false;
+  }
+
+  updateEmailHandler(): void {
+    this.router.navigate(['/update-email'])
   }
 
   saveProfileHandler(): void {
@@ -84,13 +81,10 @@ export class ProfileComponent implements OnInit {
     this.userService.updateProfile(this.form.value).subscribe({
       next: () => {
         this.toastr.success('Profile updated', 'Success');
-        this.toggleEditMode();
+        this.isEditMode = false;
       },
       error: (err) => {
-        if (err.status === 409) {
-          console.log(err);
-          this.form.setErrors({ userExists: true });
-        }
+        console.log(err);
       },
     });
   }

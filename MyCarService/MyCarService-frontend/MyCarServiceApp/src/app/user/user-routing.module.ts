@@ -13,6 +13,7 @@ import { UserActivate } from '../core/guards/user.activate';
 import { ServicesPageComponent } from '../services-page/services-page.component';
 import { AboutPageComponent } from '../about-page/about-page.component';
 import { UpdateUserBookingComponent } from './update-user-booking/update-user-booking.component';
+import { UpdateEmailComponent } from './update-email/update-email.component';
 
 const routes: Routes = [
   {
@@ -68,6 +69,11 @@ const routes: Routes = [
     component: UpdateUserBookingComponent,
     canActivate: [UserActivate],
   },
+  {
+    path: 'update-email',
+    component: UpdateEmailComponent,
+    canActivate: [UserActivate]
+  }
 ];
 
 @NgModule({

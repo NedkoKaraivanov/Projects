@@ -44,6 +44,10 @@ export class UpdateUserBookingComponent implements OnInit {
     description: [''],
   });
 
+  compareObjects(o1: Vehicle, o2: Vehicle): boolean {
+    return o1.id === o2.id && o1.brand === o2.brand && o1.model === o2.model;
+  }
+
   ngOnInit(): void {
     this.id = this.route.snapshot.params['id'];
     this.bookingService.getUserBooking(Number(this.id)).subscribe({
@@ -64,9 +68,7 @@ export class UpdateUserBookingComponent implements OnInit {
 
     this.vehicleService.getUserVehicles().subscribe({
       next: (vehicles) => {
-        this.vehicles = vehicles.filter(
-          (vehicle) => vehicle.id !== this.booking?.vehicle.id
-        );
+        this.vehicles = vehicles;
       },
       error: (err) => {
         console.log(err);

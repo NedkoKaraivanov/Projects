@@ -1,30 +1,24 @@
 .welcome-container {
   margin-bottom: 5px;
   color: rgba(0, 0, 0, 0.884);
-  font-family: Arial, Helvetica, sans-serif;
+  font-family: 'arial';
 }
 .welcome-msg {
-  width: 100%;
   box-sizing: border-box;
-  padding: 5px 10px;
+  text-align: center;
+  width: 100%;
+  line-height: 1.6;
+  padding: 15px;
 }
 
 .welcome-msg p {
   display: inline;
-  font-style: italic;
   font-family: '';
   color: black;
-  font-size: 27px;
-}
-
-.info-msg {
-  box-sizing: border-box;
-  padding: 5px 10px;
-  text-align: center;
 }
 
 mat-grid-tile {
-  border: 2px solid #ffffff;
+  border: 2px solid snow;
   border-radius: 6px;
   background-size: cover;
   background-repeat: no-repeat;
@@ -34,5 +28,9 @@ mat-grid-tile {
 
 mat-grid-tile:hover {
   scale: 105%;
+}
+
+mat-grid-tile-header {
+  font-size: 18px;
 }
 

@@ -1,21 +1,22 @@
 <div class="container">
   <ng-container *ngIf="!isEditMode">
-      <h2>Profile</h2>
+    <h2>Profile</h2>
     <mat-card class="example-card">
-      <mat-card-header> 
-      </mat-card-header>
+      <mat-card-header> </mat-card-header>
       <img mat-card-image src="/assets/images/profile.png" alt="user photo" />
-      <br>
+      <br />
       <mat-card-content>
         <div class="profile-details">
           <mat-icon>person</mat-icon> First name:
           <span class="details">{{ profileDetails.firstName }}</span>
         </div>
         <div class="profile-details">
-          <mat-icon>person</mat-icon> Last name: <span class="details">{{ profileDetails.lastName }}</span>
+          <mat-icon>person</mat-icon> Last name:
+          <span class="details">{{ profileDetails.lastName }}</span>
         </div>
         <div class="profile-details">
-          <mat-icon>email</mat-icon> Email: <span class="details">{{ profileDetails.email }}</span>
+          <mat-icon>email</mat-icon> Email:
+          <span class="details">{{ profileDetails.email }}</span>
         </div>
         <div class="profile-details">
           <mat-icon>phone</mat-icon> Phone number:
@@ -23,8 +24,21 @@
         </div>
       </mat-card-content>
       <mat-card-actions>
-        <button class="edit-btn" mat-raised-button color="primary" (click)="toggleEditMode()">
-          Edit
+        <button
+          class="edit-btn"
+          mat-raised-button
+          color="primary"
+          (click)="toggleEditMode()"
+        >
+          Edit Details
+        </button>
+        <button
+          class="edit-btn"
+          mat-raised-button
+          color="primary"
+          (click)="updateEmailHandler()"
+        >
+          Change Email
         </button>
       </mat-card-actions>
     </mat-card>
@@ -37,17 +51,6 @@
         <img mat-card-image src="/assets/images/profile.png" alt="user photo" />
       </mat-card>
       <br />
-      <mat-form-field>
-        <mat-label>email</mat-label>
-        <input type="email" matInput formControlName="email" required/>
-        <mat-error *ngIf="form.get('email')?.hasError('required')"
-          >Email is required</mat-error
-        >
-        <mat-error *ngIf="form.get('email')?.hasError('email')"
-          >Invalid email format</mat-error
-        >
-      </mat-form-field>
-
       <mat-form-field>
         <mat-label>Phone number</mat-label>
         <input matInput formControlName="phoneNumber" />
@@ -69,10 +72,7 @@
       <button type="submit" class="save-btn" mat-raised-button color="accent">
         Save
       </button>
-      <hr>
-      <mat-error *ngIf="form?.hasError('userExists')"
-        >Email is already taken</mat-error
-      >
+      <hr />
     </form>
   </ng-container>
 </div>

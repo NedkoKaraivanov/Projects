@@ -3,10 +3,9 @@
     <h2>Update Booking Details</h2>
     <mat-form-field>
       <mat-label>Update Vehicle</mat-label>
-      <mat-select [(value)]="selectedVehicle" formControlName="vehicle" required>
-        <mat-option [value]="selectedVehicle">{{ selectedVehicle?.brand }} {{ selectedVehicle?.model }}</mat-option>
-        <mat-option *ngFor="let vehicle of vehicles" [value]="vehicle"
-          >{{ vehicle?.brand }} {{ vehicle?.model }}</mat-option
+      <mat-select [(ngModel)]="selectedVehicle" [compareWith]="compareObjects" formControlName="vehicle" required>
+        <mat-option *ngFor="let selectedVehicle of vehicles" [value]="selectedVehicle"
+          >{{ selectedVehicle?.brand }} {{ selectedVehicle?.model }}</mat-option
         >
       </mat-select>
       <mat-error *ngIf="form.get('vehicle')?.hasError('required')"
