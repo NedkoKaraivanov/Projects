@@ -12,6 +12,7 @@ import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.ExtendWith;
+import org.mockito.InjectMocks;
 import org.mockito.Mock;
 import org.mockito.Mockito;
 import org.mockito.junit.jupiter.MockitoExtension;
@@ -28,22 +29,18 @@ import static org.mockito.Mockito.when;
 public class VehicleServiceTest {
 
     private final String EXISTING_EMAIL = "user@test.com";
-
+    private final String TEST_PASSWORD = "123123";
     private final String BRAND_BMW = "BMW";
-
     private final String BMW_MODEL = "1st-Series";
 
-    private VehicleService toTest;
     @Mock
     private UserRepository mockUserRepository;
 
     @Mock
     private VehicleRepository mockVehicleRepository;
 
-    @BeforeEach
-    void setUp() {
-        toTest = new VehicleService(mockUserRepository, mockVehicleRepository);
-    }
+    @InjectMocks
+    private VehicleService toTest;
 
     public static class TestPrincipal implements Principal {
         private final String email;
@@ -70,7 +67,7 @@ public class VehicleServiceTest {
 
         UserEntity testUserEntity = UserEntity.builder()
                 .email(EXISTING_EMAIL)
-                .password("123123")
+                .password(TEST_PASSWORD)
                 .roles(List.of(testAdminRole))
                 .vehicles(List.of(testVehicleEntity))
                 .build();
@@ -115,7 +112,7 @@ public class VehicleServiceTest {
 
         UserEntity testUserEntity = UserEntity.builder()
                 .email(EXISTING_EMAIL)
-                .password("123123")
+                .password(TEST_PASSWORD)
                 .roles(List.of(testUserRole))
                 .vehicles(new ArrayList<>())
                 .build();
@@ -159,7 +156,7 @@ public class VehicleServiceTest {
 
         UserEntity testUserEntity = UserEntity.builder()
                 .email(EXISTING_EMAIL)
-                .password("123123")
+                .password(TEST_PASSWORD)
                 .roles(List.of(testUserRole))
                 .vehicles(new ArrayList<>())
                 .build();
