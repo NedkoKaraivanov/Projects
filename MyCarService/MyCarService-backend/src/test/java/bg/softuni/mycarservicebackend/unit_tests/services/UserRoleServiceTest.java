@@ -4,9 +4,9 @@ import bg.softuni.mycarservicebackend.domain.entities.UserRoleEntity;
 import bg.softuni.mycarservicebackend.domain.enums.UserRoleEnum;
 import bg.softuni.mycarservicebackend.repositories.UserRoleRepository;
 import bg.softuni.mycarservicebackend.services.UserRoleService;
-import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.ExtendWith;
+import org.mockito.InjectMocks;
 import org.mockito.Mock;
 import org.mockito.junit.jupiter.MockitoExtension;
 
@@ -14,7 +14,6 @@ import java.util.Arrays;
 import java.util.List;
 import java.util.stream.Collectors;
 
-import static org.mockito.ArgumentMatchers.any;
 import static org.mockito.Mockito.verify;
 import static org.mockito.Mockito.when;
 
@@ -26,12 +25,9 @@ public class UserRoleServiceTest {
 
     private Long COUNT_ROLES = 0L;
 
-    private UserRoleService toTest;
 
-    @BeforeEach
-    void setUp() {
-        toTest = new UserRoleService(mockUserRoleRepository);
-    }
+    @InjectMocks
+    private UserRoleService toTest;
 
 
     @Test

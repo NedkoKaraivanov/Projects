@@ -19,10 +19,7 @@ import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.ExtendWith;
-import org.mockito.ArgumentCaptor;
-import org.mockito.Captor;
-import org.mockito.Mock;
-import org.mockito.Mockito;
+import org.mockito.*;
 import org.mockito.junit.jupiter.MockitoExtension;
 
 import java.security.Principal;
@@ -39,6 +36,7 @@ public class BookingServiceTest {
 
     private final String TEST_EMAIL = "user@test.com";
 
+    private final String TEST_USER_PASSWORD = "123123";
     private final String BRAND_BMW = "BMW";
 
     private final String BMW_MODEL = "1st-Series";
@@ -51,8 +49,9 @@ public class BookingServiceTest {
 
     private final Double TEST_PRICE = 500.00;
 
+    private final String TEST_DIAGNOSTICS_ENUM = "DIAGNOSTICS";
+
     private final String TEST_SERVICE_TYPE_DIAGNOSTICS = "Diagnostics";
-    private BookingService toTest;
 
     @Mock
     private UserRepository mockUserRepository;
@@ -72,6 +71,9 @@ public class BookingServiceTest {
     @Captor
     private ArgumentCaptor<BookingEntity> bookingEntityArgumentCaptor;
 
+    @InjectMocks
+    private BookingService toTest;
+
     UserRoleEntity testUserRole;
 
     VehicleEntity testVehicleEntity;
@@ -84,12 +86,6 @@ public class BookingServiceTest {
 
     @BeforeEach
     void setUp() {
-        toTest = new BookingService(mockUserRepository,
-                mockUserService,
-                mockBookingRepository,
-                mockVehicleRepository,
-                mockVehicleService);
-
         testUserRole = UserRoleEntity.builder().role(UserRoleEnum.USER).build();
 
         testVehicleEntity = VehicleEntity.builder()
@@ -99,7 +95,7 @@ public class BookingServiceTest {
 
         testUserEntity = UserEntity.builder()
                 .email(TEST_EMAIL)
-                .password("123123")
+                .password(TEST_USER_PASSWORD)
                 .roles(List.of(testUserRole, testUserRole))
                 .vehicles(List.of(testVehicleEntity))
                 .build();
@@ -143,7 +139,7 @@ public class BookingServiceTest {
         List<BookingDTO> testUserBookings = toTest.getUserBookings(principal);
         Assertions.assertEquals(1, testUserBookings.size());
         Assertions.assertEquals(TEST_EMAIL, firstBookingEntity.getUser().getEmail());
-        Assertions.assertEquals("DIAGNOSTICS", testUserBookings.get(0).getServiceType());
+        Assertions.assertEquals(TEST_DIAGNOSTICS_ENUM, testUserBookings.get(0).getServiceType());
     }
 
     @Test
@@ -169,7 +165,7 @@ public class BookingServiceTest {
 
         Assertions.assertEquals(firstBookingEntity.getId(), bookingDTO.getId());
         Assertions.assertTrue(firstBookingEntity.getIsConfirmed());
-        Assertions.assertEquals("DIAGNOSTICS", bookingDTO.getServiceType());
+        Assertions.assertEquals(TEST_DIAGNOSTICS_ENUM, bookingDTO.getServiceType());
     }
 
     @Test
@@ -185,7 +181,7 @@ public class BookingServiceTest {
         UserDTO userDTO = UserDTO.builder()
                 .id(1L)
                 .email(TEST_EMAIL)
-                .password("123123")
+                .password(TEST_USER_PASSWORD)
                 .vehicles(List.of(vehicleDTO))
                 .build();
 
@@ -193,7 +189,7 @@ public class BookingServiceTest {
                 .user(userDTO)
                 .vehicle(vehicleDTO)
                 .isConfirmed(true)
-                .serviceType("DIAGNOSTICS").build();
+                .serviceType(TEST_DIAGNOSTICS_ENUM).build();
 
         BookingEntity bookingToBeSaved = BookingEntity
                 .builder()
@@ -239,7 +235,7 @@ public class BookingServiceTest {
         UserDTO userDTO = UserDTO.builder()
                 .id(1L)
                 .email(TEST_EMAIL)
-                .password("123123")
+                .password(TEST_USER_PASSWORD)
                 .vehicles(List.of(vehicleDTO))
                 .build();
 

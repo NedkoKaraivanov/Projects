@@ -14,7 +14,9 @@ import org.mockito.InjectMocks;
 import org.mockito.Mock;
 import org.mockito.Mockito;
 import org.mockito.junit.jupiter.MockitoExtension;
+import org.modelmapper.ModelMapper;
 import org.springframework.security.core.userdetails.UsernameNotFoundException;
+import org.springframework.security.crypto.password.PasswordEncoder;
 
 import java.security.Principal;
 import java.util.List;
@@ -30,6 +32,7 @@ public class UserServiceTest {
     private final String TEST_USER_EMAIL = "user@test.com";
     private final String TEST_ADMIN_FIRSTNAME = "adminFirstName";
     private final String TEST_ADMIN_LASTNAME = "adminLastName";
+
     private final String NEW_ADMIN_EMAIL = "newAdminEmail";
     private final String EXISTING_EMAIL = "admin@test.com";
     private final String EXISTING_RANDOM_EMAIL = "existingRandomEmail@test.com";
@@ -38,6 +41,11 @@ public class UserServiceTest {
     @Mock
     private UserRepository mockUserRepository;
 
+    @Mock
+    private PasswordEncoder passwordEncoder;
+
+    @Mock
+    private ModelMapper modelMapper;
     @Mock
     private UserRoleRepository mockUserRoleRepository;
 
