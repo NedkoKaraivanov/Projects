@@ -4,6 +4,7 @@ import bg.softuni.mycarservicebackend.config.JwtService;
 import bg.softuni.mycarservicebackend.domain.entities.UserEntity;
 import bg.softuni.mycarservicebackend.domain.entities.UserRoleEntity;
 import bg.softuni.mycarservicebackend.domain.enums.UserRoleEnum;
+import bg.softuni.mycarservicebackend.exceptions.ExistingUserException;
 import bg.softuni.mycarservicebackend.repositories.UserRepository;
 import bg.softuni.mycarservicebackend.repositories.UserRoleRepository;
 import bg.softuni.mycarservicebackend.services.ApplicationUserDetailsService;
@@ -49,7 +50,7 @@ public class AuthenticationService {
 
         var existingUser = userRepository.findByEmail(request.getEmail());
         if (existingUser.isPresent()) {
-            throw new RuntimeException();
+            throw new ExistingUserException();
         }
 
         UserEntity user = UserEntity.builder()
