@@ -43,7 +43,7 @@ public class UserService {
         String newEmail = userDTO.getEmail();
 
         if (userRepository.findByEmail(newEmail).isPresent() && (!existingUser.getEmail().equals(newEmail))) {
-            throw new RuntimeException();
+            throw new ExistingUserException();
         }
 
         modelMapper.map(userDTO, existingUser);

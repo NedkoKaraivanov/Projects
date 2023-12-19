@@ -43,11 +43,7 @@ public class BookingController {
 
     @DeleteMapping("/bookings/{id}")
     public ResponseEntity<Void> deleteBooking(@PathVariable Long id) {
-        try {
             bookingService.deleteBooking(id);
             return ResponseEntity.status(HttpStatus.NO_CONTENT).build();
-        } catch (RuntimeException e) {
-            return ResponseEntity.status(HttpStatus.NOT_FOUND).build();
-        }
     }
 }

@@ -21,6 +21,9 @@ public class GlobalExceptionHandler {
         } else if (ex instanceof AuthenticationException) {
             status = HttpStatus.UNAUTHORIZED;
             message = ex.getMessage();
+        } else if (ex instanceof BookingNotFoundException) {
+            status = HttpStatus.NOT_FOUND;
+            message = ex.getMessage();
         }
 
         return ResponseEntity.status(status).body(message);

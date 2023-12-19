@@ -7,6 +7,7 @@ import bg.softuni.mycarservicebackend.domain.entities.BookingEntity;
 import bg.softuni.mycarservicebackend.domain.entities.UserEntity;
 import bg.softuni.mycarservicebackend.domain.entities.VehicleEntity;
 import bg.softuni.mycarservicebackend.domain.enums.ServiceTypeEnum;
+import bg.softuni.mycarservicebackend.exceptions.BookingNotFoundException;
 import bg.softuni.mycarservicebackend.repositories.BookingRepository;
 import bg.softuni.mycarservicebackend.repositories.UserRepository;
 import bg.softuni.mycarservicebackend.repositories.VehicleRepository;
@@ -101,7 +102,7 @@ public class BookingService {
     }
 
     public void deleteBooking(Long id) {
-        BookingEntity bookingEntity = this.bookingRepository.findById(id).orElseThrow(()-> new RuntimeException("No such booking exists"));
+        BookingEntity bookingEntity = this.bookingRepository.findById(id).orElseThrow(()-> new BookingNotFoundException());
         Long userId = bookingEntity.getUser().getId();
         UserEntity userEntity = this.userRepository.findById(userId).get();
         userEntity.getBookings().remove(bookingEntity);

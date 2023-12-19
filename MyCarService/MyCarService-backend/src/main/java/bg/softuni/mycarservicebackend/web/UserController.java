@@ -27,23 +27,13 @@ public class UserController {
 
     @PutMapping("/profile")
     public ResponseEntity<UserDTO> updateProfile(Principal principal, @RequestBody UserDTO userDTO) {
-        try {
             return ResponseEntity.ok(this.userService.updateProfile(principal, userDTO));
-        } catch (RuntimeException e) {
-            return ResponseEntity.status(409).build();
-        }
     }
 
     @PatchMapping("/update-email")
     public ResponseEntity<Void> updateEmail(Principal principal, @RequestBody ChangeEmailDTO changeEmailDTO) {
-        try {
             this.userService.updateEmail(principal, changeEmailDTO);
             return ResponseEntity.status(HttpStatus.OK).build();
-        } catch (ExistingUserException e) {
-            return ResponseEntity.status(HttpStatus.CONFLICT).build();
-        } catch (AuthenticationException e) {
-            return ResponseEntity.status(HttpStatus.UNAUTHORIZED).build();
-        }
     }
 
 }
