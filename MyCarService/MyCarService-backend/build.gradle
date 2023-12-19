@@ -41,6 +41,8 @@ dependencies {
 
 	implementation group: 'org.junit', name: 'junit5-engine', version: '5.0.0-ALPHA'
 	runtimeOnly 'com.h2database:h2'
+
+	implementation 'ch.qos.logback:logback-classic:1.4.7'
 }
 
 tasks.named('test') {
