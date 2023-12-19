@@ -3,7 +3,6 @@ package bg.softuni.mycarservicebackend.interceptor;
 import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpServletResponse;
 import org.springframework.web.servlet.HandlerInterceptor;
-import org.springframework.web.servlet.ModelAndView;
 
 import java.io.File;
 import java.io.FileWriter;
@@ -16,7 +15,7 @@ public class LoggingInterceptor implements HandlerInterceptor {
     @Override
     public boolean preHandle(HttpServletRequest request, HttpServletResponse response, Object handler) {
         if (request.getServletPath().equals("/api/auth/authenticate")) {
-            String email = request.getParameter("email"); // Get username from request
+            String email = request.getParameter("email");
             String clientIp = getClientIp(request);
             logUserLogin(email, clientIp);
         }
