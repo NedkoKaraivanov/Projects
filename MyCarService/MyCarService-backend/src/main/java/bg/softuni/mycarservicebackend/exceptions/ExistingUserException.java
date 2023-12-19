@@ -3,6 +3,6 @@ package bg.softuni.mycarservicebackend.exceptions;
 public class ExistingUserException extends RuntimeException {
 
     public ExistingUserException() {
-        super();
+        super("User with this email already exists.");
     }
 }

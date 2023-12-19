@@ -39,12 +39,7 @@ public class AuthenticationController {
     }
 
     @ExceptionHandler(ExistingUserException.class)
-    public ResponseEntity<Void> handleExistingUserException() {
-        return ResponseEntity.status(HttpStatus.CONFLICT).build();
-    }
-
-    @ExceptionHandler(AuthenticationException.class)
-    public ResponseEntity<Void> handleAuthenticationException() {
-        return ResponseEntity.status(HttpStatus.UNAUTHORIZED).build();
+    public ResponseEntity<String> handleExistingUserException(ExistingUserException ex) {
+        return ResponseEntity.status(HttpStatus.CONFLICT).body(ex.getMessage());
     }
 }
