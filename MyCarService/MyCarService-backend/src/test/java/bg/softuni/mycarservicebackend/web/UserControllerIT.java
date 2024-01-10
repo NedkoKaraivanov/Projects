@@ -5,10 +5,7 @@ import bg.softuni.mycarservicebackend.domain.entities.UserEntity;
 import bg.softuni.mycarservicebackend.repositories.UserRepository;
 import bg.softuni.mycarservicebackend.repositories.UserRoleRepository;
 import com.fasterxml.jackson.databind.ObjectMapper;
-import org.junit.jupiter.api.AfterAll;
-import org.junit.jupiter.api.BeforeAll;
-import org.junit.jupiter.api.Test;
-import org.junit.jupiter.api.TestInstance;
+import org.junit.jupiter.api.*;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.autoconfigure.web.servlet.AutoConfigureMockMvc;
 import org.springframework.boot.test.context.SpringBootTest;
@@ -19,6 +16,8 @@ import org.springframework.test.context.ActiveProfiles;
 import org.springframework.test.web.servlet.MockMvc;
 import org.springframework.test.web.servlet.request.MockMvcRequestBuilders;
 import org.springframework.test.web.servlet.result.MockMvcResultMatchers;
+
+import java.util.List;
 
 import static org.hamcrest.Matchers.is;
 
@@ -32,7 +31,7 @@ public class UserControllerIT {
 
     private static final String UPDATED_EMAIL = "updatedEmail@test.com";
 
-    private static final String EXISTING_USER_EMAIL = "anotherUser@test.com";
+    private static final String EXISTING_USER_EMAIL = "existingUser@test.com";
 
     private static final String PHONE_NUMBER = "123123";
 
@@ -62,13 +61,12 @@ public class UserControllerIT {
     private ObjectMapper objectMapper;
 
 
-    @BeforeAll
+    @BeforeEach
     void setUp() {
-        UserEntity testUser = createTestUser();
-        userRepository.save(testUser);
+        createTestUsers();
     }
 
-    @AfterAll
+    @AfterEach
     void tearDown() {
         userRepository.deleteAll();
     }
@@ -106,14 +104,6 @@ public class UserControllerIT {
     @Test
     @WithMockUser(username = "userEmail@test.com", roles = "USER")
     void updateProfile_Invalid_NewEmail_ExceptionThrown() throws Exception {
-        UserEntity existingUser = UserEntity.builder()
-                .email(EXISTING_USER_EMAIL)
-                .password(passwordEncoder.encode(PASSWORD))
-                .phoneNumber(PHONE_NUMBER)
-                .firstName(NAME_TOMAS)
-                .build();
-
-        userRepository.save(existingUser);
 
         UserDTO updatedInfo = UserDTO.builder()
                 .email(EXISTING_USER_EMAIL)
@@ -130,12 +120,21 @@ public class UserControllerIT {
     }
 
 
-    private UserEntity createTestUser() {
-        return UserEntity.builder()
+    private void createTestUsers() {
+        UserEntity testUser =  UserEntity.builder()
                 .email(TEST_EMAIL)
                 .password(passwordEncoder.encode(PASSWORD))
                 .phoneNumber(PHONE_NUMBER)
                 .firstName(NAME_PETER)
                 .build();
+
+        UserEntity existingUser =  UserEntity.builder()
+                .email(EXISTING_USER_EMAIL)
+                .password(passwordEncoder.encode(PASSWORD))
+                .phoneNumber(PHONE_NUMBER)
+                .firstName(NAME_GEORGE)
+                .build();
+
+        this.userRepository.saveAllAndFlush(List.of(testUser, existingUser));
     }
 }

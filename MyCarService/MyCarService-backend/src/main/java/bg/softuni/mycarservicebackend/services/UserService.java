@@ -39,17 +39,17 @@ public class UserService {
         return userRepository.findByEmail(email).orElseThrow(() -> new UsernameNotFoundException("UserEntity with name " + email + " not found!"));
     }
     public UserDTO updateProfile(Principal principal, UserDTO userDTO) {
-        UserEntity existingUser = userRepository.findByEmail(principal.getName()).orElseThrow();
+        UserEntity principalUser = userRepository.findByEmail(principal.getName()).orElseThrow();
         String newEmail = userDTO.getEmail();
 
-        if (userRepository.findByEmail(newEmail).isPresent() && (!existingUser.getEmail().equals(newEmail))) {
+        if (userRepository.findByEmail(newEmail).isPresent() && (!principalUser.getEmail().equals(newEmail))) {
             throw new ExistingUserException();
         }
 
-        modelMapper.map(userDTO, existingUser);
-        userRepository.save(existingUser);
+        modelMapper.map(userDTO, principalUser);
+        userRepository.save(principalUser);
 
-        return createUserDTO(existingUser);
+        return createUserDTO(principalUser);
     }
 
     public UserDTO createUserDTO(UserEntity user) {
