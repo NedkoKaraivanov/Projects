@@ -32,6 +32,7 @@ dependencies {
 	developmentOnly 'org.springframework.boot:spring-boot-devtools'
 	runtimeOnly 'com.mysql:mysql-connector-j'
 	annotationProcessor 'org.projectlombok:lombok'
+	implementation 'org.springframework.boot:spring-boot-starter-websocket'
 	testImplementation 'org.springframework.boot:spring-boot-starter-test'
 	testImplementation 'org.springframework.security:spring-security-test'
 
@@ -42,7 +43,7 @@ dependencies {
 	implementation group: 'org.junit', name: 'junit5-engine', version: '5.0.0-ALPHA'
 	runtimeOnly 'com.h2database:h2'
 
-	implementation 'ch.qos.logback:logback-classic:1.4.7'
+	implementation 'ch.qos.logback:logback-classic:1.4.12'
 }
 
 tasks.named('test') {
