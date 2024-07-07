@@ -1,6 +1,6 @@
 package bg.softuni.mycarservicebackend.auth;
 
-import bg.softuni.mycarservicebackend.config.JwtService;
+import bg.softuni.mycarservicebackend.services.JwtService;
 import bg.softuni.mycarservicebackend.domain.entities.UserEntity;
 import bg.softuni.mycarservicebackend.domain.entities.UserRoleEntity;
 import bg.softuni.mycarservicebackend.domain.enums.UserRoleEnum;

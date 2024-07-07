@@ -1,4 +1,4 @@
-package bg.softuni.mycarservicebackend.config;
+package bg.softuni.mycarservicebackend.services;
 
 import io.jsonwebtoken.Claims;
 import io.jsonwebtoken.Jwts;

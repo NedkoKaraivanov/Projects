@@ -1,5 +1,6 @@
-package bg.softuni.mycarservicebackend.config;
+package bg.softuni.mycarservicebackend.filter;
 
+import bg.softuni.mycarservicebackend.services.JwtService;
 import bg.softuni.mycarservicebackend.services.ApplicationUserDetailsService;
 import bg.softuni.mycarservicebackend.token.TokenRepository;
 import jakarta.servlet.FilterChain;

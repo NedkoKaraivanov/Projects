@@ -1,5 +1,6 @@
 package bg.softuni.mycarservicebackend.config;
 
+import bg.softuni.mycarservicebackend.filter.JwtAuthenticationFilter;
 import lombok.RequiredArgsConstructor;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;

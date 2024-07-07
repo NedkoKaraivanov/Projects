@@ -1,4 +1,4 @@
-package bg.softuni.mycarservicebackend.config;
+package bg.softuni.mycarservicebackend.services;
 
 import bg.softuni.mycarservicebackend.token.TokenRepository;
 import jakarta.servlet.http.HttpServletRequest;
