@@ -1,7 +1,7 @@
 <mat-toolbar color="primary" class="navbar">
   <div class="logo">
     <a routerLink="/home">
-      BestService <img class="logo-img" src="../../../assets/car-logo2.jpg" />
+      Best<img class="logo-img" src="../../../assets/car-logo2.jpg" />Service
     </a>
   </div>
   <ul class="nav-links">
@@ -19,23 +19,28 @@
     </li>
     <div class="mini-navbar">
       <ul class="nav-links" *ngIf="!isLoggedIn">
-        <li>
-          <a mat-raised-button color="accent" routerLink="/login">Login</a>
+        <li class="icon">
+          <a mat-raised-button color="accent" routerLink="/login"
+            ><mat-icon>login</mat-icon>Login</a
+          >
         </li>
-        <li>
+        <li class="icon">
           <a mat-raised-button color="accent" routerLink="/register"
-            >Register</a
+            ><mat-icon>app_registration</mat-icon>Register</a
           >
         </li>
       </ul>
 
       <ul class="nav-links" *ngIf="isLoggedIn">
-        <li>
+        <li class="icon">
+          <a mat-button><mat-icon>notifications</mat-icon></a>
+        </li>
+        <li class="icon">
           <a mat-raised-button color="accent" routerLink="/profile"
-            ><mat-icon>person</mat-icon> Profile</a
+            ><mat-icon>person</mat-icon>Profile</a
           >
         </li>
-        <li (click)="logout()">
+        <li class="icon" (click)="logout()">
           <a mat-raised-button color="accent"
             ><mat-icon>logout</mat-icon>Logout</a
           >
