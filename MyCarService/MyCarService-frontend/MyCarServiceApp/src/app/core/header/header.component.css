@@ -43,5 +43,4 @@
 .nav-links a:hover {
   opacity: 1;
   transform: scale(105%);
-  text-decoration: underline;
 }
