@@ -4,6 +4,7 @@ import bg.softuni.mycarservicebackend.domain.dtos.ChangeEmailDTO;
 import bg.softuni.mycarservicebackend.domain.dtos.UserDTO;
 import bg.softuni.mycarservicebackend.domain.dtos.UserRoleDTO;
 import bg.softuni.mycarservicebackend.domain.entities.UserEntity;
+import bg.softuni.mycarservicebackend.domain.entities.UserRoleEntity;
 import bg.softuni.mycarservicebackend.domain.enums.UserRoleEnum;
 import bg.softuni.mycarservicebackend.exceptions.ExistingUserException;
 import bg.softuni.mycarservicebackend.repositories.UserRepository;
@@ -98,5 +99,10 @@ public class UserService {
 
         existingUser.setEmail(changeEmailDTO.getNewEmail());
         this.userRepository.save(existingUser);
+    }
+
+    protected List<UserEntity> findAdminUsers() {
+        UserRoleEntity adminRole = this.userRoleRepository.findByRole(UserRoleEnum.ADMIN);
+        return this.userRepository.findAllByRolesEquals(List.of(adminRole));
     }
 }
