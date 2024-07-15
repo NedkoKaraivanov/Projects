@@ -2,6 +2,7 @@ import { Component } from '@angular/core';
 import { UserService } from '../user.service';
 import { Router } from '@angular/router';
 import { FormBuilder, Validators } from '@angular/forms';
+import { WebSocketService } from 'src/app/web-socket.service';
 
 @Component({
   selector: 'app-register',
@@ -12,7 +13,8 @@ export class RegisterComponent {
   constructor(
     private userService: UserService,
     private router: Router,
-    private fb: FormBuilder
+    private fb: FormBuilder,
+    private webSocketService: WebSocketService
   ) {}
 
   form = this.fb.group({
@@ -34,6 +36,7 @@ export class RegisterComponent {
     }
     this.userService.register(this.form.value).subscribe({
       next: (response) => {
+        this.webSocketService.connect();
         localStorage.setItem('access_token', response.access_token);
         localStorage.setItem('refresh_token', response.refresh_token);
         localStorage.setItem('roles', JSON.stringify(response.roles));

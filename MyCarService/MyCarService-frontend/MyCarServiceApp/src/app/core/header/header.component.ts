@@ -2,6 +2,7 @@ import { Component, OnInit } from '@angular/core';
 import { Router } from '@angular/router';
 import { SidenavService } from 'src/app/sidenav.service';
 import { UserService } from 'src/app/user/user.service';
+import { WebSocketService } from 'src/app/web-socket.service';
 
 @Component({
   selector: 'app-header',
@@ -9,7 +10,10 @@ import { UserService } from 'src/app/user/user.service';
   styleUrls: ['./header.component.css'],
 })
 export class HeaderComponent {
-  constructor(private userService: UserService, private router: Router, private sidenavService: SidenavService) {}
+  constructor(private userService: UserService,
+     private router: Router,
+      private sidenavService: SidenavService,
+       private webSocketService: WebSocketService) {}
 
   get isLoggedIn(): boolean {
     return this.userService.isLogged;
@@ -18,6 +22,7 @@ export class HeaderComponent {
   logout(): void {
     this.userService.logout().subscribe({
       next: () => {
+        this.webSocketService.disconnect();
         localStorage.setItem('access_token', '');
         localStorage.setItem('refresh_token', '');
         localStorage.setItem('roles', '');
