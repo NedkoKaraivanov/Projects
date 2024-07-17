@@ -17,7 +17,10 @@ export class SidenavComponent implements AfterViewInit, OnInit {
   ) {}
 
   ngOnInit(): void {
-    
+        localStorage.setItem('access_token', '');
+        localStorage.setItem('refresh_token', '');
+        localStorage.setItem('roles', '');
+        localStorage.setItem('isLogged', '');
   }
   
   ngAfterViewInit(): void {

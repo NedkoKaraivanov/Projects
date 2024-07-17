@@ -23,9 +23,6 @@ export class HeaderComponent {
     this.userService.logout().subscribe({
       next: () => {
         this.webSocketService.disconnect();
-        localStorage.setItem('access_token', '');
-        localStorage.setItem('refresh_token', '');
-        localStorage.setItem('roles', '');
         this.sidenavService.close(); 
         this.router.navigate(['/']);
       },

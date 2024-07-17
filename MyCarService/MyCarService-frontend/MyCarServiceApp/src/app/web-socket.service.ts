@@ -1,5 +1,5 @@
 import { Injectable } from '@angular/core';
-import { Message } from '@stomp/stompjs';
+import { IMessage } from '@stomp/stompjs';
 import { RxStomp } from '@stomp/rx-stomp';
 @Injectable({
   providedIn: 'root',
@@ -23,9 +23,11 @@ export class WebSocketService {
   }
 
   subscribeToTopic(topic: string): void {
-    this.client?.watch(topic).subscribe((message: Message) => {
+    this.client?.watch(topic).subscribe((message: IMessage) => {
+      console.log('Subscribed for Messages');
       console.log(message.body);
     });
+    console.log(`User is subscribed to ${topic}`);
   }
 
   sendMessage(message: any): void {

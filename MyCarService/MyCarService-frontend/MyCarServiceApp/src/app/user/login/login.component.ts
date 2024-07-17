@@ -30,16 +30,16 @@ export class LoginComponent {
     this.userService.login(this.form.value).subscribe({
       next: (response) => {
         this.webSocketService.connect();
-        this.webSocketService.subscribeToTopic('/topic/hello');
-        this.webSocketService.sendMessage('Hello from Client');
         localStorage.setItem('access_token', response.access_token);
         localStorage.setItem('refresh_token', response.refresh_token);
         localStorage.setItem('roles', JSON.stringify(response.roles));
         localStorage.setItem('isLogged', 'true');
         if (response.roles.includes('1')) {
           this.router.navigate(['/home']);
+          this.webSocketService.subscribeToTopic('/user/notifications');
         } else {
           this.router.navigate(['/manage-bookings']);
+          this.webSocketService.subscribeToTopic('/topic/notifications');
         }
       },
       error: (err) => {

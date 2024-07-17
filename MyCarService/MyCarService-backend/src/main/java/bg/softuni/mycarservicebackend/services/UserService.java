@@ -103,6 +103,6 @@ public class UserService {
 
     protected List<UserEntity> findAdminUsers() {
         UserRoleEntity adminRole = this.userRoleRepository.findByRole(UserRoleEnum.ADMIN);
-        return this.userRepository.findAllByRolesEquals(List.of(adminRole));
+        return this.userRepository.findAllByRolesIn(List.of(adminRole));
     }
 }
