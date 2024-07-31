@@ -54,10 +54,7 @@ export class UserService implements OnDestroy {
   }
 
   logout() {
-    localStorage.setItem('isLogged', '');
-    localStorage.setItem('access_token', '');
-    localStorage.setItem('refresh_token', '');
-    localStorage.setItem('roles', '');
+    localStorage.clear();
     return this.http
       .post<User>(this.logout_url, {})
       .pipe(tap(() => this.user$$.next(undefined)));

@@ -1,5 +1,5 @@
 import { AfterViewInit, Component, OnInit, ViewChild } from '@angular/core';
-import { MatSidenav} from '@angular/material/sidenav';
+import { MatSidenav } from '@angular/material/sidenav';
 import { SidenavService } from 'src/app/sidenav.service';
 import { UserService } from 'src/app/user/user.service';
 
@@ -17,12 +17,15 @@ export class SidenavComponent implements AfterViewInit, OnInit {
   ) {}
 
   ngOnInit(): void {
-        localStorage.setItem('access_token', '');
-        localStorage.setItem('refresh_token', '');
-        localStorage.setItem('roles', '');
-        localStorage.setItem('isLogged', '');
+    const token = localStorage.getItem('access_token');
+    if (token == null) {
+          localStorage.setItem('access_token', '');
+          localStorage.setItem('refresh_token', '');
+          localStorage.setItem('roles', '');
+          localStorage.setItem('isLogged', '');
+    }
   }
-  
+
   ngAfterViewInit(): void {
     this.sidenavService.setSidenav(this.sidenav);
   }
